@@ -1,0 +1,40 @@
+﻿
+.tiendita {
+    font-family: algerian;
+    color: gainsboro;
+
+    font-size: 20px;
+    padding-top: 20px;
+    padding-left: 24px;
+    
+    float:left
+}
+
+.container_menu {
+    width: 100%;
+    max-width: 220px;
+    background: #2b2c49;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    float: left;
+    position: fixed
+}
+
+.container_menu nav{
+    transform: translateY(15%);
+
+}
+.container_menu nav a{
+    display:block;
+    text-decoration: none;
+    padding:20px;
+    color: #c7c7c7;
+    border-left: 5px solid transparent;
+    color:#fff;
+}
+
+.content{
+    margin-left:270px;
+    margin-right:20px
+}

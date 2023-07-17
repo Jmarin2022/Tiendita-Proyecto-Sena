@@ -1,0 +1,37 @@
+﻿body {
+}
+.botun a{
+    text-decoration:none;
+    color:white
+}
+.botunp {
+    width: auto;
+    height: 37px;
+    background: #02c0ce;
+    border-radius: 1vh;
+    border: 0.1px solid white;
+    box-shadow:1px 1px 4px gray
+}
+    .botunp a {
+        text-decoration: none;
+        color: white;
+        padding: 5px;
+    }
+    .botunp:hover {
+        background: #0f9ba5;
+        box-shadow: 4px 3px 4px gray
+    }
+.fuentetitulo {
+    font-family: 'Book Antiqua';
+    color: gray;
+}
+/*############################################# Botón agregar*/
+
+.agcliente {
+    float: right;
+    margin-top: 15px;
+    width
+
+}
+
+/*Entradas*/

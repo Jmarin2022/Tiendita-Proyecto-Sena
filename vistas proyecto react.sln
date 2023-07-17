@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vistas proyecto react", "vistas proyecto react\vistas proyecto react.csproj", "{3F608684-4095-4801-9DCA-4262B4DEE057}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3F608684-4095-4801-9DCA-4262B4DEE057}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F608684-4095-4801-9DCA-4262B4DEE057}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F608684-4095-4801-9DCA-4262B4DEE057}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F608684-4095-4801-9DCA-4262B4DEE057}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {972B57EA-937A-4CD5-AA37-EED436E109D5}
+	EndGlobalSection
+EndGlobal
