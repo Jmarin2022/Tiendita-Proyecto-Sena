@@ -3,7 +3,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Modal } from "./Modal";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 export function ListadoCliente() {
     const [clientes, setClientes] = useState([]);
     const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
@@ -51,7 +52,10 @@ export function ListadoCliente() {
     };
 
     return (
+        
         <div className="container">
+            <NavBar />
+            <div className="contenido">
             <h2>Lista de clientes</h2>
             <table className="table">
                 <thead>
@@ -83,6 +87,7 @@ export function ListadoCliente() {
             {/* Modal para confirmar la eliminación */}
             <Modal clienteSeleccionado={clienteSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
             <Link to="/cliente/guardar">Crear Cliente</Link>
+            </div>
         </div>
     );
 }

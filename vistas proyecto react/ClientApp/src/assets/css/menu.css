@@ -10,15 +10,20 @@
     float:left
 }
 
+*{
+    margin:0px;
+
+}
+
 .container_menu {
-    width: 100%;
-    max-width: 220px;
-    background: #2b2c49;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    float: left;
-    position: fixed
+    width:20%;
+    height:1200px;
+    
+}
+
+.contenido{
+    width:80%;
+    height:1200px;
 }
 
 .container_menu nav{
