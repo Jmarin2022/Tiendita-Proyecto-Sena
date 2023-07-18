@@ -3,7 +3,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Modal } from "./Modal";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 export function Listadoentradum() {
     const [entradums, setentradums] = useState([]);
     const [entradumSeleccionado, setentradumSeleccionado] = useState(null);
@@ -53,28 +54,43 @@ export function Listadoentradum() {
     };
 
     return (
-        <div className="container">
-            <h2>Lista de entradums</h2>
-            <table className="table">
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+
+
+                <div className="Titulo">
+                    <h2 class="letra">Lista de las entradas</h2>
+                    <div class="btn-neon ">
+                        <span id="span1"></span>
+                        <span id="span2"></span>
+                        <span id="span3"></span>
+                        <span id="span4"></span>
+                        <a href="/entradas/guardar">Agregar</a>
+                    </div>
+                </div>
+
+
+            <table className="table1">
                 <thead>
                     <tr>
-                        <th scope="col">Id entradum</th>
-                        <th scope="col">id del producto</th>
-                        <th scope="col">Catidad</th>
-                        <th scope="col">Proveedor</th>
-                        <th scope="col">Fecha Registro</th>
-                        <th scope="col">Operaciones</th>
+                        <th scope="col " className="raya">Id entradum</th>
+                        <th scope="col " className="raya">id del producto</th>
+                        <th scope="col " className="raya">Catidad</th>
+                        <th scope="col " className="raya">Proveedor</th>
+                        <th scope="col " className="raya">Fecha Registro</th>
+                        <th scope="col " className="raya">Operaciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {entradums.map((entradum) => (
                         <tr key={entradum.IdEntrada}>
-                            <td>{entradum.idEntrada}</td>
-                            <td>{entradum.idProductos}</td>
-                            <td>{entradum.cantidad}</td>
-                            <td>{entradum.proveedor}</td>
-                            <td>{formatDate(entradum.fecha)}</td>
-                            <td>
+                            <td className="raya">{entradum.idEntrada}</td>
+                            <td className="raya">{entradum.idProductos}</td>
+                            <td className="raya">{entradum.cantidad}</td>
+                            <td className="raya">{entradum.proveedor}</td>
+                            <td className="raya">{formatDate(entradum.fecha)}</td>
+                            <td className="raya corto">
                                 <button onClick={() => handleEliminarClick(entradum)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">Eliminar</button> |
                                 <Link to={`/entradas/editar/${entradum.idEntrada}`}>Editar</Link> |
                                 <Link to={`/entradas/detalles/${entradum.idEntrada}`}>Ver detalle</Link>
@@ -86,7 +102,7 @@ export function Listadoentradum() {
 
             {/* Modal para confirmar la eliminación */}
             <Modal entradumSeleccionado={entradumSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
-            <Link to="/entradum/guardar">Crear entradum</Link>
+            </div>
         </div>
     );
 }

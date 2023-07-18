@@ -53,28 +53,42 @@ export function ListadoCliente() {
 
     return (
         
-        <div className="container">
+        <div className="container1">
             <NavBar />
             <div className="contenido">
-            <h2>Lista de clientes</h2>
-            <table className="table">
+
+                    
+                <div className="Titulo">
+                    <h2 class="letra">Lista de clientes</h2>
+                    <div class="btn-neon ">
+                        <span id="span1"></span>
+                        <span id="span2"></span>
+                        <span id="span3"></span>
+                        <span id="span4"></span>
+                        <a href="/cliente/guardar">Agregar</a>
+
+                    </div>
+                </div>
+                
+                
+            <table className="table1">
                 <thead>
                     <tr>
-                        <th scope="col">Id Cliente</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Apellido</th>
-                        <th scope="col">Fecha Registro</th>
-                        <th scope="col">Operaciones</th>
+                            <th scope="col " className="raya">Id Cliente</th>
+                            <th scope="col " className="raya">Nombre</th>
+                            <th scope="col " className="raya">Apellido</th>
+                            <th scope="col " className="raya">Fecha Registro</th>
+                            <th scope="col " className="raya">Operaciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {clientes.map((cliente) => (
                         <tr key={cliente.idCliente}>
-                            <td>{cliente.idCliente}</td>
-                            <td>{cliente.nombre}</td>
-                            <td>{cliente.apellido}</td>
-                            <td>{formatDate(cliente.fechaRegistro)}</td>
-                            <td>
+                            <td className="raya">{cliente.idCliente}</td>
+                            <td className="raya">{cliente.nombre}</td>
+                            <td className="raya">{cliente.apellido}</td>
+                            <td className="raya">{formatDate(cliente.fechaRegistro)}</td>
+                            <td className="raya corto">
                                 <button onClick={() => handleEliminarClick(cliente)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">Eliminar</button> |
                                 <Link to={`/cliente/editar/${cliente.idCliente}`}>Editar</Link> |
                                 <Link to={`/cliente/detalles/${cliente.idCliente}`}>Ver detalle</Link>
@@ -86,7 +100,6 @@ export function ListadoCliente() {
 
             {/* Modal para confirmar la eliminación */}
             <Modal clienteSeleccionado={clienteSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
-            <Link to="/cliente/guardar">Crear Cliente</Link>
             </div>
         </div>
     );

@@ -1,6 +1,8 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 
 export const PermisosDetalles = () => {
     const { idPermisos } = useParams();
@@ -31,13 +33,47 @@ export const PermisosDetalles = () => {
     }
 
     return (
-        <div>
-            <h2>Detalles del permisoss</h2>
-            <p>ID: {permisos.idPermisos}</p>
-            <p>Modulo: {permisos.modulo}</p>
-            <p>Crear: {permisos.crear}</p>
-            <p>Eliminar: {permisos.eliminar}</p>
-            <p>Editar: {permisos.editar}</p>
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+
+
+                <div className="Titulo">
+                    <h2 class="letra">Detqalle de los permisos</h2>
+                    <div class="btn-neon ">
+                        <span id="span1"></span>
+                        <span id="span2"></span>
+                        <span id="span3"></span>
+                        <span id="span4"></span>
+                        <a href="/permiso/guardar">Agregar</a>
+
+                    </div>
+                </div>
+
+
+                <table className="table1">
+                    <thead>
+                        <tr>
+                            <th scope="col " className="raya">Id permiso</th>
+                            <th scope="col " className="raya">Modulo</th>
+                            <th scope="col " className="raya">Crear</th>
+                            <th scope="col " className="raya">Eliminar</th>
+                            <th scope="col " className="raya">Editar</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                            <tr >
+                            <td className="raya">{permisos.idPermisos}</td>
+                            <td className="raya">{permisos.modulo}</td>
+                            <td className="raya">{permisos.crear}</td>
+                            <td className="raya">{permisos.eliminar}</td>
+                            <td className="raya">{permisos.editar}</td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

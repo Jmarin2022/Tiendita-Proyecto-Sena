@@ -1,6 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 
 export const ImagenEditar = () => {
     const { idImagen } = useParams();
@@ -47,43 +49,52 @@ export const ImagenEditar = () => {
     };
 
     return (
-        <div>
-            <h2>Editar imagen</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
+
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+                <div className="highlight contenidointerior">
+                    <h2>Editar Cliente</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-row">
+
+                            <div className="col">
                     <label htmlFor="nombre">nombre:</label>
-                    <input type="text" id="nombre" name="nombre" value={imagen.nombre} onChange={handleChange} />
+                    <input type="text" className="form-control" id="nombre" name="nombre" value={imagen.nombre} onChange={handleChange} />
                 </div>
-                <div>
+                 <div className="col">
                     <label htmlFor="descripcion">descripcion:</label>
-                    <input type="text" id="descripcion" name="descripcion" value={imagen.descripcion} onChange={handleChange} />
+                    <input type="text" className="form-control" id="descripcion" name="descripcion" value={imagen.descripcion} onChange={handleChange} />
                 </div>
-                <div>
+                 <div className="col">
                     <label htmlFor="stock">stock:</label>
-                    <input type="text" id="stock" name="stock" value={imagen.stock} onChange={handleChange} />
+                    <input type="text" className="form-control" id="stock" name="stock" value={imagen.stock} onChange={handleChange} />
                 </div>
-                <div>
+                 <div className="col">
                     <label htmlFor="precio">precio:</label>
-                    <input type="text" id="precio" name="precio" value={imagen.precio} onChange={handleChange} />
+                    <input type="text" className="form-control" id="precio" name="precio" value={imagen.precio} onChange={handleChange} />
                 </div>
-                <div>
+                 <div className="col">
                     <label htmlFor="categoria">categoria:</label>
-                    <input type="text" id="categoria" name="categoria" value={imagen.categoria} onChange={handleChange} />
+                    <input type="text" className="form-control" id="categoria" name="categoria" value={imagen.categoria} onChange={handleChange} />
                 </div>
-                <div>
+                 <div className="col">
                     <label htmlFor="stockMax">stockMax:</label>
-                    <input type="text" id="stockMax" name="stockMax" value={imagen.stockMax} onChange={handleChange} />
+                    <input type="text" className="form-control" id="stockMax" name="stockMax" value={imagen.stockMax} onChange={handleChange} />
                 </div>
-                <div>
+                 <div className="col">
                     <label htmlFor="stockMin">stockMin:</label>
-                    <input type="text" id="stockMin" name="stockMin" value={imagen.stockMin} onChange={handleChange} />
+                    <input type="text" className="form-control" id="stockMin" name="stockMin" value={imagen.stockMin} onChange={handleChange} />
                 </div>
-                <div>
+                 <div className="col">
                     <label htmlFor="imagen1">imagen1:</label>
-                    <input type="text" id="imagen1" name="imagen1" value={imagen.imagen1} onChange={handleChange} />
+                    <input type="text" className="form-control" id="imagen1" name="imagen1" value={imagen.imagen1} onChange={handleChange} />
                 </div>
-                <button type="submit">Guardar</button>
+                            <button type="submit">Guardar</button>
+                        </div>
             </form>
+                </div>
+            </div>
         </div>
     );
 };

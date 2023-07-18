@@ -1,7 +1,8 @@
 //import "bootsrap/dist/css/bootstrap.min.css"
 import { Component } from "react";
 import axios from 'axios';
-
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 export class GuardarImagen extends Component {
 
     constructor(props) {
@@ -36,42 +37,52 @@ export class GuardarImagen extends Component {
     }
     render() {
         return (
-            <div>
-                <form onSubmit={this.submitHandler}>
-                    <div>
-                        <p>Digite el nombre</p><br />
-                        <input type="Text" name="Nombre"  onChange={this.changeHandler} ></input>
+            <div className="container1">
+                <NavBar />
+                <div className="contenido">
+                    <div className="highlight contenidointeriorproducto">
+                        <h2>Agregar Producto</h2>
+                        <form onSubmit={this.submitHandler}>
+                            <div className="Mitad1">
+                                <div className="form-row">
+                                    <p>Digite el nombre</p> 
+                                    <input type="Text" name="Nombre" onChange={this.changeHandler}></input>
+                                </div>
+                                <div>
+                                    <p>Digite La descripcion</p> 
+                                    <input type="Text" name="Descripcion" onChange={this.changeHandler}></input>
+                                </div>
+                                <div>
+                                    <p>Digite el Stock</p> 
+                                    <input type="number" name="Stock" onChange={this.changeHandler}></input>
+                                </div>
+                                <div>
+                                    <p>Digite el Precio</p> 
+                                    <input type="number" name="Precio" onChange={this.changeHandler}></input>
+                                </div>
+                            </div>
+                            <div className="Mitad2">
+                                <div>
+                                    <p>Digite la Categoria</p> 
+                                    <input type="Text" name="Categoria" onChange={this.changeHandler}></input>
+                                </div>
+                                <div>
+                                    <p>Digite el Stock Maximo</p> 
+                                    <input type="number" name="StockMax" onChange={this.changeHandler}></input>
+                                </div>
+                                <div>
+                                    <p>Digite el Stock Minimo</p> 
+                                    <input type="number" name="StockMin" onChange={this.changeHandler}></input>
+                                </div>
+                                <div>
+                                    <p>Sube la imagen</p> 
+                                    <input type="text" name="Imagen1" onChange={this.changeHandler}></input>
+                                </div>
+                            </div>
+                            <button type="submit">Enviar</button>
+                        </form>
                     </div>
-                    <div>
-                        <p>Digite La descripcion</p><br />
-                        <input type="Text" name="Descripcion"  onChange={this.changeHandler} ></input>
-                    </div>
-                    <div>
-                        <p>Digite el Stock</p><br />
-                        <input type="number" name="Stock"  onChange={this.changeHandler} ></input>
-                    </div>
-                    <div>
-                        <p>Digite el Precio</p><br />
-                        <input type="number" name="Precio" onChange={this.changeHandler} ></input>
-                    </div>
-                    <div>
-                        <p>Digite la Categoria</p><br />
-                        <input type="Text" name="Categoria"  onChange={this.changeHandler} ></input>
-                    </div>
-                    <div>
-                        <p>Digite el Stock Maximo</p><br />
-                        <input type="number" name="StockMax" onChange={this.changeHandler} ></input>
-                    </div>
-                    <div>
-                        <p>Digite el Stock Minimo</p><br />
-                        <input type="number" name="StockMin" onChange={this.changeHandler} ></input>
-                    </div>
-                    <div>
-                        <p>Sube la imagen</p><br />
-                        <input type="text" name="Imagen1"  onChange={this.changeHandler} ></input>
-                    </div>
-                    <button type="submit" >Enviar</button>
-                </form>
+                </div>
             </div>
         )
     }

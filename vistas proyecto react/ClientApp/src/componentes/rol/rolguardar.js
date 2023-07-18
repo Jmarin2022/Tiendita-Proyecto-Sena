@@ -1,6 +1,8 @@
 //import "bootsrap/dist/css/bootstrap.min.css"
 import { Component } from "react";
 import axios from 'axios';
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 
 export class GuardarRol extends Component {
 
@@ -31,18 +33,24 @@ export class GuardarRol extends Component {
     }
     render() {
         return (
-            <div>
-                <form onSubmit={this.submitHandler}>
-                    <div>
+            <div className="container1">
+                <NavBar />
+                <div className="contenido">
+                    <div className="highlight contenidointerior1">
+                        <h2>Crear Permiso</h2>
+                        <form onSubmit={this.submitHandler}>
+                            <div className="form-row">
                         <p>Digite el rol1</p><br />
-                        <input type="Text" name="rol1" onChange={this.changeHandler} ></input>
+                                <input className="form-control"  type="Text" name="rol1" onChange={this.changeHandler} ></input>
                     </div>
-                    <div>
+                            <div className="form-row">
                         <p>Digite La fecha</p><br />
-                        <input type="datetime-local" name="fecha" onChange={this.changeHandler} ></input>
+                                <input className="form-control" type="datetime-local" name="fecha" onChange={this.changeHandler} ></input>
                     </div>
                     <button type="submit" >Enviar</button>
                 </form>
+                    </div>
+                </div>
             </div>
         )
     }

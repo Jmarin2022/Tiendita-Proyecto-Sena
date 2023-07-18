@@ -1,6 +1,8 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 
 export const ImagenDetalles = () => {
     const { idImagen } = useParams();
@@ -31,16 +33,56 @@ export const ImagenDetalles = () => {
     }
 
     return (
-        <div>
-            <h2>Detalles del imagens</h2>
-            <p>ID: {imagen.idImagen}</p>
-            <p>Producto: {imagen.nombre}</p>
-            <p>descripcion: {imagen.descripcion}</p>
-            <p>stock: {imagen.stock}</p>
-            <p>precio: {imagen.precio}</p>
-            <p>stockMax: {imagen.stockMax}</p>
-            <p>stockMin: {imagen.stockMin}</p>
-            <p>imagen1: {imagen.imagen1}</p>
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+
+
+                <div className="Titulo">
+                    <h2 class="letra">Detalle de los Productos</h2>
+                    <div class="btn-neon ">
+                        <span id="span1"></span>
+                        <span id="span2"></span>
+                        <span id="span3"></span>
+                        <span id="span4"></span>
+                        <a href="/imagen/guardar">Agregar</a>
+
+                    </div>
+                </div>
+
+
+                <table className="table2">
+                    <thead>
+                        <tr>
+                            <th scope="col " className="raya">Id imagen</th>
+                            <th scope="col " className="raya">Nombre</th>
+                            <th scope="col " className="raya">Descripción</th>
+                            <th scope="col " className="raya">Stock</th>
+                            <th scope="col " className="raya">Precio</th>
+                            <th scope="col " className="raya">Categoria</th>
+                            <th scope="col " className="raya">StockMax</th>
+                            <th scope="col " className="raya">StockMin</th>
+                            <th scope="col " className="raya">Imagen1</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                            <tr >
+                                <td className="raya">{imagen.idImagen}</td>
+                                <td className="raya">{imagen.nombre}</td>
+                                <td className="raya">{imagen.descripcion}</td>
+                                <td className="raya">{imagen.stock}</td>
+                                <td className="raya">{imagen.precio}</td>
+                                <td className="raya">{imagen.categoria}</td>
+                                <td className="raya">{imagen.stockMax}</td>
+                                <td className="raya">{imagen.stockMin}</td>
+                                <td className="raya">{imagen.imagen1}</td>
+                            </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
         </div>
     );
 };

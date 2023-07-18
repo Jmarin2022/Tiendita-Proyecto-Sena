@@ -3,7 +3,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Modal } from "./Modal";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 export function ListadoRol() {
     const [Rol, setRol] = useState([]);
     const [RolSeleccionado, setRoleleccionado] = useState(null);
@@ -54,27 +55,42 @@ export function ListadoRol() {
     };
 
     return (
-        <div className="container">
-            <h2>Lista de Rol</h2>
-            <table className="table">
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+
+
+                <div className="Titulo">
+                    <h2 class="letra">Lista de los roles</h2>
+                    <div class="btn-neon ">
+                        <span id="span1"></span>
+                        <span id="span2"></span>
+                        <span id="span3"></span>
+                        <span id="span4"></span>
+                        <a href="/Rol/guardar">Agregar</a>
+
+                    </div>
+                </div>
+
+
+                <table className="table1">
                 <thead>
                     <tr>
-                        <th scope="col">Id Rol</th>
-                        <th scope="col">Rol1</th>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Operaciones</th>
+                        <th scope="col " className="raya">Id Rol</th>
+                        <th scope="col " className="raya">Rol1</th>
+                        <th scope="col " className="raya">Fecha</th>
+                        <th scope="col " className="raya">Operaciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {Rol.map((Rol) => (
                         <tr key={Rol.IdRol}>
-                            <td>{Rol.idRol}</td>
-                            <td>{Rol.rol1}</td>
-                            <td>{formatDate(Rol.fecha)}</td>
-                            <td>
+                            <td className="raya">{Rol.idRol}</td>
+                            <td className="raya">{Rol.rol1}</td>
+                            <td className="raya">{formatDate(Rol.fecha)}</td>
+                            <td className="raya corto">
                                 <button onClick={() => handleEliminarClick(Rol)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">Eliminar</button> |
-                                <Link to={`/rol/editar/${Rol.idRol}`}>Editar</Link> |
-                                <Link to={`/rol/detalles/${Rol.idRol}`}>Ver detalle</Link>
+                                <Link to={`/rol/editar/${Rol.idRol}`}>Editar</Link> 
                             </td>
                         </tr>
                     ))}
@@ -83,7 +99,7 @@ export function ListadoRol() {
 
             {/* Modal para confirmar la eliminación */}
             <Modal RolSeleccionado={RolSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
-            <Link to="/Rol/guardar">Crear Rol</Link>
+            </div>
         </div>
     );
 }

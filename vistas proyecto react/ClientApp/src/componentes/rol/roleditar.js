@@ -1,6 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 
 export const RolEditar = () => {
     const { idRol } = useParams();
@@ -41,21 +43,30 @@ export const RolEditar = () => {
     };
 
     return (
-        <div>
-            <h2>Editar rol</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
+
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+                <div className="highlight contenidointerior">
+                    <h2>Editar Permiso</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-row">
+
+                            <div className="col">
                     <label htmlFor="rol1">rol:</label>
-                    <input type="text" id="rol1" name="rol1" value={rol.rol1} onChange={handleChange} />
+                                <input className="form-control" type="text" id="rol1" name="rol1" value={rol.rol1} onChange={handleChange} />
                 </div>
-                <div>
+                            <div className="form-row">
                     <label htmlFor="fecha">fecha:</label>
-                    <input type="datetime-local" id="fecha" name="fecha"  onChange={handleChange} />
+                                <input className="form-control" type="datetime-local" id="fecha" name="fecha"  onChange={handleChange} />
                 </div>
                 <button type="submit">Guardar</button>
-            </form>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    );
+        )
 };
 
 

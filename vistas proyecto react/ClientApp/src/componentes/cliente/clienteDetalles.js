@@ -1,6 +1,8 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 
 export const ClienteDetalles = () => {
     const { idCliente } = useParams();
@@ -31,15 +33,44 @@ export const ClienteDetalles = () => {
     }
 
     return (
-        <div>
-            <h2>Detalles del cliente</h2>
-            <p>ID: {cliente.idCliente}</p>
-            <p>Nombre: {cliente.nombre}</p>
-            <p>Apellido: {cliente.apellido}</p>
-            <p>Celular: {cliente.celular}</p>
-            <p>Dirección: {cliente.direccion}</p>
-            <p>Fecha de registro: {cliente.fechaRegistro}</p>
-            <p>Estado: {cliente.estado}</p>
+
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+
+
+                <div className="Titulo">
+                    <h2 class="letra">Detalle del cliente</h2>
+                    <div class="btn-neon ">
+                        <span id="span1"></span>
+                        <span id="span2"></span>
+                        <span id="span3"></span>
+                        <span id="span4"></span>
+                        <a href="/cliente/guardar">Agregar</a>
+
+                    </div>
+                </div>
+
+
+                <table className="table1">
+                    <thead>
+                        <tr>
+                            <th scope="col " className="raya">Id Cliente</th>
+                            <th scope="col " className="raya">Nombre</th>
+                            <th scope="col " className="raya">Apellido</th>
+                            <th scope="col " className="raya">Fecha Registro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                <td className="raya">{cliente.idCliente}</td>
+                                <td className="raya">{cliente.nombre}</td>
+                                <td className="raya">{cliente.apellido}</td>
+                                <td className="raya">{cliente.fechaRegistro}</td>
+                            </tr>
+                    </tbody>
+                    </table>
+            </div>
         </div>
     );
 };

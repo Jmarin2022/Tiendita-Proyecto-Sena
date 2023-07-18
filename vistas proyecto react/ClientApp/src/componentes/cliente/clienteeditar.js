@@ -1,6 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 
 const ClienteEditar = () => {
     const { idCliente } = useParams();
@@ -43,28 +45,42 @@ const ClienteEditar = () => {
     };
 
     return (
-        <div>
-            <h2>Editar Cliente</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" value={cliente.nombre} onChange={handleChange} />
+
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+                <div className="highlight contenidointerior">
+                    <h2>Editar Cliente</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-row">
+
+                            <div className="col">
+                                <label htmlFor="nombre">Nombre:</label>
+                                <input className="form-control"  type="text" id="nombre" name="nombre" value={cliente.nombre} onChange={handleChange} />
+                            </div>
+                            <div className="col">
+                                <label htmlFor="apellido">Apellido:</label>
+                                <input type="text" className="form-control" form-control id="apellido" name="apellido" value={cliente.apellido} onChange={handleChange} />
+                            </div>
+                            <div className="col">
+                                <label htmlFor="celular">Celular:</label>
+                                <input type="text " className="form-control" id="celular" name="celular" value={cliente.celular} onChange={handleChange} />
+                            </div>
+                            <div className="col">
+                                <label htmlFor="direccion">Dirección:</label>
+                                <input type="text" className="form-control" id="direccion" name="direccion" value={cliente.direccion} onChange={handleChange} />
+                            </div>
+                            
+                                <button type="submit">Guardar</button>
+                        </div>
+                        
+
+                    </form>
                 </div>
-                <div>
-                    <label htmlFor="apellido">Apellido:</label>
-                    <input type="text" id="apellido" name="apellido" value={cliente.apellido} onChange={handleChange} />
-                </div>
-                <div>
-                    <label htmlFor="celular">Celular:</label>
-                    <input type="text" id="celular" name="celular" value={cliente.celular} onChange={handleChange} />
-                </div>
-                <div>
-                    <label htmlFor="direccion">Dirección:</label>
-                    <input type="text" id="direccion" name="direccion" value={cliente.direccion} onChange={handleChange} />
-                </div>
-                <button type="submit">Guardar</button>
-            </form>
+               
+            </div>
         </div>
+            
     );
 };
 

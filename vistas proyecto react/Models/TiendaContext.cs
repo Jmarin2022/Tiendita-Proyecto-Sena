@@ -124,6 +124,9 @@ public partial class TiendaContext : DbContext
             entity.Property(e => e.Proveedor)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.HasOne(d => d.Producto).WithMany(p => p.Entradas)
+                .HasForeignKey(d => d.IdProductos)
+                .HasConstraintName("FK_Entrada_Imagen");
         });
 
         modelBuilder.Entity<Imagen>(entity =>

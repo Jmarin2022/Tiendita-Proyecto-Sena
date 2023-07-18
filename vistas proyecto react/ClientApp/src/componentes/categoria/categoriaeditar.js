@@ -1,6 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 
 const CategoriaEditar = () => {
     const { idCategoria } = useParams();
@@ -42,23 +44,30 @@ const CategoriaEditar = () => {
     };
 
     return (
-        <div>
-            <h2>Editar Categoría</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+                <div className="highlight contenidointerior">
+                    <h2>Editar Categoría</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-row">
+                            <div className="col">
                     <label htmlFor="nombreC">Nombre:</label>
-                    <input type="text" id="nombreC" name="nombreC" value={categoria.nombreC} onChange={handleChange} />
+                                <input type="text" className="form-control" id="nombreC" name="nombreC" value={categoria.nombreC} onChange={handleChange} />
                 </div>
-                <div>
+                            <div className="col">
                     <label htmlFor="estado">estado:</label>
-                    <input type="text" id="estado" name="estado" value={categoria.estado} onChange={handleChange} />
+                                <input type="text" className="form-control" id="estado" name="estado" value={categoria.estado} onChange={handleChange} />
                 </div>
-                <div>
+                            <div className="col">
                     <label htmlFor="idImagen">ID Imagen:</label>
-                    <input type="text" id="idImagen" name="idImagen" value={categoria.idImagen} onChange={handleChange} />
+                                <input type="text" className="form-control" id="idImagen" name="idImagen" value={categoria.idImagen} onChange={handleChange} />
                 </div>
-                <button type="submit">Guardar</button>
+                            <button type="submit">Guardar</button>
+                        </div>
             </form>
+                </div>
+            </div>
         </div>
     );
 };

@@ -58,7 +58,7 @@ const App = () => {
             <Routes>
                 {/*Metedo de listar*/}
                 {/*<Route path="/" element={<inicio />} />*/}
-                <Route path="/cliente" element={<ListadoCliente />} />
+                <Route path="/" element={<ListadoCliente />} />
                 <Route path="/venta" element={<Listadoventa />} />
                 <Route path="/categoria" element={<Listadocategoria />} />
                 <Route path="/detalleventa" element={<Listadodetalleventa />} />

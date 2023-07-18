@@ -3,7 +3,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Modal } from "./Modal";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 export function Listadocategoria() {
     const [categoria, setcategoria] = useState([]);
     const [categoriaSeleccionado, setcategoriaSeleccionado] = useState(null);
@@ -45,26 +46,42 @@ export function Listadocategoria() {
     };
 
     return (
-        <div className="container">
-            <h2>Lista de categoria</h2>
-            <table className="table">
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+
+
+                <div className="Titulo">
+                    <h2 class="letra">Lista de las categorias</h2>
+                    <div class="btn-neon ">
+                        <span id="span1"></span>
+                        <span id="span2"></span>
+                        <span id="span3"></span>
+                        <span id="span4"></span>
+                        <a href="/categoria/guardar">Agregar</a>
+
+                    </div>
+                </div>
+
+
+                <table className="table1">
                 <thead>
                     <tr>
-                        <th scope="col">Id categoria</th>
-                        <th scope="col">Nombre categoria</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">IdImagen</th>
-                        <th scope="col">Operaciones </th>
+                        <th className="raya" scope="col">Id categoria</th>
+                        <th className="raya" scope="col">Nombre categoria</th>
+                        <th className="raya" scope="col">Estado</th>
+                        <th className="raya" scope="col">IdImagen</th>
+                        <th className="raya" scope="col">Operaciones </th>
                     </tr>
                 </thead>
                 <tbody>
                     {categoria.map((categoria) => (
                         <tr key={categoria.idCategoria}>
-                            <td>{categoria.idCategoria}</td>
-                            <td>{categoria.nombreC}</td>
-                            <td>{categoria.estado}</td>
-                            <td>{categoria.idImagen}</td>
-                            <td>
+                            <td className="raya">{categoria.idCategoria}</td>
+                            <td className="raya">{categoria.nombreC}</td>
+                            <td className="raya">{categoria.estado}</td>
+                            <td className="raya">{categoria.idImagen}</td>
+                            <td className="raya corto">
                                 <button onClick={() => handleEliminarClick(categoria)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">Eliminar</button> |
                                 <Link to={`/categoria/editar/${categoria.idCategoria}`}>Editar</Link> |
                                 <Link to={`/categoria/detalles/${categoria.idCategoria}`}>Ver detalle</Link>
@@ -72,11 +89,11 @@ export function Listadocategoria() {
                         </tr>
                     ))}
                 </tbody>
-            </table>
+                </table>
+            </div>
 
             {/* Modal para confirmar la eliminación */}
             <Modal categoriaSeleccionado={categoriaSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
-            <Link to="/categoria/guardar">Crear categoria</Link>
         </div>
     );
 }

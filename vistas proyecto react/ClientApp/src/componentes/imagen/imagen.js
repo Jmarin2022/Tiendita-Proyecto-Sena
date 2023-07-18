@@ -3,7 +3,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Modal } from "./Modal";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 export function Listadoimagen() {
     const [imagen, setimagen] = useState([]);
     const [imagenSeleccionado, setimageneleccionado] = useState(null);
@@ -46,36 +47,50 @@ export function Listadoimagen() {
     };
 
     return (
-        <div className="container">
-            <h2>Lista de imagen</h2>
-            <table className="table">
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+
+
+                <div className="Titulo">
+                    <h2 class="letra">Lista de los Productos</h2>
+                    <div class="btn-neon ">
+                        <span id="span1"></span>
+                        <span id="span2"></span>
+                        <span id="span3"></span>
+                        <span id="span4"></span>
+                        <a href="/imagen/guardar">Agregar</a>
+
+                    </div>
+                </div>
+
+
+                <table className="table2">
                 <thead>
                     <tr>
-                        <th scope="col">Id imagen</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Descripcion</th>
-                        <th scope="col">Stock</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Categoria</th>
-                        <th scope="col">StockMax</th>
-                        <th scope="col">StockMin</th>
-                        <th scope="col">Imagen1</th>
-                        <th scope="col">Operaciones</th>
+                         <th scope="col " className="raya">Id imagen</th>
+                         <th scope="col " className="raya">Nombre</th>
+                         <th scope="col " className="raya">Stock</th>
+                         <th scope="col " className="raya">Precio</th>
+                         <th scope="col " className="raya">Categoria</th>
+                         <th scope="col " className="raya">StockMax</th>
+                         <th scope="col " className="raya">StockMin</th>
+                         <th scope="col " className="raya">Imagen1</th>
+                         <th scope="col " className="raya">Operaciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {imagen.map((imagen) => (
                         <tr key={imagen.IdImagen}>
-                            <td>{imagen.idImagen}</td>
-                            <td>{imagen.nombre}</td>
-                            <td>{imagen.descripcion}</td>
-                            <td>{imagen.stock}</td>
-                            <td>{imagen.precio}</td>
-                            <td>{imagen.categoria}</td>
-                            <td>{imagen.stockMax}</td>
-                            <td>{imagen.stockMin}</td>
-                            <td>{imagen.imagen1}</td>
-                            <td>
+                            <td className="raya">{imagen.idImagen}</td>
+                            <td className="raya">{imagen.nombre}</td>
+                            <td className="raya">{imagen.stock}</td>
+                            <td className="raya">{imagen.precio}</td>
+                            <td className="raya">{imagen.categoria}</td>
+                            <td className="raya">{imagen.stockMax}</td>
+                            <td className="raya">{imagen.stockMin}</td>
+                            <td className="raya">{imagen.imagen1}</td>
+                            <td className="raya corto">
                                 <button onClick={() => handleEliminarClick(imagen)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">Eliminar</button> |
                                 <Link to={`/imagen/editar/${imagen.idImagen}`}>Editar</Link> |
                                 <Link to={`/imagen/detalles/${imagen.idImagen}`}>Ver detalle</Link>
@@ -87,7 +102,7 @@ export function Listadoimagen() {
 
             {/* Modal para confirmar la eliminación */}
             <Modal imagenSeleccionado={imagenSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
-            <Link to="/imagen/guardar">Crear imagen</Link>
+            </div>
         </div>
     );
 }

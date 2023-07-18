@@ -1,6 +1,8 @@
 //import "bootsrap/dist/css/bootstrap.min.css"
 import { Component } from "react";
 import axios from 'axios';
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 
 export class GuardarPermiso extends Component {
 
@@ -32,38 +34,44 @@ export class GuardarPermiso extends Component {
     }
     render() {
         return (
-            <div>
-                <form onSubmit={this.submitHandler}>
-                    <div>
+            <div className="container1">
+                <NavBar />
+                <div className="contenido">
+                    <div className="highlight contenidointerior1">
+                        <h2>Crear Permiso</h2>
+                        <form onSubmit={this.submitHandler}>
+                            <div className="form-row">
                         <p>Digite el Modulo</p><br />
-                        <input type="Text" name="Modulo"  onChange={this.changeHandler} ></input>
+                                <input className="form-control" type="Text" name="Modulo"  onChange={this.changeHandler} ></input>
                     </div>
                     <div>
                         <p>Digite si puede crear</p><br />
-                        <select name="Crear" onChange={this.changeHandler}>
-                            <option value="">Seleccione</option>
-                            <option value="Si">Si</option>
-                            <option value="No">No</option>
+                                <select className="custom-select"  name="Crear" onChange={this.changeHandler}>
+                            <option  value="">Seleccione</option>
+                            <option  value="Si">Si</option>
+                            <option  value="No">No</option>
                         </select>
                     </div>
                     <div>
                         <p>Digite si puede Eliminar</p><br />
-                        <select name="Eliminar" onChange={this.changeHandler}>
-                            <option value="">Seleccione</option>
-                            <option value="Si">Si</option>
-                            <option value="No">No</option>
+                                <select className="custom-select" name="Eliminar" onChange={this.changeHandler}>
+                            <option  value="">Seleccione</option>
+                            <option  value="Si">Si</option>
+                            <option  value="No">No</option>
                         </select>
                     </div>
                     <div>
                         <p>Digite si puede Editar</p><br />
-                        <select name="Editar" onChange={this.changeHandler} >
-                            <option value="">Seleccione</option>
-                            <option value="Si">Si</option>
-                            <option value="No">No</option>
+                                <select className="custom-select" name="Editar" onChange={this.changeHandler} >
+                            <option  value="">Seleccione</option>
+                            <option  value="Si">Si</option>
+                            <option  value="No">No</option>
                             </select>
                     </div>
                     <button type="submit" >Enviar</button>
                 </form>
+                    </div>
+                </div>
             </div>
         )
     }

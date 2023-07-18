@@ -3,7 +3,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Modal } from "./Modal";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 export function Listadousuario() {
     const [usuario, setusuario] = useState([]);
     const [usuarioSeleccionado, setusuarioeleccionado] = useState(null);
@@ -46,26 +47,42 @@ export function Listadousuario() {
     };
 
     return (
-        <div className="container">
-            <h2>Lista de usuario</h2>
-            <table className="table">
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+
+
+                <div className="Titulo">
+                    <h2 class="letra">Lista de usuarios</h2>
+                    <div class="btn-neon ">
+                        <span id="span1"></span>
+                        <span id="span2"></span>
+                        <span id="span3"></span>
+                        <span id="span4"></span>
+                        <a href="/usuario/guardar">Agregar</a>
+
+                    </div>
+                </div>
+
+
+                <table className="table1">
                 <thead>
                     <tr>
-                        <th scope="col">Id usuario</th>
-                        <th scope="col">Rol</th>
-                        <th scope="col">Nombre del usuario</th>
-                        <th scope="col">Contraseña</th>
-                        <th scope="col">Operaciones</th>
+                        <th scope="col " className="raya">Id usuario</th>
+                        <th scope="col " className="raya">Rol</th>
+                        <th scope="col " className="raya">Nombre del usuario</th>
+                        <th scope="col " className="raya">Contraseña</th>
+                        <th scope="col " className="raya">Operaciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {usuario.map((usuario) => (
                         <tr key={usuario.Id}>
-                            <td>{usuario.id}</td>
-                            <td>{usuario.rol}</td>
-                            <td>{usuario.usuario1}</td>
-                            <td>{usuario.contrasena}</td>
-                            <td>
+                            <td className="raya">{usuario.id}</td>
+                            <td className="raya">{usuario.rol}</td>
+                            <td className="raya">{usuario.usuario1}</td>
+                            <td className="raya">{usuario.contrasena}</td>
+                            <td className="raya corto">
                                 <button onClick={() => handleEliminarClick(usuario)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">Eliminar</button> |
                                 <Link to={`/usuario/editar/${usuario.id}`}>Editar</Link> |
                                 <Link to={`/usuario/detalles/${usuario.id}`}>Ver detalle</Link>
@@ -77,7 +94,7 @@ export function Listadousuario() {
 
             {/* Modal para confirmar la eliminación */}
             <Modal usuarioSeleccionado={usuarioSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
-            <Link to="/usuario/guardar">Crear usuario</Link>
+            </div>
         </div>
     );
 }

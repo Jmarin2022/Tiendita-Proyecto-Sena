@@ -1,10 +1,14 @@
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "../../assets/css/menu.css"
+import "../../assets/css/bootstrap/dist/css/bootstrap.min.css"
 export function NavBar() {
 
     return (
         <div className="container_menu">
-            <a className="tiendita" href="/inicio">Tiendita_Soft</a>
+            <div className="titulologo">
+                <a className="tiendita" href="/inicio">Tiendita_Soft</a>
+            </div>
+            
             <nav>
                 <a className="nav-link" href="/dasboard"  >Dashboard</a>
 

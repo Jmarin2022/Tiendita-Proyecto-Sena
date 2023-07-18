@@ -1,6 +1,9 @@
 //import "bootsrap/dist/css/bootstrap.min.css"
 import { useEffect, useState, Component } from "react";
 import axios from 'axios';
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
+
 
 export class GuardarCategoria extends Component {
 
@@ -32,19 +35,28 @@ export class GuardarCategoria extends Component {
     }
     render() {
         return (
-            <div>
-                <form onSubmit={this.submitHandler}>
-                    <div>
-                        <input type="Text" name="NombreC"  onChange={this.changeHandler} ></input>
+            <div className="container1">
+                <NavBar />
+                <div className="contenido">
+                    <div className="highlight contenidointerior">
+                        <h2>Crear Cliente</h2>
+                        <form onSubmit={this.submitHandler}>
+                            <div className="form-row">
+                            <p>Digite el nombre de la categoria</p>
+                        <input className="form-control" type="Text" name="NombreC"  onChange={this.changeHandler} ></input>
                     </div>
-                    <div>
-                        <input type="Text" name="Estado"  onChange={this.changeHandler} ></input>
+                            <div className="form-row">
+                                <p>Digite el estado de la categoria</p>
+                        <input className="form-control" type="Text" name="Estado"  onChange={this.changeHandler} ></input>
                     </div>
-                    <div>
-                        <input type="Text" name="IdImagen"  onChange={this.changeHandler} ></input>
+                            <div className="form-row">
+                                <p>Digite la imagen categoria</p>
+                        <input className="form-control" type="Text" name="IdImagen"  onChange={this.changeHandler} ></input>
                     </div>
                     <button type="submit">Enviar</button>
                 </form>
+                    </div>
+                </div>
             </div>
         )
     }

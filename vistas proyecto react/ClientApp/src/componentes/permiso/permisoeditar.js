@@ -1,6 +1,9 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
+
 
 export const PermisosEditar = () => {
     const { idPermisos } = useParams();
@@ -43,27 +46,36 @@ export const PermisosEditar = () => {
     };
 
     return (
-        <div>
-            <h2>Editar Permisos</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
+
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+                <div className="highlight contenidointerior">
+                    <h2>Editar Permiso</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-row">
+
+                            <div className="col">
                     <label htmlFor="modulo">modulo:</label>
-                    <input type="text" id="modulo" name="modulo" value={Permisos.modulo} onChange={handleChange} />
+                    <input type="text " className="form-control" id="modulo" name="modulo" value={Permisos.modulo} onChange={handleChange} />
                 </div>
-                <div>
+                <div className="form-row">
                     <label htmlFor="crear">crear:</label>
-                    <input type="text" id="crear" name="crear" value={Permisos.crear} onChange={handleChange} />
+                    <input type="text " className="form-control" id="crear" name="crear" value={Permisos.crear} onChange={handleChange} />
                 </div>
-                <div>
+                <div className="form-row">
                     <label htmlFor="eliminar">eliminar:</label>
-                    <input type="text" id="eliminar" name="eliminar" value={Permisos.eliminar} onChange={handleChange} />
+                    <input type="text " className="form-control" id="eliminar" name="eliminar" value={Permisos.eliminar} onChange={handleChange} />
                 </div>
-                <div>
+                <div className="form-row">
                     <label htmlFor="editar">editar:</label>
-                    <input type="text" id="editar" name="editar" value={Permisos.editar} onChange={handleChange} />
+                    <input type="text " className="form-control" id="editar" name="editar" value={Permisos.editar} onChange={handleChange} />
                 </div>
-                <button type="submit">Guardar</button>
+                            <button type="submit">Guardar</button>
+                        </div>
             </form>
+                </div>
+            </div>
         </div>
     );
 };

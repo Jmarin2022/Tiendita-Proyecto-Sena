@@ -1,6 +1,8 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 
 export const RolDetalles = () => {
     const { idRol } = useParams();
@@ -31,11 +33,45 @@ export const RolDetalles = () => {
     }
 
     return (
-        <div>
-            <h2>Detalles del Rols</h2>
-            <p>ID: {Rol.idRol}</p>
-            <p>nombre del rol: {Rol.rol1}</p>
-            <p>Fecha de creacion: {Rol.fecha}</p>
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+
+
+                <div className="Titulo">
+                    <h2 class="letra">Detalle del roll</h2>
+                    <div class="btn-neon ">
+                        <span id="span1"></span>
+                        <span id="span2"></span>
+                        <span id="span3"></span>
+                        <span id="span4"></span>
+                        <a href="/Rol/guardar">Agregar</a>
+
+                    </div>
+                </div>
+
+
+                <table className="table1">
+                    <thead>
+                        <tr>
+                            <th scope="col " className="raya">Id Rol</th>
+                            <th scope="col " className="raya">Rol1</th>
+                            <th scope="col " className="raya">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                            <tr>
+                                <td className="raya">{Rol.idRol}</td>
+                                <td className="raya">{Rol.rol1}</td>
+                                <td className="raya">{Rol.fecha}</td>
+                            </tr>
+                    </tbody>
+                </table>
+
+                {/* Modal para confirmar la eliminación */}
+
+            </div>
         </div>
     );
 };

@@ -1,6 +1,8 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 
 export const EntradumsDetalles = () => {
     const { idEntrada } = useParams();
@@ -31,13 +33,47 @@ export const EntradumsDetalles = () => {
     }
 
     return (
-        <div>
-            <h2>Detalles del Entradas</h2>
-            <p>ID: {Entradums.idEntrada}</p>
-            <p>Producto: {Entradums.idProductos}</p>
-            <p>Cantidad: {Entradums.cantidad}</p>
-            <p>Proveedor: {Entradums.proveedor}</p>
-            <p>Fecha: {Entradums.fecha}</p>
+        <div className="container1">
+            <NavBar />
+            <div className="contenido">
+
+
+                <div className="Titulo">
+                    <h2 class="letra">Lista de las entradas</h2>
+                    <div class="btn-neon ">
+                        <span id="span1"></span>
+                        <span id="span2"></span>
+                        <span id="span3"></span>
+                        <span id="span4"></span>
+                        <a href="/entradas/guardar">Agregar</a>
+                    </div>
+                </div>
+
+
+                <table className="table1">
+                    <thead>
+                        <tr>
+                            <th scope="col " className="raya">Id entradum</th>
+                            <th scope="col " className="raya">id del producto</th>
+                            <th scope="col " className="raya">Catidad</th>
+                            <th scope="col " className="raya">Proveedor</th>
+                            <th scope="col " className="raya">Fecha Registro</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                            <tr>
+                            <td className="raya">{Entradums.idEntrada}</td>
+                            <td className="raya">{Entradums.idProductos}</td>
+                            <td className="raya">{Entradums.cantidad}</td>
+                            <td className="raya">{Entradums.proveedor}</td>
+                            <td className="raya">{Entradums.fecha}</td>
+
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

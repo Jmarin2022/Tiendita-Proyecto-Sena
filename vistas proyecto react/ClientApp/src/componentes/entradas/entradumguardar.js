@@ -1,6 +1,8 @@
 //import "bootsrap/dist/css/bootstrap.min.css"
 import {Component } from "react";
 import axios from 'axios';
+import { NavBar } from '../principales/navbar'
+import '../../assets/css/menu.css'
 
 export class GuardarEntradas extends Component {
 
@@ -33,26 +35,32 @@ export class GuardarEntradas extends Component {
     }
     render() {
         return (
-            <div>
-                <form onSubmit={this.submitHandler}>
-                    <div>
+            <div className="container1">
+                <NavBar />
+                <div className="contenido">
+                    <div className="highlight contenidointerior">
+                        <h2>Crear Entrada</h2>
+                        <form onSubmit={this.submitHandler}>
+                            <div className="form-row">
                         <p>Digite el id del producto</p>
-                        <input type="number" name="IdProductos"  onChange={this.changeHandler} ></input>
+                       <input className="form-control" type="number" name="IdProductos"  onChange={this.changeHandler} ></input>
                     </div>
-                    <div>
+                   <div className="form-row">
                         <p>Digite el id de la referencia</p>
-                        <input type="number" name="cantidad"  onChange={this.changeHandler} ></input>
+                       <input className="form-control" type="number" name="cantidad"  onChange={this.changeHandler} ></input>
                     </div>
-                    <div>
+                   <div className="form-row">
                         <p>Digite el Proveedor</p>
-                        <input type="Text" name="Proveedor"  onChange={this.changeHandler} ></input>
+                       <input className="form-control" type="Text" name="Proveedor"  onChange={this.changeHandler} ></input>
                     </div>
-                    <div>
+                   <div className="form-row">
                         <p>Ponga la fecha de la entrada</p>
-                        <input type="date" name="Fecha"  onChange={this.changeHandler} ></input>
+                       <input className="form-control" type="datetime-local" name="Fecha"  onChange={this.changeHandler} ></input>
                     </div>
                     <button type="submit">Enviar</button>
-                </form>
+                        </form>
+                    </div>
+                </div>
             </div>
         )
     }
