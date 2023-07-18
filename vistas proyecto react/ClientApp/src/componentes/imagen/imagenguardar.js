@@ -29,7 +29,7 @@ export class GuardarImagen extends Component {
         axios.post('api/imagen/Guardar', this.state)
             .then(response => {
                 console.log(response)
-                window.location.href = "imagen";
+                window.location.href = "/imagen";
             })
             .catch(error => {
                 console.log(error)

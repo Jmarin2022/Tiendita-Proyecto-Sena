@@ -26,7 +26,7 @@ export class GuardarPermiso extends Component {
         axios.post('api/permiso/Guardar', this.state)
             .then(response => {
                 console.log(response)
-                window.location.href = "permiso";
+                window.location.href = "/permiso";
             })
             .catch(error => {
                 console.log(error)

@@ -61,6 +61,7 @@ export function ListadoRol() {
 
 
                 <div className="Titulo">
+                    <a href="/permiso" className="letra btn-neon">Permisos</a>
                     <h2 class="letra">Lista de los roles</h2>
                     <div class="btn-neon ">
                         <span id="span1"></span>

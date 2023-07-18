@@ -6,11 +6,11 @@ export function NavBar() {
     return (
         <div className="container_menu">
             <div className="titulologo">
-                <a className="tiendita" href="/inicio">Tiendita_Soft</a>
+                <a className="tiendita" href="/">Tiendita_Soft</a>
             </div>
             
             <nav>
-                <a className="nav-link" href="/dasboard"  >Dashboard</a>
+                <a className="nav-link" href="/"  >Dashboard</a>
 
                 <a className="nav-link" href="/rol"   >Roles</a>
 

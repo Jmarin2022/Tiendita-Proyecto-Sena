@@ -27,7 +27,7 @@ export class GuardarCategoria extends Component {
         axios.post('api/categoria/Guardar', this.state)
             .then(response => {
                 console.log(response)
-                window.location.href = "categoria";
+                window.location.href = "/categoria";
             })
             .catch(error => {
                 console.log(error)

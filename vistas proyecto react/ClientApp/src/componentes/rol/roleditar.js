@@ -36,7 +36,7 @@ export const RolEditar = () => {
         e.preventDefault();
         try {
             await axios.put(`/api/rol/Editar/${idRol}`, rol);
-            window.location.href = `/`;
+            window.location.href = `/rol`;
         } catch (error) {
             console.error(error);
         }

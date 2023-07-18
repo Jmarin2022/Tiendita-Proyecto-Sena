@@ -38,7 +38,7 @@ const ClienteEditar = () => {
         e.preventDefault();
         try {
             await axios.put(`/api/cliente/Editar/${idCliente}`, cliente);
-            window.location.href = `/`;
+            window.location.href = `/cliente`;
         } catch (error) {
             console.error(error);
         }

@@ -42,7 +42,7 @@ export const ImagenEditar = () => {
         e.preventDefault();
         try {
             await axios.put(`/api/imagen/Editar/${idImagen}`, imagen);
-            window.location.href = `/`;
+            window.location.href = `/imagen`;
         } catch (error) {
             console.error(error);
         }

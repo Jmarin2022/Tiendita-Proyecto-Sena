@@ -25,7 +25,7 @@ export class GuardarUsuario extends Component {
         axios.post('api/usuario/Guardar', this.state)
             .then(response => {
                 console.log(response)
-                window.location.href = "/";
+                window.location.href = "/usuario";
             })
             .catch(error => {
                 console.log(error)

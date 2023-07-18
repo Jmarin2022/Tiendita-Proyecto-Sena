@@ -37,7 +37,7 @@ export const UsuarioEditar = () => {
         e.preventDefault();
         try {
             await axios.put(`/api/usuario/Editar/${id}`, usuario);
-            window.location.href = `/`;
+            window.location.href = `/usuario`;
         } catch (error) {
             console.error(error);
         }

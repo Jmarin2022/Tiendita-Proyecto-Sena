@@ -29,7 +29,7 @@ export class GuardarCliente extends Component {
         axios.post('api/cliente/Guardar', this.state)
             .then(response => {
                 console.log(response)
-                window.location.href = "cliente";
+                window.location.href = "/cliente";
             })
             .catch(error => {
                 console.log(error)

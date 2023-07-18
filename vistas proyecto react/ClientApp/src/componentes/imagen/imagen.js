@@ -53,6 +53,7 @@ export function Listadoimagen() {
 
 
                 <div className="Titulo">
+                    <a href="/categoria" className="letra btn-neon">Categoria</a>
                     <h2 class="letra">Lista de los Productos</h2>
                     <div class="btn-neon ">
                         <span id="span1"></span>

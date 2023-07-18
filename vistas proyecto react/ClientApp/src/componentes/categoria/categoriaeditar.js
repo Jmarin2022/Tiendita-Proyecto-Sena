@@ -37,7 +37,7 @@ const CategoriaEditar = () => {
         e.preventDefault();
         try {
             await axios.put(`/api/categoria/Editar/${idCategoria}`, categoria);
-            window.location.href = `/`;
+            window.location.href = `/categoria`;
         } catch (error) {
             console.error(error);
         }

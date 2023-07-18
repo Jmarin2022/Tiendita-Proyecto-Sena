@@ -38,7 +38,7 @@ export const EntradumsEditar = () => {
         e.preventDefault();
         try {
             await axios.put(`/api/entradum/Editar/${idEntrada}`, Entradums);
-            window.location.href = `/`;
+            window.location.href = `/entradas`;
         } catch (error) {
             console.error(error);
         }

@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import { Route, Routes, BrowserRouter} from "react-router-dom";
 
+/* Metodo de Dasboard*/
+import { Inicio } from "./componentes/principales/inicio";
 
 
 /* Metodo de listar*/
@@ -57,8 +59,8 @@ const App = () => {
         <BrowserRouter>
             <Routes>
                 {/*Metedo de listar*/}
-                {/*<Route path="/" element={<inicio />} />*/}
-                <Route path="/" element={<ListadoCliente />} />
+                <Route path="/" element={<Inicio />}/>
+                <Route path="/cliente" element={<ListadoCliente />} />
                 <Route path="/venta" element={<Listadoventa />} />
                 <Route path="/categoria" element={<Listadocategoria />} />
                 <Route path="/detalleventa" element={<Listadodetalleventa />} />

@@ -39,7 +39,7 @@ export const PermisosEditar = () => {
         e.preventDefault();
         try {
             await axios.put(`/api/permiso/Editar/${idPermisos}`, Permisos);
-            window.location.href = `/`;
+            window.location.href = `/permiso`;
         } catch (error) {
             console.error(error);
         }

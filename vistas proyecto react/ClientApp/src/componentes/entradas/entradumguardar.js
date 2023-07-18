@@ -27,7 +27,7 @@ export class GuardarEntradas extends Component {
         axios.post('api/entradum/Guardar', this.state)
             .then(response => {
                 console.log(response)
-                window.location.href = "entradas";
+                window.location.href = "/entradas";
             })
             .catch(error => {
                 console.log(error)

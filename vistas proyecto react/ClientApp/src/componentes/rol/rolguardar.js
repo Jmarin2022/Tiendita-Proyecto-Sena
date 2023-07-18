@@ -25,7 +25,7 @@ export class GuardarRol extends Component {
         axios.post('api/rol/Guardar', this.state)
             .then(response => {
                 console.log(response)
-                window.location.href = "/";
+                window.location.href = "/rol";
             })
             .catch(error => {
                 console.log(error)
