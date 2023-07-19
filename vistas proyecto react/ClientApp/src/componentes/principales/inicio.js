@@ -6,7 +6,7 @@ import '../../assets/css/menu.css'
 export function Inicio(props) {
 
     return (
-        <div className="container1">
+        <div  >
             <NavBar />
             <div className="contenido">
 

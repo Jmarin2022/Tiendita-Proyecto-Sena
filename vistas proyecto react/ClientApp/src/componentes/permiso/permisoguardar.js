@@ -34,9 +34,9 @@ export class GuardarPermiso extends Component {
     }
     render() {
         return (
-            <div className="container1">
+            <div  >
                 <NavBar />
-                <div className="contenido">
+                <div className="contenido1">
                     <div className="highlight contenidointerior1">
                         <h2>Crear Permiso</h2>
                         <form onSubmit={this.submitHandler}>

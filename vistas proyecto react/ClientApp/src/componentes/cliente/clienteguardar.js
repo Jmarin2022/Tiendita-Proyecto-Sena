@@ -38,9 +38,9 @@ export class GuardarCliente extends Component {
     render() {
         return (
 
-            <div className="container1">
+            <div  >
                 <NavBar />
-                <div className="contenido">
+                <div className="contenido1">
                     <div className="highlight contenidointeriorproducto">
                         <h2>Crear Cliente</h2>
                         <form onSubmit={this.submitHandler}>
@@ -65,7 +65,7 @@ export class GuardarCliente extends Component {
                                 </div>
                                 <div className="form-row">
                                     <p>Digite la fecha de registro</p>
-                                    <input className="form-control" type="date" name="fechaRegistro" onChange={this.changeHandler}></input>
+                                    <input className="form-control" type="datetime-local" name="fechaRegistro" onChange={this.changeHandler}></input>
                                 </div>
                                 <div className="form-row">
                                     <p>Digite el estado</p>

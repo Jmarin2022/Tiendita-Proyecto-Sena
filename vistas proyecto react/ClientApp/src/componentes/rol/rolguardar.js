@@ -33,18 +33,18 @@ export class GuardarRol extends Component {
     }
     render() {
         return (
-            <div className="container1">
+            <div  >
                 <NavBar />
-                <div className="contenido">
+                <div className="contenido1">
                     <div className="highlight contenidointerior1">
                         <h2>Crear Permiso</h2>
                         <form onSubmit={this.submitHandler}>
                             <div className="form-row">
-                        <p>Digite el rol1</p><br />
+                        <p>Digite el rol1</p>
                                 <input className="form-control"  type="Text" name="rol1" onChange={this.changeHandler} ></input>
                     </div>
                             <div className="form-row">
-                        <p>Digite La fecha</p><br />
+                        <p>Digite La fecha</p>
                                 <input className="form-control" type="datetime-local" name="fecha" onChange={this.changeHandler} ></input>
                     </div>
                     <button type="submit" >Enviar</button>

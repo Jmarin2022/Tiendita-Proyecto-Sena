@@ -1,6 +1,13 @@
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "../../assets/css/menu.css"
 import "../../assets/css/bootstrap/dist/css/bootstrap.min.css"
+import { BsCardText } from 'react-icons/bs';
+import { BsPerson } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
+import { BiCart } from 'react-icons/bi';
+import { BiPlus } from 'react-icons/bi';
+import { BsShop } from 'react-icons/bs';
+
 export function NavBar() {
 
     return (
@@ -10,19 +17,30 @@ export function NavBar() {
             </div>
             
             <nav>
-                <a className="nav-link" href="/"  >Dashboard</a>
+                <Link to="/" className="nav-link">
+                    <BsCardText /> Dashboard
+                </Link>
+                <Link to="/rol" className="nav-link">
+                    <BsPerson /> Rol
+                </Link>
+                <Link to="/usuario" className="nav-link">
+                    <BsPerson /> Usuarios
+                </Link>
+                <Link to="/imagen" className="nav-link">
+                    <BsShop /> Productos
+                </Link>
+                <Link to="/entradas" className="nav-link">
+                    <BiPlus /> Entrada
+                </Link>
 
-                <a className="nav-link" href="/rol"   >Roles</a>
+                <Link to="/cliente" className="nav-link">
+                    <BsPerson /> Cliente
+                </Link>
 
-                <a className="nav-link" href="/usuario"   >Usuarios</a>
+                <Link to="/venta" className="nav-link">
+                    <BiCart /> Ventas
+                </Link>
 
-                <a className="nav-link" href="/imagen" >productos</a>
-
-                <a className="nav-link" href="/entradas"  >Entrada</a>
-
-                <a className="nav-link" href="/cliente"  >Cliente</a>
-                
-                <a className="nav-link" href="/venta"   >Ventas</a>
 
             </nav>
         </div>

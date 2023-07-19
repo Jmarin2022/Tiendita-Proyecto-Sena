@@ -46,9 +46,9 @@ const ClienteEditar = () => {
 
     return (
 
-        <div className="container1">
+        <div  >
             <NavBar />
-            <div className="contenido">
+            <div className="contenido1">
                 <div className="highlight contenidointerior">
                     <h2>Editar Cliente</h2>
                     <form onSubmit={handleSubmit}>

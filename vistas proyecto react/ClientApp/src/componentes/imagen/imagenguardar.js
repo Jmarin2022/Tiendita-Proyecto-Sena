@@ -37,9 +37,9 @@ export class GuardarImagen extends Component {
     }
     render() {
         return (
-            <div className="container1">
+            <div  >
                 <NavBar />
-                <div className="contenido">
+                <div className="contenido1">
                     <div className="highlight contenidointeriorproducto">
                         <h2>Agregar Producto</h2>
                         <form onSubmit={this.submitHandler}>

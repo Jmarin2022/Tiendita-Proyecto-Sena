@@ -86,7 +86,7 @@ public partial class TiendaContext : DbContext
                 .HasColumnName("estado");
             entity.Property(e => e.FechaRegistro)
                 .HasDefaultValueSql("(getdate())")
-                .HasColumnType("date")
+                .HasColumnType("datetime")
                 .HasColumnName("fecha_registro");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)

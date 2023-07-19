@@ -33,22 +33,22 @@ export class GuardarUsuario extends Component {
     }
     render() {
         return (
-            <div className="container1">
+            <div  >
                 <NavBar />
-                <div className="contenido">
+                <div className="contenido1">
                     <div className="highlight contenidointeriorproducto">
                         <h2>Crear usuario</h2>
                         <form onSubmit={this.submitHandler}>
                             <div className="form-row">
-                        <p>Digite el usuario1</p><br />
+                        <p>Digite el usuario1</p>
                         <input className="form-control" type="Text" name="usuario1" onChange={this.changeHandler} ></input>
                     </div>
                             <div className="form-row">
-                        <p>Digite La rol</p><br />
+                        <p>Digite La rol</p>
                         <input className="form-control" type="Text" name="rol" onChange={this.changeHandler} ></input>
                     </div>
                             <div className="form-row">
-                        <p>Digite el contrasena</p><br />
+                        <p>Digite el contrasena</p>
                         <input className="form-control" type="text" name="contrasena" onChange={this.changeHandler} ></input>
                     </div>
                     <button type="submit" >Enviar</button>

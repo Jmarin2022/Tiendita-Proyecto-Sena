@@ -26,6 +26,34 @@
     background-color: #F2F5F7;
     margin: 0px;
     padding: 0px;
+    min-height:50%;
+    width:85%;
+    border-radius:5px;
+    margin-left:10%;
+    margin-top:5%;
+    padding:3%;
+}
+.container2 {
+    background-color: #F2F5F7;
+    margin: 0px;
+    padding: 0px;
+    min-height: 50%;
+    width: 60%;
+    border-radius: 5px;
+    margin-left: 20%;
+    margin-top: 5%;
+    padding: 3%;
+}
+.container3 {
+    background-color: #F2F5F7;
+    margin: 0px;
+    padding: 0px;
+    min-height: 50%;
+    width: 70%;
+    border-radius: 5px;
+    margin-left: 20%;
+    margin-top: 5%;
+    padding: 3%;
 }
 
 .container_menu {
@@ -39,6 +67,7 @@
 .raya {
     border-bottom-color: currentColor;
     border-bottom:solid 1px black;
+    margin-left:5px;
 }
 
 .corto{
@@ -54,23 +83,27 @@
 }
 
 .table1{
-   
-    margin:0px;
-    width:78%;
-    margin-left:12%;
-
+    width:90%;
+    margin-left:5%;
 }
 
-.contenido {
+
+
+.espacio{
+    margin-right:10%
+}
+
+.contenido1 {
     width: 82%;
     height: 660px;
-    float:left;
-    margin:0px;
+    float: left;
+    margin: 0px;
 }
+
 
 .contenidointerior1 {
     width: 50%;
-    height:60%;
+    height: 60%;
     margin-left: 25%;
     background-color: #f7f7f9;
     margin-top: 5%;
@@ -126,13 +159,7 @@
     padding: 20px;
 }
 
-    .table2 {
-        margin: 0px;
-        width: 90%;
-        margin-left: 5%;
-        margin-right: 0px;
-        
-    }
+
 
 .container_menu nav {
     transform: translateY(15%);

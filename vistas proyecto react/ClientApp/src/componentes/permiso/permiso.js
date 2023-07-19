@@ -5,9 +5,15 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { NavBar } from '../principales/navbar'
 import '../../assets/css/menu.css'
+import { BiTrash } from 'react-icons/bi'; // Importar el icono de eliminación
+import { BiBrush } from 'react-icons/bi';
+import { BiChevronRight, BiChevronLeft } from 'react-icons/bi'; // Importar los iconos de flechas
+
 export function Listadopermiso() {
     const [permiso, setpermiso] = useState([]);
-    const [permisosSeleccionado, setpermisoeleccionado] = useState(null);
+    const [permisosSeleccionado, setpermisosSeleccionado] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const permisosPorPagina = 5;
 
     const mostrarpermiso = async () => {
         try {
@@ -23,8 +29,8 @@ export function Listadopermiso() {
             const response = await axios.delete(`/api/permiso/Eliminar/${IdPermisos}`);
             if (response.status === 200) {
                 mostrarpermiso();
-                setpermisoeleccionado(null);
-                window.location.href = "/"
+                setpermisosSeleccionado(null);
+                window.location.href = "/permiso";
             }
         } catch (error) {
             console.error(error);
@@ -36,65 +42,83 @@ export function Listadopermiso() {
     }, []);
 
     const handleEliminarClick = (permiso) => {
-        setpermisoeleccionado(permiso);
+        setpermisosSeleccionado(permiso);
     };
 
     const handleConfirmarEliminar = () => {
         if (permisosSeleccionado) {
             eliminarpermiso(permisosSeleccionado.idPermisos);
-
         }
     };
 
+    const indexOfLastPermiso = currentPage * permisosPorPagina;
+    const indexOfFirstPermiso = indexOfLastPermiso - permisosPorPagina;
+    const permisosPaginados = permiso.slice(indexOfFirstPermiso, indexOfLastPermiso);
+
+    const handleNextPage = () => {
+        setCurrentPage(currentPage + 1);
+    };
+
+    const handlePrevPage = () => {
+        setCurrentPage(currentPage - 1);
+    };
+
     return (
-        <div className="container1">
+        <div>
             <NavBar />
-            <div className="contenido">
-
-
+            <div className="contenido1">
                 <div className="Titulo">
-                    <h2 class="letra">Lista de los permisos</h2>
-                    <div class="btn-neon ">
+                    <h2 className="letra">Lista de los permisos</h2>
+                    <div className="btn-neon">
                         <span id="span1"></span>
                         <span id="span2"></span>
                         <span id="span3"></span>
                         <span id="span4"></span>
                         <a href="/permiso/guardar">Agregar</a>
-
                     </div>
                 </div>
 
-
-                <table className="table1">
-                <thead>
-                    <tr>
-                         <th scope="col " className="raya">Id permiso</th>
-                         <th scope="col " className="raya">Modulo</th>
-                         <th scope="col " className="raya">Crear</th>
-                         <th scope="col " className="raya">Eliminar</th>
-                         <th scope="col " className="raya">Editar</th>
-                         <th scope="col " className="raya">Operaciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {permiso.map((permiso) => (
-                        <tr key={permiso.IdPermisos}>
-                            <td className="raya">{permiso.idPermisos}</td>
-                            <td className="raya">{permiso.modulo}</td>
-                            <td className="raya">{permiso.crear}</td>
-                            <td className="raya">{permiso.eliminar}</td>
-                            <td className="raya">{permiso.editar}</td>
-                            <td className="raya corto">
-                                <button onClick={() => handleEliminarClick(permiso)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">Eliminar</button> |
-                                <Link to={`/permiso/editar/${permiso.idPermisos}`}>Editar</Link> |
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-
-            {/* Modal para confirmar la eliminación */}
-            <Modal permisosSeleccionado={permisosSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
+                <div className="container2">
+                    <table className="table1">
+                        <thead>
+                            <tr>
+                                <th scope="col" className="raya">Id permiso</th>
+                                <th scope="col" className="raya">Modulo</th>
+                                <th scope="col" className="raya">Crear</th>
+                                <th scope="col" className="raya">Eliminar</th>
+                                <th scope="col" className="raya">Editar</th>
+                                <th scope="col" className="raya">Operaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {permisosPaginados.map((permiso) => (
+                                <tr key={permiso.IdPermisos}>
+                                    <td className="raya">{permiso.idPermisos}</td>
+                                    <td className="raya">{permiso.modulo}</td>
+                                    <td className="raya">{permiso.crear}</td>
+                                    <td className="raya">{permiso.eliminar}</td>
+                                    <td className="raya">{permiso.editar}</td>
+                                    <td className="raya corto">
+                                        <button className="btn btn-outline-danger espacio" onClick={() => handleEliminarClick(permiso)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">
+                                            <BiTrash />
+                                        </button>
+                                        <button className="btn btn-primary espacio" onClick={() => { window.location.href = `/permiso/editar/${permiso.idPermisos}`; }}>
+                                            <BiBrush />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <div className="pagination">
+                        <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
+                            <BiChevronLeft /> Anterior
+                        </button>
+                        <button className="btn btn-primary" onClick={handleNextPage} disabled={permisosPaginados.length < permisosPorPagina}>
+                            Siguiente <BiChevronRight />
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -33,9 +33,9 @@ export const ImagenDetalles = () => {
     }
 
     return (
-        <div className="container1">
+        <div  >
             <NavBar />
-            <div className="contenido">
+            <div className="contenido1">
 
 
                 <div className="Titulo">
@@ -51,7 +51,7 @@ export const ImagenDetalles = () => {
                 </div>
 
 
-                <table className="table2">
+                <table className="table1">
                     <thead>
                         <tr>
                             <th scope="col " className="raya">Id imagen</th>

@@ -33,9 +33,9 @@ export const EntradumsDetalles = () => {
     }
 
     return (
-        <div className="container1">
+        <div  >
             <NavBar />
-            <div className="contenido">
+            <div className="contenido1">
 
 
                 <div className="Titulo">
@@ -55,7 +55,7 @@ export const EntradumsDetalles = () => {
                         <tr>
                             <th scope="col " className="raya">Id entradum</th>
                             <th scope="col " className="raya">id del producto</th>
-                            <th scope="col " className="raya">Catidad</th>
+                            <th scope="col " className="raya">Cantidad</th>
                             <th scope="col " className="raya">Proveedor</th>
                             <th scope="col " className="raya">Fecha Registro</th>
 

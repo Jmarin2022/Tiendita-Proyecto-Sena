@@ -35,9 +35,9 @@ export class GuardarCategoria extends Component {
     }
     render() {
         return (
-            <div className="container1">
+            <div>
                 <NavBar />
-                <div className="contenido">
+                <div className="contenido1">
                     <div className="highlight contenidointerior">
                         <h2>Crear Cliente</h2>
                         <form onSubmit={this.submitHandler}>

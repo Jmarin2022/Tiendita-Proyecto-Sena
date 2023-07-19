@@ -33,9 +33,9 @@ export const UsuarioDetalles = () => {
     }
 
     return (
-        <div className="container1">
+        <div  >
             <NavBar />
-            <div className="contenido">
+            <div className="contenido1">
 
 
                 <div className="Titulo">

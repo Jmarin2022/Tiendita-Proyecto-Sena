@@ -35,9 +35,9 @@ export class GuardarEntradas extends Component {
     }
     render() {
         return (
-            <div className="container1">
+            <div  >
                 <NavBar />
-                <div className="contenido">
+                <div className="contenido1">
                     <div className="highlight contenidointerior">
                         <h2>Crear Entrada</h2>
                         <form onSubmit={this.submitHandler}>
@@ -46,7 +46,7 @@ export class GuardarEntradas extends Component {
                        <input className="form-control" type="number" name="IdProductos"  onChange={this.changeHandler} ></input>
                     </div>
                    <div className="form-row">
-                        <p>Digite el id de la referencia</p>
+                        <p>Digite la cantidad del producto</p>
                        <input className="form-control" type="number" name="cantidad"  onChange={this.changeHandler} ></input>
                     </div>
                    <div className="form-row">

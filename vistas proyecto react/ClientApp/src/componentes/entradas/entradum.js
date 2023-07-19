@@ -2,12 +2,17 @@ import { useEffect, useState } from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Modal } from "./Modal";
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import { NavBar } from '../principales/navbar'
 import '../../assets/css/menu.css'
+import { BiTrash } from 'react-icons/bi'; // Importar el icono de eliminación
+import { BiBrush } from 'react-icons/bi';
+import { BiChevronRight, BiChevronLeft } from 'react-icons/bi'; // Importar los iconos de flechas
+
 export function Listadoentradum() {
     const [entradums, setentradums] = useState([]);
     const [entradumSeleccionado, setentradumSeleccionado] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const entradasPorPagina = 5;
 
     const mostrarentradums = async () => {
         try {
@@ -24,7 +29,7 @@ export function Listadoentradum() {
             if (response.status === 200) {
                 mostrarentradums();
                 setentradumSeleccionado(null);
-                window.location.href="/"
+                window.location.href = "/entradas";
             }
         } catch (error) {
             console.error(error);
@@ -49,19 +54,28 @@ export function Listadoentradum() {
     const handleConfirmarEliminar = () => {
         if (entradumSeleccionado) {
             eliminarentradum(entradumSeleccionado.idEntrada);
-
         }
     };
 
+    const indexOfLastEntrada = currentPage * entradasPorPagina;
+    const indexOfFirstEntrada = indexOfLastEntrada - entradasPorPagina;
+    const entradasPaginadas = entradums.slice(indexOfFirstEntrada, indexOfLastEntrada);
+
+    const handleNextPage = () => {
+        setCurrentPage(currentPage + 1);
+    };
+
+    const handlePrevPage = () => {
+        setCurrentPage(currentPage - 1);
+    };
+
     return (
-        <div className="container1">
+        <div  >
             <NavBar />
-            <div className="contenido">
-
-
+            <div className="contenido1">
                 <div className="Titulo">
-                    <h2 class="letra">Lista de las entradas</h2>
-                    <div class="btn-neon ">
+                    <h2 className="letra">Lista de las entradas</h2>
+                    <div className="btn-neon ">
                         <span id="span1"></span>
                         <span id="span2"></span>
                         <span id="span3"></span>
@@ -70,38 +84,53 @@ export function Listadoentradum() {
                     </div>
                 </div>
 
-
-            <table className="table1">
-                <thead>
-                    <tr>
-                        <th scope="col " className="raya">Id entradum</th>
-                        <th scope="col " className="raya">id del producto</th>
-                        <th scope="col " className="raya">Catidad</th>
-                        <th scope="col " className="raya">Proveedor</th>
-                        <th scope="col " className="raya">Fecha Registro</th>
-                        <th scope="col " className="raya">Operaciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {entradums.map((entradum) => (
-                        <tr key={entradum.IdEntrada}>
-                            <td className="raya">{entradum.idEntrada}</td>
-                            <td className="raya">{entradum.idProductos}</td>
-                            <td className="raya">{entradum.cantidad}</td>
-                            <td className="raya">{entradum.proveedor}</td>
-                            <td className="raya">{formatDate(entradum.fecha)}</td>
-                            <td className="raya corto">
-                                <button onClick={() => handleEliminarClick(entradum)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">Eliminar</button> |
-                                <Link to={`/entradas/editar/${entradum.idEntrada}`}>Editar</Link> |
-                                <Link to={`/entradas/detalles/${entradum.idEntrada}`}>Ver detalle</Link>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-
-            {/* Modal para confirmar la eliminación */}
-            <Modal entradumSeleccionado={entradumSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
+                <div className="container3">
+                    <table className="table1">
+                        <thead>
+                            <tr>
+                                <th scope="col " className="raya">Id entradum</th>
+                                <th scope="col " className="raya">id del producto</th>
+                                <th scope="col " className="raya">Catidad</th>
+                                <th scope="col " className="raya">Proveedor</th>
+                                <th scope="col " className="raya">Fecha Registro</th>
+                                <th scope="col " className="raya">Operaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {entradasPaginadas.map((entradum) => (
+                                <tr key={entradum.IdEntrada}>
+                                    <td className="raya">{entradum.idEntrada}</td>
+                                    <td className="raya">{entradum.idProductos}</td>
+                                    <td className="raya">{entradum.cantidad}</td>
+                                    <td className="raya">{entradum.proveedor}</td>
+                                    <td className="raya">{formatDate(entradum.fecha)}</td>
+                                    <td className="raya corto">
+                                        <button className="btn btn-outline-danger espacio" onClick={() => handleEliminarClick(entradum)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">
+                                            <BiTrash />
+                                        </button>
+                                        <button className="btn btn-primary espacio" onClick={() => { window.location.href = `/entradas/editar/${entradum.idEntrada}`; }}>
+                                            <BiBrush />
+                                        </button>
+                                        <button className="btn btn-success espacio" onClick={() => { window.location.href = `/entradas/detalles/${entradum.idEntrada}`; }}>
+                                            <BiChevronRight />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <div className="pagination">
+                        <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
+                            <BiChevronLeft /> Anterior
+                        </button>
+                        <button className="btn btn-primary" onClick={handleNextPage} disabled={entradasPaginadas.length < entradasPorPagina}>
+                            Siguiente <BiChevronRight />
+                        </button>
+                    </div>
+                    {/* Modal para confirmar la eliminación */}
+                    <Modal entradumSeleccionado={entradumSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
+                </div>
+                
             </div>
         </div>
     );

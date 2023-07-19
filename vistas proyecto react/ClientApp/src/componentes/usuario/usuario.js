@@ -5,26 +5,32 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { NavBar } from '../principales/navbar'
 import '../../assets/css/menu.css'
-export function Listadousuario() {
-    const [usuario, setusuario] = useState([]);
-    const [usuarioSeleccionado, setusuarioeleccionado] = useState(null);
+import { BiTrash } from 'react-icons/bi'; // Importar el icono de eliminación
+import { BiBrush } from 'react-icons/bi';
+import { BiChevronRight, BiChevronLeft } from 'react-icons/bi'; // Importar los iconos de flechas
 
-    const mostrarusuario = async () => {
+export function Listadousuario() {
+    const [usuario, setUsuario] = useState([]);
+    const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const usuariosPorPagina = 5;
+
+    const mostrarUsuarios = async () => {
         try {
             const response = await axios.get("/api/usuario/Lista");
-            setusuario(response.data);
+            setUsuario(response.data);
         } catch (error) {
             console.error(error);
         }
     };
 
-    const eliminarusuario = async (Id) => {
+    const eliminarUsuario = async (Id) => {
         try {
             const response = await axios.delete(`/api/usuario/Eliminar/${Id}`);
             if (response.status === 200) {
-                mostrarusuario();
-                setusuarioeleccionado(null);
-                window.location.href = "/"
+                mostrarUsuarios();
+                setUsuarioSeleccionado(null);
+                window.location.href = "/usuario";
             }
         } catch (error) {
             console.error(error);
@@ -32,68 +38,88 @@ export function Listadousuario() {
     };
 
     useEffect(() => {
-        mostrarusuario();
+        mostrarUsuarios();
     }, []);
 
     const handleEliminarClick = (usuario) => {
-        setusuarioeleccionado(usuario);
+        setUsuarioSeleccionado(usuario);
     };
 
     const handleConfirmarEliminar = () => {
         if (usuarioSeleccionado) {
-            eliminarusuario(usuarioSeleccionado.id);
-
+            eliminarUsuario(usuarioSeleccionado.id);
         }
     };
 
+    const indexOfLastUsuario = currentPage * usuariosPorPagina;
+    const indexOfFirstUsuario = indexOfLastUsuario - usuariosPorPagina;
+    const usuariosPaginados = usuario.slice(indexOfFirstUsuario, indexOfLastUsuario);
+
+    const handleNextPage = () => {
+        setCurrentPage(currentPage + 1);
+    };
+
+    const handlePrevPage = () => {
+        setCurrentPage(currentPage - 1);
+    };
+
     return (
-        <div className="container1">
+        <div>
             <NavBar />
-            <div className="contenido">
-
-
+            <div className="contenido1">
                 <div className="Titulo">
-                    <h2 class="letra">Lista de usuarios</h2>
-                    <div class="btn-neon ">
+                    <h2 className="letra">Lista de usuarios</h2>
+                    <div className="btn-neon">
                         <span id="span1"></span>
                         <span id="span2"></span>
                         <span id="span3"></span>
                         <span id="span4"></span>
                         <a href="/usuario/guardar">Agregar</a>
-
                     </div>
                 </div>
 
-
-                <table className="table1">
-                <thead>
-                    <tr>
-                        <th scope="col " className="raya">Id usuario</th>
-                        <th scope="col " className="raya">Rol</th>
-                        <th scope="col " className="raya">Nombre del usuario</th>
-                        <th scope="col " className="raya">Contraseña</th>
-                        <th scope="col " className="raya">Operaciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {usuario.map((usuario) => (
-                        <tr key={usuario.Id}>
-                            <td className="raya">{usuario.id}</td>
-                            <td className="raya">{usuario.rol}</td>
-                            <td className="raya">{usuario.usuario1}</td>
-                            <td className="raya">{usuario.contrasena}</td>
-                            <td className="raya corto">
-                                <button onClick={() => handleEliminarClick(usuario)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">Eliminar</button> |
-                                <Link to={`/usuario/editar/${usuario.id}`}>Editar</Link> |
-                                <Link to={`/usuario/detalles/${usuario.id}`}>Ver detalle</Link>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-
-            {/* Modal para confirmar la eliminación */}
-            <Modal usuarioSeleccionado={usuarioSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
+                <div className="container2">
+                    <table className="table1">
+                        <thead>
+                            <tr>
+                                <th scope="col" className="raya">Id usuario</th>
+                                <th scope="col" className="raya">Rol</th>
+                                <th scope="col" className="raya">Nombre del usuario</th>
+                                <th scope="col" className="raya">Contraseña</th>
+                                <th scope="col" className="raya">Operaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {usuariosPaginados.map((usuario) => (
+                                <tr key={usuario.Id}>
+                                    <td className="raya">{usuario.id}</td>
+                                    <td className="raya">{usuario.rol}</td>
+                                    <td className="raya">{usuario.usuario1}</td>
+                                    <td className="raya">{usuario.contrasena}</td>
+                                    <td className="raya corto">
+                                        <button className="btn btn-outline-danger espacio" onClick={() => handleEliminarClick(usuario)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">
+                                            <BiTrash />
+                                        </button>
+                                        <button className="btn btn-primary espacio" onClick={() => { window.location.href = `/usuario/editar/${usuario.id}`; }}>
+                                            <BiBrush />
+                                        </button>
+                                        <button className="btn btn-success espacio" onClick={() => { window.location.href = `/usuario/detalles/${usuario.id}`; }}>
+                                            <BiChevronRight />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <div className="pagination">
+                        <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
+                            <BiChevronLeft /> Anterior
+                        </button>
+                        <button className="btn btn-primary" onClick={handleNextPage} disabled={usuariosPaginados.length < usuariosPorPagina}>
+                            Siguiente <BiChevronRight />
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );
