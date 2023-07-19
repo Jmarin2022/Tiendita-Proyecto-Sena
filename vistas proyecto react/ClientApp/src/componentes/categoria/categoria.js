@@ -12,7 +12,7 @@ export function Listadocategoria() {
     const [categoria, setcategoria] = useState([]);
     const [categoriaSeleccionado, setcategoriaSeleccionado] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
+    const itemsPerPage = 12;
 
     const mostrarcategoria = async () => {
         try {
@@ -66,8 +66,10 @@ export function Listadocategoria() {
     return (
         <div>
             <NavBar />
-            <div className="contenido1">
-                <div className="Titulo">
+            <div className="margin0">
+                <div className="card ">
+                    <div className="card-header1">
+                <div className="Titulo1">
                     <h2 className="letra">Lista de categorías</h2>
                     <div className="btn-neon">
                         <span id="span1"></span>
@@ -76,9 +78,9 @@ export function Listadocategoria() {
                         <span id="span4"></span>
                         <a href="/categoria/guardar">Agregar</a>
                     </div>
-                </div>
-
-                <div className="container2">
+                </div></div>
+                    <div className="card-body">
+                
                     <table className="table1">
                         <thead>
                             <tr>
@@ -106,16 +108,15 @@ export function Listadocategoria() {
                                         >
                                             <BiBrush />
                                         </button>
-                                        <button className="btn btn-success espacio" onClick={() => { window.location.href = `/categoria/detalles/${categoria.idCategoria}`; }}>
-                                            <BiChevronRight />
-                                        </button>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
 
-                    <div className="pagination">
+                    
+                    </div>
+                    <div className="pagination bajar">
                         <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
                             <BiChevronLeft /> Anterior
                         </button>
@@ -123,11 +124,10 @@ export function Listadocategoria() {
                             Siguiente <BiChevronRight />
                         </button>
                     </div>
-                </div>
             </div>
 
             {/* Modal para confirmar la eliminación */}
             <Modal categoriaSeleccionado={categoriaSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
-        </div>
+        </div></div>
     );
 }

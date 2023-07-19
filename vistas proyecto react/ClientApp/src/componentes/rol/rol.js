@@ -13,7 +13,7 @@ export function ListadoRol() {
     const [rol, setRol] = useState([]);
     const [rolSeleccionado, setRolSeleccionado] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const rolesPorPagina = 5;
+    const rolesPorPagina = 12;
 
     const mostrarRol = async () => {
         try {
@@ -73,9 +73,11 @@ export function ListadoRol() {
     return (
         <div>
             <NavBar />
-            <div className="contenido1">
+            <div className="margin0">
+                <div className="card ">
+                    <div className="card-header1">
                 <div className="Titulo">
-                    <a href="/permiso" className="letra btn-neon">Permisos</a>
+                    <a href="/permiso" className="letra btn-neon1">Permisos</a>
                     <h2 className="letra">Lista de los roles</h2>
                     <div className="btn-neon">
                         <span id="span1"></span>
@@ -84,9 +86,9 @@ export function ListadoRol() {
                         <span id="span4"></span>
                         <a href="/Rol/guardar">Agregar</a>
                     </div>
-                </div>
+                </div></div>
 
-                <div className="container2">
+                    <div className="card-body">
                     <table className="table1">
                         <thead>
                             <tr>
@@ -114,7 +116,9 @@ export function ListadoRol() {
                             ))}
                         </tbody>
                     </table>
-                    <div className="pagination">
+                    
+                    </div>
+                    <div className="pagination bajar">
                         <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
                             <BiChevronLeft /> Anterior
                         </button>
@@ -122,8 +126,7 @@ export function ListadoRol() {
                             Siguiente <BiChevronRight />
                         </button>
                     </div>
-                </div>
             </div>
-        </div>
+        </div></div>
     );
 }

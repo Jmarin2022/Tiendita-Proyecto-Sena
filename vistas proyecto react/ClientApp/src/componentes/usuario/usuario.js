@@ -13,7 +13,7 @@ export function Listadousuario() {
     const [usuario, setUsuario] = useState([]);
     const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const usuariosPorPagina = 5;
+    const usuariosPorPagina = 12;
 
     const mostrarUsuarios = async () => {
         try {
@@ -66,52 +66,54 @@ export function Listadousuario() {
     return (
         <div>
             <NavBar />
-            <div className="contenido1">
-                <div className="Titulo">
-                    <h2 className="letra">Lista de usuarios</h2>
-                    <div className="btn-neon">
-                        <span id="span1"></span>
-                        <span id="span2"></span>
-                        <span id="span3"></span>
-                        <span id="span4"></span>
-                        <a href="/usuario/guardar">Agregar</a>
+            <div className="margin0">
+                <div className="card ">
+                    <div className="card-header">
+                        <div className="Titulo1">
+                            <h2 className="letra">Lista de usuarios</h2>
+                            <div className="btn-neon">
+                                <span id="span1"></span>
+                                <span id="span2"></span>
+                                <span id="span3"></span>
+                                <span id="span4"></span>
+                                <a href="/usuario/guardar">Agregar</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <div className="container2">
-                    <table className="table1">
-                        <thead>
-                            <tr>
-                                <th scope="col" className="raya">Id usuario</th>
-                                <th scope="col" className="raya">Rol</th>
-                                <th scope="col" className="raya">Nombre del usuario</th>
-                                <th scope="col" className="raya">Contraseña</th>
-                                <th scope="col" className="raya">Operaciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {usuariosPaginados.map((usuario) => (
-                                <tr key={usuario.Id}>
-                                    <td className="raya">{usuario.id}</td>
-                                    <td className="raya">{usuario.rol}</td>
-                                    <td className="raya">{usuario.usuario1}</td>
-                                    <td className="raya">{usuario.contrasena}</td>
-                                    <td className="raya corto">
-                                        <button className="btn btn-outline-danger espacio" onClick={() => handleEliminarClick(usuario)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">
-                                            <BiTrash />
-                                        </button>
-                                        <button className="btn btn-primary espacio" onClick={() => { window.location.href = `/usuario/editar/${usuario.id}`; }}>
-                                            <BiBrush />
-                                        </button>
-                                        <button className="btn btn-success espacio" onClick={() => { window.location.href = `/usuario/detalles/${usuario.id}`; }}>
-                                            <BiChevronRight />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <div className="pagination">
+                    <div className="card-body">
+                        <div className="">
+                            <table className="table1">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" className="raya">Id usuario</th>
+                                        <th scope="col" className="raya">Rol</th>
+                                        <th scope="col" className="raya">Nombre del usuario</th>
+                                        <th scope="col" className="raya">Contraseña</th>
+                                        <th scope="col" className="raya">Operaciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {usuariosPaginados.map((usuario) => (
+                                        <tr key={usuario.Id}>
+                                            <td className="raya">{usuario.id}</td>
+                                            <td className="raya">{usuario.rol}</td>
+                                            <td className="raya">{usuario.usuario1}</td>
+                                            <td className="raya">{usuario.contrasena}</td>
+                                            <td className="raya corto">
+                                                <button className="btn btn-outline-danger espacio" onClick={() => handleEliminarClick(usuario)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">
+                                                    <BiTrash />
+                                                </button>
+                                                <button className="btn btn-primary espacio" onClick={() => { window.location.href = `/usuario/editar/${usuario.id}`; }}>
+                                                    <BiBrush />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div className="pagination bajar">
                         <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
                             <BiChevronLeft /> Anterior
                         </button>
@@ -120,6 +122,9 @@ export function Listadousuario() {
                         </button>
                     </div>
                 </div>
+                
+
+                
             </div>
         </div>
     );

@@ -7,7 +7,7 @@ import { BiChevronRight, BiChevronLeft } from 'react-icons/bi';
 
 export function Listadoventa() {
     const [venta, setVenta] = useState([]);
-    const [ventasPorPagina] = useState(5);
+    const [ventasPorPagina] = useState(12);
     const [currentPage, setCurrentPage] = useState(1);
 
     const mostrarVenta = async () => {
@@ -38,8 +38,10 @@ export function Listadoventa() {
     return (
         <div>
             <NavBar />
-            <div className="contenido1">
-                <div className="Titulo">
+            <div className="margin0">
+                <div className="card ">
+                    <div className="card-header">
+                <div className="Titulo1">
                     <h2 className="letra">Lista de las ventas</h2>
                     <div className="btn-neon">
                         <span id="span1"></span>
@@ -48,9 +50,9 @@ export function Listadoventa() {
                         <span id="span4"></span>
                         <a href="/ventas/guardar">Agregar</a>
                     </div>
-                </div>
+                </div></div>
 
-                <div className="container2">
+                    <div className="card-body">
                     <table className="table1">
                         <thead>
                             <tr>
@@ -77,7 +79,9 @@ export function Listadoventa() {
                             ))}
                         </tbody>
                     </table>
-                    <div className="pagination">
+                    
+                    </div>
+                    <div className="pagination bajar">
                         <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
                             <BiChevronLeft /> Anterior
                         </button>
@@ -85,8 +89,7 @@ export function Listadoventa() {
                             Siguiente <BiChevronRight />
                         </button>
                     </div>
-                </div>
             </div>
-        </div>
+        </div></div>
     );
 }

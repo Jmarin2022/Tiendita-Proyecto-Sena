@@ -13,7 +13,7 @@ export function Listadopermiso() {
     const [permiso, setpermiso] = useState([]);
     const [permisosSeleccionado, setpermisosSeleccionado] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const permisosPorPagina = 5;
+    const permisosPorPagina = 12;
 
     const mostrarpermiso = async () => {
         try {
@@ -66,8 +66,10 @@ export function Listadopermiso() {
     return (
         <div>
             <NavBar />
-            <div className="contenido1">
-                <div className="Titulo">
+            <div className="margin0">
+                <div className="card ">
+                    <div className="card-header1">
+                <div className="Titulo1">
                     <h2 className="letra">Lista de los permisos</h2>
                     <div className="btn-neon">
                         <span id="span1"></span>
@@ -76,9 +78,9 @@ export function Listadopermiso() {
                         <span id="span4"></span>
                         <a href="/permiso/guardar">Agregar</a>
                     </div>
-                </div>
+                </div></div>
 
-                <div className="container2">
+                    <div className="card-body">
                     <table className="table1">
                         <thead>
                             <tr>
@@ -110,7 +112,9 @@ export function Listadopermiso() {
                             ))}
                         </tbody>
                     </table>
-                    <div className="pagination">
+                    
+                    </div>
+                    <div className="pagination bajar">
                         <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
                             <BiChevronLeft /> Anterior
                         </button>
@@ -118,8 +122,7 @@ export function Listadopermiso() {
                             Siguiente <BiChevronRight />
                         </button>
                     </div>
-                </div>
             </div>
-        </div>
+        </div></div>
     );
 }

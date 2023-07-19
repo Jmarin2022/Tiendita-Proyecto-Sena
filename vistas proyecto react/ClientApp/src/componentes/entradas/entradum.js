@@ -12,7 +12,7 @@ export function Listadoentradum() {
     const [entradums, setentradums] = useState([]);
     const [entradumSeleccionado, setentradumSeleccionado] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const entradasPorPagina = 5;
+    const entradasPorPagina = 12;
 
     const mostrarentradums = async () => {
         try {
@@ -72,8 +72,10 @@ export function Listadoentradum() {
     return (
         <div  >
             <NavBar />
-            <div className="contenido1">
-                <div className="Titulo">
+            <div className="margin0">
+                <div className="card ">
+                    <div className="card-header1">
+                <div className="Titulo1">
                     <h2 className="letra">Lista de las entradas</h2>
                     <div className="btn-neon ">
                         <span id="span1"></span>
@@ -82,9 +84,9 @@ export function Listadoentradum() {
                         <span id="span4"></span>
                         <a href="/entradas/guardar">Agregar</a>
                     </div>
-                </div>
+                </div></div>
+                    <div className="card-body">
 
-                <div className="container3">
                     <table className="table1">
                         <thead>
                             <tr>
@@ -111,15 +113,17 @@ export function Listadoentradum() {
                                         <button className="btn btn-primary espacio" onClick={() => { window.location.href = `/entradas/editar/${entradum.idEntrada}`; }}>
                                             <BiBrush />
                                         </button>
-                                        <button className="btn btn-success espacio" onClick={() => { window.location.href = `/entradas/detalles/${entradum.idEntrada}`; }}>
-                                            <BiChevronRight />
-                                        </button>
+
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
-                    <div className="pagination">
+                    
+                    {/* Modal para confirmar la eliminación */}
+                    <Modal entradumSeleccionado={entradumSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
+                </div>
+                    <div className="pagination bajar">
                         <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
                             <BiChevronLeft /> Anterior
                         </button>
@@ -127,11 +131,7 @@ export function Listadoentradum() {
                             Siguiente <BiChevronRight />
                         </button>
                     </div>
-                    {/* Modal para confirmar la eliminación */}
-                    <Modal entradumSeleccionado={entradumSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
-                </div>
-                
             </div>
-        </div>
+        </div></div>
     );
 }

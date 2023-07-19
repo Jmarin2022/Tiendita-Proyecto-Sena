@@ -12,7 +12,7 @@ export function Listadoimagen() {
     const [imagen, setimagen] = useState([]);
     const [imagenSeleccionado, setimageneleccionado] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
+    const itemsPerPage = 12;
 
     const mostrarimagen = async () => {
         try {
@@ -65,9 +65,17 @@ export function Listadoimagen() {
     return (
         <div>
             <NavBar />
-            <div className="contenido1">
+            <div className="margin0">
+                <div className="card ">
+                    <div className="card-header1">
                 <div className="Titulo">
-                    <a href="/categoria" className="letra btn-neon">Categoria</a>
+                            <div className="btn-neon1">
+                                <span id="span1"></span>
+                                <span id="span2"></span>
+                                <span id="span3"></span>
+                                <span id="span4"></span>
+                                <a href="/categoria">Categoria</a>
+                            </div>
                     <h2 className="letra">Lista de los Productos</h2>
                     <div className="btn-neon">
                         <span id="span1"></span>
@@ -76,8 +84,8 @@ export function Listadoimagen() {
                         <span id="span4"></span>
                         <a href="/imagen/guardar">Agregar</a>
                     </div>
-                </div>
-                <div className="container1">
+                </div></div>
+                    <div className="card-body">
                     <table className="table1">
                         <thead>
                             <tr>
@@ -121,7 +129,11 @@ export function Listadoimagen() {
                             ))}
                         </tbody>
                     </table>
-                    <div className="pagination">
+                    
+                </div>
+                {/* Modal para confirmar la eliminación */}
+                <Modal imagenSeleccionado={imagenSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
+                    <div className="pagination bajar">
                         <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
                             <BiChevronLeft /> Anterior
                         </button>
@@ -129,11 +141,7 @@ export function Listadoimagen() {
                             Siguiente <BiChevronRight />
                         </button>
                     </div>
-                </div>
-                {/* Modal para confirmar la eliminación */}
-                <Modal imagenSeleccionado={imagenSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
-                
             </div>
-        </div>
+        </div></div>
     );
 }

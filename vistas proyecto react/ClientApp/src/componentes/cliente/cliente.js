@@ -12,7 +12,7 @@ export function ListadoCliente() {
     const [clientes, setClientes] = useState([]);
     const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
+    const itemsPerPage = 12;
 
     const mostrarClientes = async () => {
         try {
@@ -73,8 +73,10 @@ export function ListadoCliente() {
     return (
         <div>
             <NavBar />
-            <div className="contenido1">
-                <div className="Titulo">
+            <div className="margin0">
+                <div className="card ">
+                    <div className="card-header1">
+                <div className="Titulo1">
                     <h2 className="letra">Lista de clientes</h2>
                     <div className="btn-neon">
                         <span id="span1"></span>
@@ -83,9 +85,9 @@ export function ListadoCliente() {
                         <span id="span4"></span>
                         <a href="/cliente/guardar">Agregar</a>
                     </div>
-                </div>
-
-                <div className="container3">
+                </div></div>
+                    <div className="card-body">
+               
                     <table className="table1">
                         <thead>
                             <tr>
@@ -115,16 +117,16 @@ export function ListadoCliente() {
                                         >
                                             <BiBrush />
                                         </button>
-                                        <button className="btn btn-success espacio" onClick={() => { window.location.href = `/cliente/detalles/${cliente.idCliente}`; }}>
-                                            <BiChevronRight />
-                                        </button>
+
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
 
-                    <div className="pagination">
+                    
+                    </div>
+                    <div className="pagination bajar">
                         <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
                             <BiChevronLeft /> Anterior
                         </button>
@@ -132,10 +134,9 @@ export function ListadoCliente() {
                             Siguiente <BiChevronRight />
                         </button>
                     </div>
-                </div>
             </div>
             {/* Modal para confirmar la eliminación */}
             <Modal clienteSeleccionado={clienteSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
-        </div>
+        </div></div>
     );
 }
