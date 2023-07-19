@@ -104,5 +104,26 @@ namespace vistas_proyecto_react.Controllers
             return Ok(Usuario);
         }
 
+        // ... otros códigos ...
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] Usuario request)
+        {
+            Usuario usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Usuario1 == request.Usuario1 && u.Contrasena == request.Contrasena);
+
+            if (usuario != null)
+            {
+                return Ok("Inicio de sesión exitoso");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, "Credenciales inválidas. Por favor, intente nuevamente.");
+            }
+        }
+
+        // ... otros códigos ...
+
     }
 }

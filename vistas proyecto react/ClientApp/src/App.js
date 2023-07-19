@@ -4,7 +4,7 @@ import React from 'react';
 import { Route, Routes, BrowserRouter} from "react-router-dom";
 
 /* Metodo de Dasboard*/
-import { Inicio } from "./componentes/principales/inicio";
+import { Inicio } from "./componentes/principales/login";
 
 
 /* Metodo de listar*/
