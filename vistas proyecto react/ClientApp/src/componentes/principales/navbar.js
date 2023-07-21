@@ -20,7 +20,7 @@ export function NavBar() {
                 <div className="nav-link1 bajar2">
                 </div>
                 <Link to="/" className="nav-link1">
-                    <BsCardText /> Dashboard
+                    <BsCardText /> Dashboard1
                 </Link>
                 <Link to="/rol" className="nav-link1">
                     <BsPerson /> Rol
