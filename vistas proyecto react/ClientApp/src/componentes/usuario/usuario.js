@@ -68,7 +68,7 @@ export function Listadousuario() {
             <NavBar />
             <div className="margin0">
                 <div className="card ">
-                    <div className="card-header">
+                    <div className="card-header1">
                         <div className="Titulo1">
                             <h2 className="letra">Lista de usuarios</h2>
                             <div className="btn-neon">
@@ -113,6 +113,7 @@ export function Listadousuario() {
                             </table>
                         </div>
                     </div>
+                    <Modal usuarioSeleccionado={usuarioSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
                     <div className="pagination bajar">
                         <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
                             <BiChevronLeft /> Anterior

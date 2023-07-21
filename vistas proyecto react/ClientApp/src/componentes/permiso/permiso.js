@@ -114,6 +114,7 @@ export function Listadopermiso() {
                     </table>
                     
                     </div>
+                    <Modal permisosSeleccionado={permisosSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
                     <div className="pagination bajar">
                         <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
                             <BiChevronLeft /> Anterior

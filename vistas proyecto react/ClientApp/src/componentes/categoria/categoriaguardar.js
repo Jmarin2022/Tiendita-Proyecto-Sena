@@ -39,7 +39,7 @@ export class GuardarCategoria extends Component {
                 <NavBar />
                 <div className="contenido1">
                     <div className="highlight contenidointerior">
-                        <h2>Crear Cliente</h2>
+                        <h2>Crear Categoria</h2>
                         <form onSubmit={this.submitHandler}>
                             <div className="form-row">
                             <p>Digite el nombre de la categoria</p>
@@ -53,7 +53,7 @@ export class GuardarCategoria extends Component {
                                 <p>Digite la imagen categoria</p>
                         <input className="form-control" type="Text" name="IdImagen"  onChange={this.changeHandler} ></input>
                     </div>
-                    <button type="submit">Enviar</button>
+                            <button type="submit" class="btn btn-primary bajar1">Guardar</button>
                 </form>
                     </div>
                 </div>

@@ -47,7 +47,7 @@ export class GuardarRol extends Component {
                         <p>Digite La fecha</p>
                                 <input className="form-control" type="datetime-local" name="fecha" onChange={this.changeHandler} ></input>
                     </div>
-                    <button type="submit" >Enviar</button>
+                            <button type="submit" class="btn btn-primary bajar1">Guardar</button>
                 </form>
                     </div>
                 </div>

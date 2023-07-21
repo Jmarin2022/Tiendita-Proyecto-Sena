@@ -72,7 +72,7 @@ export class GuardarCliente extends Component {
                                     <input className="form-control" type="Text" name="estado" onChange={this.changeHandler}></input>
                                 </div>
                             </div>
-                            <button type="submit">Enviar</button>
+                            <button type="submit" class="btn btn-primary bajar1">Guardar</button>
                         </form>
                     </div>
             </div>

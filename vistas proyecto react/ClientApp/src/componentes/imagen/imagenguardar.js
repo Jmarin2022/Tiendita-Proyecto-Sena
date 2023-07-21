@@ -79,7 +79,7 @@ export class GuardarImagen extends Component {
                                     <input type="text" name="Imagen1" onChange={this.changeHandler}></input>
                                 </div>
                             </div>
-                            <button type="submit">Enviar</button>
+                            <button type="submit" class="btn btn-primary bajar1">Guardar</button>
                         </form>
                     </div>
                 </div>

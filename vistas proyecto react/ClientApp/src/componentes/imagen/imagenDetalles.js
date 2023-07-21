@@ -33,24 +33,28 @@ export const ImagenDetalles = () => {
     }
 
     return (
-        <div  >
+        <div>
             <NavBar />
-            <div className="contenido1">
-
-
-                <div className="Titulo">
-                    <h2 class="letra">Detalle de los Productos</h2>
-                    <div class="btn-neon ">
-                        <span id="span1"></span>
-                        <span id="span2"></span>
-                        <span id="span3"></span>
-                        <span id="span4"></span>
-                        <a href="/imagen/guardar">Agregar</a>
-
-                    </div>
-                </div>
-
-
+            <div className="margin0">
+                <div className="card ">
+                    <div className="card-header1">
+                        <div className="Titulo">
+                            <div className="btn-neon1">
+                                <span id="span1"></span>
+                                <span id="span2"></span>
+                                <span id="span3"></span>
+                                <span id="span4"></span>
+                                <a href="/imagen">Regresar</a>
+                            </div>
+                            <h2 className="letra">Detalle del Productos</h2>
+                            <div className="btn-neon">
+                                <span id="span1"></span>
+                                <span id="span2"></span>
+                                <span id="span3"></span>
+                                <span id="span4"></span>
+                                <a href="/imagen/guardar">Agregar</a>
+                            </div>
+                        </div></div>
                 <table className="table1">
                     <thead>
                         <tr>
@@ -83,7 +87,7 @@ export const ImagenDetalles = () => {
                 </table>
 
             </div>
-        </div>
+        </div></div>
     );
 };
 

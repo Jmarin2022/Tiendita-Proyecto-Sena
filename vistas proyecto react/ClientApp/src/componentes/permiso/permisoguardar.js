@@ -37,15 +37,15 @@ export class GuardarPermiso extends Component {
             <div  >
                 <NavBar />
                 <div className="contenido1">
-                    <div className="highlight contenidointerior1">
+                    <div className="highlight contenidointerior2">
                         <h2>Crear Permiso</h2>
                         <form onSubmit={this.submitHandler}>
                             <div className="form-row">
-                        <p>Digite el Modulo</p><br />
+                        <p>Digite el Modulo</p> 
                                 <input className="form-control" type="Text" name="Modulo"  onChange={this.changeHandler} ></input>
                     </div>
                     <div>
-                        <p>Digite si puede crear</p><br />
+                        <p>Digite si puede crear</p> 
                                 <select className="custom-select"  name="Crear" onChange={this.changeHandler}>
                             <option  value="">Seleccione</option>
                             <option  value="Si">Si</option>
@@ -53,7 +53,7 @@ export class GuardarPermiso extends Component {
                         </select>
                     </div>
                     <div>
-                        <p>Digite si puede Eliminar</p><br />
+                        <p>Digite si puede Eliminar</p> 
                                 <select className="custom-select" name="Eliminar" onChange={this.changeHandler}>
                             <option  value="">Seleccione</option>
                             <option  value="Si">Si</option>
@@ -61,14 +61,14 @@ export class GuardarPermiso extends Component {
                         </select>
                     </div>
                     <div>
-                        <p>Digite si puede Editar</p><br />
+                        <p>Digite si puede Editar</p> 
                                 <select className="custom-select" name="Editar" onChange={this.changeHandler} >
                             <option  value="">Seleccione</option>
                             <option  value="Si">Si</option>
                             <option  value="No">No</option>
                             </select>
                     </div>
-                    <button type="submit" >Enviar</button>
+                    <button type="submit" class="btn btn-primary bajar1">Guardar</button>
                 </form>
                     </div>
                 </div>

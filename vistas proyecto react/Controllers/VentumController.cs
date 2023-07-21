@@ -76,19 +76,19 @@ namespace vistas_proyecto_react.Controllers
         [Route("Detalles/{id:int}")]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Venta == null)
+            if (id == null || _context.DetalleVentas == null)
             {
                 return NotFound();
             }
 
-            var Ventum = await _context.Venta
+            var DetalleVenta = await _context.DetalleVentas
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (Ventum == null)
+            if (DetalleVenta == null)
             {
                 return NotFound();
             }
 
-            return StatusCode(StatusCodes.Status200OK, Ventum);
+            return StatusCode(StatusCodes.Status200OK, DetalleVenta);
         }
 
         [HttpGet]

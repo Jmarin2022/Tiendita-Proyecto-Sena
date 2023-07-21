@@ -51,7 +51,7 @@ export class GuardarUsuario extends Component {
                         <p>Digite el contrasena</p>
                         <input className="form-control" type="text" name="contrasena" onChange={this.changeHandler} ></input>
                     </div>
-                    <button type="submit" >Enviar</button>
+                    <button type="submit" class="btn btn-primary bajar1">Guardar</button>
                 </form>
 
                     </div>

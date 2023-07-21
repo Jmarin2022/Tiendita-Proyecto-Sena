@@ -77,7 +77,13 @@ export function ListadoRol() {
                 <div className="card ">
                     <div className="card-header1">
                 <div className="Titulo">
-                    <a href="/permiso" className="letra btn-neon1">Permisos</a>
+                            <div className="btn-neon1">
+                                <span id="span1"></span>
+                                <span id="span2"></span>
+                                <span id="span3"></span>
+                                <span id="span4"></span>
+                                <a href="/permiso">Permisos</a>
+                            </div>
                     <h2 className="letra">Lista de los roles</h2>
                     <div className="btn-neon">
                         <span id="span1"></span>
@@ -118,6 +124,7 @@ export function ListadoRol() {
                     </table>
                     
                     </div>
+                    <Modal rolSeleccionado={rolSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
                     <div className="pagination bajar">
                         <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
                             <BiChevronLeft /> Anterior

@@ -16,33 +16,35 @@ export function NavBar() {
                 <a className="tiendita" href="/">Tiendita_Soft</a>
             </div>
             
-            <nav>
-                <Link to="/" className="nav-link">
+            <div className="nav1 ">
+                <div className="nav-link1 bajar2">
+                </div>
+                <Link to="/" className="nav-link1">
                     <BsCardText /> Dashboard
                 </Link>
-                <Link to="/rol" className="nav-link">
+                <Link to="/rol" className="nav-link1">
                     <BsPerson /> Rol
                 </Link>
-                <Link to="/usuario" className="nav-link">
+                <Link to="/usuario" className="nav-link1">
                     <BsPerson /> Usuarios
                 </Link>
-                <Link to="/imagen" className="nav-link">
+                <Link to="/imagen" className="nav-link1">
                     <BsShop /> Productos
                 </Link>
-                <Link to="/entradas" className="nav-link">
+                <Link to="/entradas" className="nav-link1">
                     <BiPlus /> Entrada
                 </Link>
 
-                <Link to="/cliente" className="nav-link">
+                <Link to="/cliente" className="nav-link1">
                     <BsPerson /> Cliente
                 </Link>
 
-                <Link to="/venta" className="nav-link">
+                <Link to="/venta" className="nav-link1">
                     <BiCart /> Ventas
                 </Link>
 
 
-            </nav>
+            </div>
         </div>
     )
 }

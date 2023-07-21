@@ -39,6 +39,7 @@ import { ImagenDetalles } from "./componentes/imagen/imagenDetalles"
 import { PermisosDetalles } from "./componentes/permiso/permisoDetalles"
 import { RolDetalles } from "./componentes/rol/rolDetalles"
 import { UsuarioDetalles } from "./componentes/usuario/usuarioDetalles"
+import { ListadoDetalleventa } from "./componentes/detalleventa/detalleventadetalles"
 
 /* Metodo put*/
 import CategoriaEditar from "./componentes/categoria/categoriaeditar";
@@ -88,10 +89,11 @@ const App = () => {
                 <Route path="/categoria/detalles/:idCategoria" element={<CategoriaDetalles />} />
                 <Route path="/cliente/detalles/:idCliente" element={<ClienteDetalles />} />
                 <Route path="/entradas/detalles/:idEntrada" element={<EntradumsDetalles />} />
-                <Route path="/imagen/detalles/:idImagen" element={<ImagenDetalles />} />
+                <Route path="/imagen/detalle/:idImagen" element={<ImagenDetalles />} />
                 <Route path="/permiso/detalles/:idPermisos" element={<PermisosDetalles />} />
                 <Route path="/rol/detalles/:idRol" element={<RolDetalles />} />
                 <Route path="/usuario/detalles/:id" element={<UsuarioDetalles />} />
+                <Route path="/detalleventa/detalle/:id" element={<ListadoDetalleventa />} />
 
                     
                 {/*Metodo put*/}

@@ -40,7 +40,7 @@ export function Listadoventa() {
             <NavBar />
             <div className="margin0">
                 <div className="card ">
-                    <div className="card-header">
+                    <div className="card-header1">
                 <div className="Titulo1">
                     <h2 className="letra">Lista de las ventas</h2>
                     <div className="btn-neon">
@@ -71,7 +71,7 @@ export function Listadoventa() {
                                     <td className="raya">{venta.fechaventa}</td>
                                     <td className="raya">{venta.total}</td>
                                     <td className="raya corto">
-                                        <button className="btn btn-success espacio" onClick={() => { window.location.href = `/venta/detalles/${venta.id}`; }}>
+                                        <button className="btn btn-success espacio" onClick={() => { window.location.href = `/detalleventa/detalle/${venta.id}`; }}>
                                             <BiChevronRight />
                                         </button>
                                     </td>

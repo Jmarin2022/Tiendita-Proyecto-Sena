@@ -69,23 +69,14 @@ namespace vistas_proyecto_react.Controllers
             return StatusCode(StatusCodes.Status200OK, "OK");
         }
 
-        [HttpGet]
-        [Route("Detalles/{id:int}")]
-        public async Task<IActionResult> Details(int? id)
+        [HttpGet("detalle/{id:int}")]
+        public async Task<IActionResult> GetDetalleVenta(int id)
         {
-            if (id == null || _context.DetalleVentas == null)
-            {
-                return NotFound();
-            }
+            var detalleVenta = await _context.DetalleVentas
+                .Where(detalle => detalle.VentaId == id)
+                .ToListAsync();
 
-            var DetalleVenta = await _context.DetalleVentas
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (DetalleVenta == null)
-            {
-                return NotFound();
-            }
-
-            return StatusCode(StatusCodes.Status200OK, DetalleVenta);
+            return Ok(detalleVenta);
         }
 
         [HttpGet]

@@ -57,7 +57,7 @@ export class GuardarEntradas extends Component {
                         <p>Ponga la fecha de la entrada</p>
                        <input className="form-control" type="datetime-local" name="Fecha"  onChange={this.changeHandler} ></input>
                     </div>
-                    <button type="submit">Enviar</button>
+                            <button type="submit" class="btn btn-primary bajar1">Guardar</button>
                         </form>
                     </div>
                 </div>

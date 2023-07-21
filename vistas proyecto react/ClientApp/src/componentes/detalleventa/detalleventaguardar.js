@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { NavBar } from '../principales/navbar';
+import '../../assets/css/menu.css';
+import { BiTrash } from 'react-icons/bi'; // Importar el icono de eliminación
+import { BiBrush } from 'react-icons/bi';
 
 export const ProductosFormulario = () => {
     const [productos, setProductos] = useState([]);
@@ -15,8 +19,8 @@ export const ProductosFormulario = () => {
     useEffect(() => {
         const fetchProductos = async () => {
             try {
-                const response = await axios.get('/api/imagen/Lista');
-                setProductos(response.data);
+                const response1 = await axios.get('/api/imagen/Lista');
+                setProductos(response1.data);
             } catch (error) {
                 console.error(error);
             }
@@ -53,7 +57,7 @@ export const ProductosFormulario = () => {
             const updatedProductosSeleccionados = [...productosSeleccionados];
             updatedProductosSeleccionados[editIndex] = {
                 ...producto,
-                ProductoId: productos.find((item) => item.nombre === producto.nombre).idProducto,
+                idImagen: productos.find((item) => item.nombre === producto.nombre).idImagen,
                 precio: productos.find((item) => item.nombre === producto.nombre).precio,
                 subtotal: producto.cantidad * productos.find((item) => item.nombre === producto.nombre).precio,
             };
@@ -62,7 +66,7 @@ export const ProductosFormulario = () => {
         } else {
             const newProducto = {
                 ...producto,
-                ProductoId: productos.find((item) => item.nombre === producto.nombre).idProducto,
+                idImagen: productos.find((item) => item.nombre === producto.nombre).idImagen,
                 precio: productos.find((item) => item.nombre === producto.nombre).precio,
                 subtotal: producto.cantidad * productos.find((item) => item.nombre === producto.nombre).precio,
             };
@@ -97,7 +101,7 @@ export const ProductosFormulario = () => {
         // Guardar los datos de la venta
         const ventaData = {
             Cliente: cliente,
-            Fechaventa: new Date().toISOString(),
+            Fechaventa: new Date(),
             Total: total,
         };
 
@@ -109,25 +113,25 @@ export const ProductosFormulario = () => {
             // Guardar los detalles de la venta
             productosSeleccionados.forEach(async (producto) => {
                 const response = await axios.get('/api/ventum/Lista');
+                const response1 = await axios.get('/api/imagen/Lista');
 
-                // Obtén el ID más algo (por ejemplo, 5) del primer elemento del objeto
-                for (var x = 0; x > response.length; x++) {
-                    console.log(response)
-                }
-                const mayor = response.length
-                const idmasalta = response[0];
 
-                console.log(Math.max(response));
+                console.log(response); 
+                console.log(response1);
+                const hola = response.data[0].id
 
-                console.log(mayor)
+                console.log(producto);
+
+                    
 
                 const detalleVentaData = {
-                    VentaId: idmasalta,
-                    ProductoId: producto.ProductoId,
+                    VentaId: hola,
+                    ProductoId: producto.idImagen,
                     Cantidad: producto.cantidad,
                     Total: producto.subtotal,
                 };
                 await axios.post('/api/detalleventa/Guardar', detalleVentaData);
+                window.location.href = "/venta";
             });
 
             // Limpiar el formulario y el listado de productos seleccionados
@@ -141,50 +145,94 @@ export const ProductosFormulario = () => {
 
     return (
         <div>
-            <h2>Formulario de Productos</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="cantidad">Cantidad:</label>
-                    <input type="number" id="cantidad" name="cantidad" value={producto.cantidad} onChange={handleChange} />
-                </div>
-                <div>
-                    <label htmlFor="nombre">Nombre:</label>
-                    <select id="nombre" name="nombre" value={producto.nombre} onChange={handleChange}>
-                        <option value="">Seleccionar producto</option>
-                        {productos.map((item, index) => (
-                            <option key={index} value={item.nombre}>
-                                {item.nombre}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <button type="submit">{editIndex !== null ? 'Guardar Cambios' : 'Agregar Producto'}</button>
-            </form>
+            <NavBar />
+            <div className="margin0">
+                <div className="card ">
+                    <div className="card-header1">
+                        <div className="Titulo1">
+                            <h2 className="letra">Crear venta</h2>
+                            <div className="btn-neon1">
+                                <span id="span1"></span>
+                                <span id="span2"></span>
+                                <span id="span3"></span>
+                                <span id="span4"></span>
+                                <a href="/venta">Regresar</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="card-body">
+                        <div className="Contenedor13">
+                            <div className="form-group row">
+                                <label className="col-sm-3 col-form-label" htmlFor="cliente">Nombre del Cliente:</label>
+                                <div className="col-sm-9">
+                                    <input className="form-control " type="text" id="cliente" value={cliente} onChange={handleClienteChange} />
+                                </div>
+                            </div>
+                            <form onSubmit={handleSubmit}>
+                                <h2 className="letra1">Información del Producto para agregar</h2>
+                                <div className="row">
+                                    <div className="form-row col-sm-5">
+                                        <label htmlFor="nombre">Nombre:</label>
+                                        <select class="form-select" id="nombre" name="nombre" value={producto.nombre} onChange={handleChange}>
+                                            <option value="">Seleccionar producto</option>
+                                            {productos.map((item, index) => (
+                                                <option key={index} value={item.nombre}>
+                                                    {item.nombre}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
 
-            <h2>Información del Cliente</h2>
-            <div>
-                <label htmlFor="cliente">Nombre del Cliente:</label>
-                <input type="text" id="cliente" value={cliente} onChange={handleClienteChange} />
-            </div>
+                                    <div className="form-row col-sm-5">
+                                        <label htmlFor="cantidad">Cantidad:</label>
+                                        <input className="form-control" type="number" id="cantidad" name="cantidad" value={producto.cantidad} onChange={handleChange} />
+                                    </div>
 
-            <h2>Listado de Productos</h2>
-            <ul>
-                {productosSeleccionados.map((item, index) => (
-                    <li key={index}>
-                        Cantidad: {item.cantidad}, Nombre: {item.nombre}, Subtotal: {item.subtotal}
-                        <button onClick={() => handleEdit(index)}>Editar</button>
-                        <button onClick={() => handleDelete(index)}>Eliminar</button>
-                    </li>
-                ))}
-            </ul>
+                                    <button class="btn btn-primary bajar1 col-sm" type="submit">{editIndex !== null ? 'Guardar Cambios' : 'Agregar Producto'}</button>
+                                </div>
+                                
+                                
+                            </form>
+                            
 
-            {productosSeleccionados.length > 0 && (
-                <div>
-                    <p>Total: {productosSeleccionados.reduce((acc, item) => acc + item.subtotal, 0)}</p>
-                    <button onClick={handleGuardarVenta}>Guardar Venta</button>
-                </div>
-            )}
-        </div>
+                            <h2 className="letra1">Listado de Productos</h2>
+                            <table className="table1">
+                                <thead>
+                                    <tr>
+                                        <th className="raya" scope="col">Nombre del producto</th>
+                                        <th className="raya" scope="col">Catidad del producto</th>
+                                        <th className="raya" scope="col">Subtotal del producto</th>
+                                        <th className="raya" scope="col">Operaciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {productosSeleccionados.map((item, index) => (
+                                        <tr key={index}>
+                                            <td className="raya">{item.nombre}</td>
+                                            <td className="raya">{item.cantidad}</td>
+                                            <td className="raya">{item.subtotal}</td>
+                                            <td className="raya">
+                                                <button className="btn btn-outline-danger espacio" onClick={() => handleDelete(index)}>
+                                                    <BiTrash />
+                                                </button>
+                                                <button className="btn btn-primary espacio" onClick={() => handleEdit(index)}>
+                                                    <BiBrush />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                ))}
+                                        </tbody>
+
+                            {productosSeleccionados.length > 0 && (
+                                <div>
+                                    <p>Total: {productosSeleccionados.reduce((acc, item) => acc + item.subtotal, 0)}</p>
+                                        <button className="btn btn-primary bajar1" onClick={handleGuardarVenta}>Guardar Venta</button>
+                                </div>
+                            )}
+                                        
+                       </table> 
+            
+        </div> </div></div></div></div>
     );
 };
 

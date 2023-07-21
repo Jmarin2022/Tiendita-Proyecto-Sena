@@ -1,6 +1,6 @@
 ﻿import React, { useState } from "react";
 
-export function Modal({ RolSeleccionado, handleConfirmarEliminar }) {
+export function Modal({ rolSeleccionado, handleConfirmarEliminar }) {
     return (
         <div className="modal fade" id="confirmarEliminarModal" tabIndex="-1" aria-labelledby="confirmarEliminarModalLabel" aria-hidden="true">
             <div className="modal-dialog">
@@ -10,8 +10,8 @@ export function Modal({ RolSeleccionado, handleConfirmarEliminar }) {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        {RolSeleccionado && (
-                            <p>¿Estás seguro de que deseas eliminar el rol {RolSeleccionado.rol1}?</p>
+                        {rolSeleccionado && (
+                            <p>¿Estás seguro de que deseas eliminar el rol {rolSeleccionado.rol1}?</p>
                         )}
                     </div>
                     <div className="modal-footer">

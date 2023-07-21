@@ -11,7 +11,7 @@ export function Modal({ categoriaSeleccionado, handleConfirmarEliminar }) {
                     </div>
                     <div className="modal-body">
                         {categoriaSeleccionado && (
-                            <p>¿Estás seguro de que deseas eliminar la categoria{categoriaSeleccionado.nombre} {categoriaSeleccionado.apellido}?</p>
+                            <p>¿Estás seguro de que deseas eliminar la categoria {categoriaSeleccionado.nombreC}?</p>
                         )}
                     </div>
                     <div className="modal-footer">
