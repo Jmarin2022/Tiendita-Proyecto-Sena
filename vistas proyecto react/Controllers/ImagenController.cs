@@ -1,8 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System;
 using vistas_proyecto_react.Models;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace vistas_proyecto_react.Controllers
 {
@@ -11,11 +16,14 @@ namespace vistas_proyecto_react.Controllers
     public class ImagenController : ControllerBase
     {
         private readonly TiendaContext _context;
+        private readonly IWebHostEnvironment _environment;
 
-        public ImagenController(TiendaContext context)
+        public ImagenController(TiendaContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
+
 
         [HttpGet]
         [Route("Lista")]
@@ -107,7 +115,44 @@ namespace vistas_proyecto_react.Controllers
 
             return Ok(Imagen);
         }
+        [HttpPost("Upload")]
+        public IActionResult UploadImage(IFormFile image)
+        {
+            try
+            {
+                if (image == null || image.Length == 0)
+                {
+                    return BadRequest("No se proporcionó una imagen válida.");
+                }
+
+                // Asegurarse de que la ruta de destino exista.
+                string destinationPath = @"C:\Users\Juan Manuel\Desktop\Proyecto\proyecto react\vistas proyecto react\vistas proyecto react\ClientApp\src\componentes\imagen\img";
+                if (!Directory.Exists(destinationPath))
+                {
+                    Directory.CreateDirectory(destinationPath);
+                }
+
+                // Generar un nombre único para la imagen (usando el nombre original del archivo).
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                string filePath = Path.Combine(destinationPath, fileName);
+
+                // Guardar la imagen en la ruta de destino.
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    image.CopyTo(stream);
+                }
+
+                return Ok("Imagen subida correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+
 
 
     }
 }
+

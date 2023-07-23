@@ -30,6 +30,7 @@ import { GuardarRolPermiso } from "./componentes/rolpermiso/rolpermisoguardar"
 import { GuardarUsuario } from "./componentes/usuario/usuarioguardar"
 import { GuardarVenta } from "./componentes/venta/ventaguardar"
 import { ProductosFormulario } from "./componentes/detalleventa/detalleventaguardar"
+import { ImageUploaderHola } from "./componentes/imagen/imagen - Copia"
 
 /*Metodo get para detalle*/
 import { CategoriaDetalles } from "./componentes/categoria/categoriaDetalles"
@@ -83,7 +84,7 @@ const App = () => {
                 <Route path="/usuario/guardar" element={<GuardarUsuario />} />
                 {/*<Route path="/ventas/guardar" element={<GuardarVenta />} />*/}
                 <Route path="/ventas/guardar" element={<ProductosFormulario />} />
-
+                <Route path="/imagen1" element={<ImageUploaderHola />} />
 
                 {/*Metodo get para detalle*/}
                 <Route path="/categoria/detalles/:idCategoria" element={<CategoriaDetalles />} />
@@ -94,6 +95,7 @@ const App = () => {
                 <Route path="/rol/detalles/:idRol" element={<RolDetalles />} />
                 <Route path="/usuario/detalles/:id" element={<UsuarioDetalles />} />
                 <Route path="/detalleventa/detalle/:id" element={<ListadoDetalleventa />} />
+
 
                     
                 {/*Metodo put*/}
