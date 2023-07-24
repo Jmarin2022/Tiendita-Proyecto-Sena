@@ -39,7 +39,9 @@ export function NavBar() {
                     <BsPerson /> Cliente
                 </Link>
 
-               
+                <Link to="/venta" className="nav-link1">
+                    <BiCart /> Ventass
+                </Link>
 
 
             </div>
