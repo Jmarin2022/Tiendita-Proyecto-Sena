@@ -4,10 +4,11 @@ import axios from 'axios';
 import { NavBar } from '../principales/navbar';
 import '../../assets/css/menu.css';
 import { BiChevronRight, BiChevronLeft } from 'react-icons/bi';
-
+import { BsPerson } from 'react-icons/bs';
+import { BiSearch } from "react-icons/bi";
 export function Listadoventa() {
     const [venta, setVenta] = useState([]);
-    const [ventasPorPagina] = useState(12);
+    const [ventasPorPagina] = useState(9);
     const [currentPage, setCurrentPage] = useState(1);
 
     const mostrarVenta = async () => {
@@ -40,17 +41,29 @@ export function Listadoventa() {
             <NavBar />
             <div className="margin0">
                 <div className="card ">
-                    <div className="card-header1">
-                <div className="Titulo1">
-                    <h2 className="letra">Lista de las ventas</h2>
-                    <div className="btn-neon">
-                        <span id="span1"></span>
-                        <span id="span2"></span>
-                        <span id="span3"></span>
-                        <span id="span4"></span>
-                        <a href="/ventas/guardar">Agregar</a>
+                    <div className="card-header1 ">
+                        <div className="Titulo12">
+                            <h2 className="letra12">Juan <BsPerson /></h2>
+                        </div>
                     </div>
-                </div></div>
+
+                    <div className="partedeltitulo">
+                        <h2 className="letra">Lista de las ventas</h2>
+                        <div className="btn-neon letra2">
+                            <span id="span1"></span>
+                            <span id="span2"></span>
+                            <span id="span3"></span>
+                            <span id="span4"></span>
+                            <a href="ventas/guardar">Agregar</a>
+                        </div>
+                    </div>
+                    <div className="reducir  " >
+                        <input type="search" className="form-control1" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                        <span class="input-group-text border-0 pegado" id="search-addon">
+                            <BiSearch />
+                        </span>
+                    </div>
+                   
 
                     <div className="card-body">
                     <table className="table1">

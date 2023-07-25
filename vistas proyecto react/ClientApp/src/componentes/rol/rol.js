@@ -8,7 +8,8 @@ import '../../assets/css/menu.css'
 import { BiTrash } from 'react-icons/bi'; // Importar el icono de eliminación
 import { BiBrush } from 'react-icons/bi';
 import { BiChevronRight, BiChevronLeft } from 'react-icons/bi'; // Importar los iconos de flechas
-
+import { BsPerson } from 'react-icons/bs';
+import { BiSearch } from "react-icons/bi";
 export function ListadoRol() {
     const [rol, setRol] = useState([]);
     const [rolSeleccionado, setRolSeleccionado] = useState(null);
@@ -75,25 +76,29 @@ export function ListadoRol() {
             <NavBar />
             <div className="margin0">
                 <div className="card ">
-                    <div className="card-header1">
-                <div className="Titulo">
-                            <div className="btn-neon1">
-                                <span id="span1"></span>
-                                <span id="span2"></span>
-                                <span id="span3"></span>
-                                <span id="span4"></span>
-                                <a href="/permiso">Permisos</a>
-                            </div>
+                    <div className="card-header1 ">
+                        <div className="Titulo12">
+                            <h2 className="letra12">Juan <BsPerson /></h2>
+                        </div>
+                    </div>
+
+                    <div className="partedeltitulo">
                     <h2 className="letra">Lista de los roles</h2>
-                    <div className="btn-neon">
+                    <div className="btn-neon letra2">
                         <span id="span1"></span>
                         <span id="span2"></span>
                         <span id="span3"></span>
                         <span id="span4"></span>
                         <a href="/Rol/guardar">Agregar</a>
                     </div>
-                </div></div>
-
+                </div>
+                    <div className="reducir  " >
+                        <input type="search" className="form-control1" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                         <span class="input-group-text border-0 pegado" id="search-addon">
+                        <BiSearch />
+                    </span>
+                    </div>
+                   
                     <div className="card-body">
                     <table className="table1">
                         <thead>

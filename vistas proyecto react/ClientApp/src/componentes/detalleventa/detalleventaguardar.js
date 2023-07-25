@@ -201,13 +201,6 @@ export const ProductosFormulario = () => {
                     <div className="card-header1">
                         <div className="Titulo1">
                             <h2 className="letra">Crear venta</h2>
-                            <div className="btn-neon1">
-                                <span id="span1"></span>
-                                <span id="span2"></span>
-                                <span id="span3"></span>
-                                <span id="span4"></span>
-                                <a href="/venta">Regresar</a>
-                            </div>
                         </div>
                     </div>
                     <div className="card-body">
