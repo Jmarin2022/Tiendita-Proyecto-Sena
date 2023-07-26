@@ -70,18 +70,53 @@ export function Listadoentradum() {
     const handlePrevPage = () => {
         setCurrentPage(currentPage - 1);
     };
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [token, setToken] = useState('');
+
+    const handleLogin = async (username, password) => {
+        // ... código de inicio de sesión ...
+    };
+
+    const handleLogout = async () => {
+        try {
+            // Realizar la solicitud al backend para cerrar sesión.
+            const response = await axios.post("/api/usuario/Cierre")
+
+            if (response.status === 200) {
+                console.log("Cierre de sesión exitoso");
+                setLoggedIn(false);
+                setToken('');
+                localStorage.removeItem('token');
+                window.location.href = "/"// Eliminar el token del localStorage
+            } else {
+                console.log("Error al cerrar sesión");
+            }
+        } catch (error) {
+            console.log(token)
+            console.error('Error al cerrar sesión:', error);
+        }
+    };
 
     return (
         <div>
             <NavBar />
             <div className="margin0">
                 <div className="card ">
-                    <div className="card-header1 ">
-                        <div className="Titulo12">
-                            <h2 className="letra12">Juan <BsPerson /></h2>
+                    {loggedIn ? (
+                        <div className="card-header1">
+                            <div className="Titulo12">
+                                <h2 className="letra12">Juan <BsPerson /></h2>
+                            </div>
+                            <button onClick={handleLogout}>Cerrar Sesión</button>
                         </div>
-                    </div>
-
+                    ) : (
+                        <div className="card-header1">
+                            <div className="Titulo12">
+                                <h2 className="letra12">Juan <BsPerson /></h2>
+                            </div>
+                            <button onClick={handleLogout}>Cerrar Sesión</button>
+                        </div>
+                    )}
                     <div className="partedeltitulo">
                         <h2 className="letra">Lista de las entradas</h2>
                         <div className="btn-neon letra2">
@@ -89,15 +124,15 @@ export function Listadoentradum() {
                             <span id="span2"></span>
                             <span id="span3"></span>
                             <span id="span4"></span>
-                            <a href="/entradas/guardar">Agregar</a>
+                            <a href="/entrada/guardar">Agregar</a>
                         </div>
                     </div>
-                    <div className="reducir  " >
-                        <input type="search" className="form-control1" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-                        <span class="input-group-text border-0 pegado" id="search-addon">
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control1 pequeño" type="search" placeholder="Search" aria-label="Search" />
+                        <button class="btn btn-primary pequeño1" type="submit">
                             <BiSearch />
-                        </span>
-                    </div>
+                        </button>
+                    </form>
                     <div className="card-body">
 
                     <table className="table1">

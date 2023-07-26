@@ -9,6 +9,7 @@ import '../../assets/css/login.css';
 export function Inicio(props) {
     const [usuario, setUsuario] = useState('');
     const [contrasena, setContrasena] = useState('');
+    const [token, setToken] = useState('');
 
     const handleUsuarioChange = (e) => {
         setUsuario(e.target.value);
@@ -18,19 +19,29 @@ export function Inicio(props) {
         setContrasena(e.target.value);
     };
 
+    // Resto del código del componente LoginPrueba...
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const response = await axios.post("/api/usuario/Login", {
                 Usuario1: usuario,
-                Contrasena: contrasena
+                Contrasena: contrasena,
             });
 
             if (response.status === 200) {
                 console.log("Inicio de sesión exitoso");
-                window.location.href = '/usuario';
-                // Aquí puedes redirigir a la página de inicio de sesión exitoso
+                const token = response.data.Token;
+                // Guardar el token en el estado del componente
+                setToken(token);
+                console.log(token);
+
+                // Esperar 5 segundos antes de redirigir
+                setTimeout(() => {
+                    window.location.href = '/usuario';
+                    // Aquí puedes redirigir a la página de inicio de sesión exitoso después de 5 segundos
+                }, 5000); // 5000 milisegundos = 5 segundos
             } else {
                 console.log("Credenciales inválidas. Por favor, intente nuevamente.");
             }
@@ -38,6 +49,10 @@ export function Inicio(props) {
             console.error(error);
         }
     };
+
+
+// Resto del código del componente LoginPrueba...
+
 
     return (
         <div className="body2">

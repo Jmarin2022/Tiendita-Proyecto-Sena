@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using vistas_proyecto_react.Models;
 
 namespace vistas_proyecto_react.Controllers
@@ -15,6 +20,8 @@ namespace vistas_proyecto_react.Controllers
         {
             _context = context;
         }
+
+
 
         [HttpGet]
         [Route("Lista")]
@@ -104,8 +111,6 @@ namespace vistas_proyecto_react.Controllers
             return Ok(Usuario);
         }
 
-        // ... otros códigos ...
-
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] Usuario request)
@@ -115,7 +120,24 @@ namespace vistas_proyecto_react.Controllers
 
             if (usuario != null)
             {
-                return Ok("Inicio de sesión exitoso");
+                // Generar el token JWT
+                var key = Encoding.ASCII.GetBytes("tu_secreto_secreto_secreto"); // Utiliza la misma clave que configuraste en ConfigureServices
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                new Claim(ClaimTypes.Name, usuario.Usuario1),
+                        // Puedes agregar más claims personalizados aquí si es necesario
+                    }),
+                    Expires = DateTime.UtcNow.AddHours(1), // Token caduca en 1 hora
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var tokenString = tokenHandler.WriteToken(token);
+
+                // Devolver el token al cliente (frontend)
+                return Ok(new { Token = tokenString });
             }
             else
             {
@@ -123,7 +145,62 @@ namespace vistas_proyecto_react.Controllers
             }
         }
 
-        // ... otros códigos ...
+        [HttpPost]
+        [Route("Cierre")]
+        [Authorize] // Requiere que el usuario esté autenticado para acceder a este endpoint
+        public IActionResult Logout()
+        {
+            try
+            {
+                // Aquí puedes agregar cualquier lógica adicional antes de invalidar el token, si es necesario.
+
+                // Invalidar el token actual, si es válido y está presente en el encabezado de la solicitud.
+                var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var key = Encoding.ASCII.GetBytes("tu_secreto_secreto_secreto"); // Misma clave que usaste para generar el token en el login.
+                    tokenHandler.ValidateToken(token, new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ClockSkew = TimeSpan.Zero // Sin margen de error en la expiración del token
+                    }, out SecurityToken validatedToken);
+
+                    // En este punto, el token es válido, por lo que puedes considerarlo como inválido (caducado) al construir un nuevo token con fecha de expiración en el pasado.
+                    var jwtToken = (JwtSecurityToken)validatedToken;
+
+                    // Construir un nuevo token con fecha de expiración en el pasado.
+                    var newExpiration = DateTime.UtcNow.AddSeconds(-1);
+                    var newToken = new JwtSecurityToken(
+                        jwtToken.Issuer,
+                        null, // Lista de audiencias vacía
+                        jwtToken.Claims,
+                        DateTime.UtcNow, // Valor actual de NotBefore
+                        newExpiration, // Nueva fecha de expiración
+                        jwtToken.SigningCredentials // Reutilizar las credenciales de firma del token original
+                    );
+
+                    // Generar el token en formato JWT.
+                    var tokenString = tokenHandler.WriteToken(newToken);
+
+                    // Devolver el token actualizado al cliente (frontend) para que pueda eliminarlo del almacenamiento local.
+                    return Ok(new { Token = tokenString });
+                }
+
+                // Si no hay token o ya ha expirado, simplemente devuelve un mensaje de éxito.
+                return Ok("Cierre de sesión exitoso");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
 
     }
 }
