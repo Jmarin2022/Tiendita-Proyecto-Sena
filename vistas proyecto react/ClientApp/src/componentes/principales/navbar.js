@@ -15,35 +15,33 @@ export function NavBar() {
             <div className="titulologo">
                 <a className="tiendita" href="/">Tiendita_Soft</a>
             </div>
-            
-            <div className="nav1 ">
-                <div className="nav-link1 bajar2">
-                </div>
-                <Link to="/" className="nav-link1">
-                    <BsCardText />Dashboard
-                </Link>
-                <Link to="/rol" className="nav-link1">
-                    <BsPerson /> Rol
-                </Link>
-                <Link to="/usuario" className="nav-link1">
-                    <BsPerson /> Usuarios
-                </Link>
-                <Link to="/imagen" className="nav-link1">
-                    <BsShop /> Productos
-                </Link>
-                <Link to="/entradas" className="nav-link1">
-                    <BiPlus /> Entrada
-                </Link>
-
-                <Link to="/cliente" className="nav-link1">
-                    <BsPerson /> Cliente
-                </Link>
-
-                <Link to="/venta" className="nav-link1">
-                    <BiCart /> Ventas
-                </Link>
-
-
+            <div className="menu-nav">
+                <nav>
+                    <Link to="/" className="nav-link">
+                        <BsCardText /> Dashboard
+                    </Link>
+                    <Link to="/rol" className="nav-link">
+                        <BsPerson /> Rol
+                    </Link>
+                    <Link to="/usuario" className="nav-link">
+                        <BsPerson /> Usuarios
+                    </Link>
+                    <Link to="/imagen" className="nav-link">
+                        <BsShop /> Productos
+                    </Link>
+                    <Link to="/entradas" className="nav-link">
+                        <BiPlus /> Entradas
+                    </Link>
+                    <Link to="/categoria" className="nav-link">
+                        <BsCardText /> Categorias
+                    </Link>
+                    <Link to="/venta" className="nav-link">
+                        <BiCart /> Ventas
+                    </Link>
+                    <Link to="/cliente" className="nav-link">
+                        <BsPerson /> Cliente
+                    </Link>
+                </nav>
             </div>
         </div>
     )
