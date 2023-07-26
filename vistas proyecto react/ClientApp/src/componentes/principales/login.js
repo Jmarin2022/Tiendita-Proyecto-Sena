@@ -31,17 +31,22 @@ export function Inicio(props) {
             });
 
             if (response.status === 200) {
-                console.log("Inicio de sesión exitoso");
-                const token = response.data.Token;
-                // Guardar el token en el estado del componente
-                setToken(token);
-                console.log(token);
+                console.log("Inicio de sesión exitos");
+                if (response.data && response.data.Token) {
+                    const token = response.data.Token;
+                    // Guardar el token en el estado del componente
+                    setToken(token);
+                    console.log(response);
 
-                // Esperar 5 segundos antes de redirigir
-                setTimeout(() => {
-                    window.location.href = '/usuario';
-                    // Aquí puedes redirigir a la página de inicio de sesión exitoso después de 5 segundos
-                }, 5000); // 5000 milisegundos = 5 segundos
+                    // Esperar 5 segundos antes de redirigir
+                    setTimeout(() => {
+                        // window.location.href = '/usuario';
+                        // Aquí puedes redirigir a la página de inicio de sesión exitoso después de 5 segundos
+                    }, 5000); // 5000 milisegundos = 5 segundos
+                } else {
+                    console.log("Token no encontrado en la respuesta del servidor.");
+                    console.log(response.data.Token);
+                }
             } else {
                 console.log("Credenciales inválidas. Por favor, intente nuevamente.");
             }
@@ -49,6 +54,8 @@ export function Inicio(props) {
             console.error(error);
         }
     };
+
+
 
 
 // Resto del código del componente LoginPrueba...

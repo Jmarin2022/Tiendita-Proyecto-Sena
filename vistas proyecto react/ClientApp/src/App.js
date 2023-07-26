@@ -5,7 +5,6 @@ import { Route, Routes, BrowserRouter} from "react-router-dom";
 
 /* Metodo de Dasboard*/
 import { Inicio } from "./componentes/principales/login";
-import { LoginPrueba } from "./componentes/principales/loginprueba";
 
 /* Metodo de listar*/
 import { ListadoCliente } from "./componentes/cliente/cliente";

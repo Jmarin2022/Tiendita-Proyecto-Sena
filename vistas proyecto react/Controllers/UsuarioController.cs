@@ -111,8 +111,7 @@ namespace vistas_proyecto_react.Controllers
             return Ok(Usuario);
         }
 
-        [HttpPost]
-        [Route("Login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] Usuario request)
         {
             Usuario usuario = await _context.Usuarios
@@ -127,7 +126,7 @@ namespace vistas_proyecto_react.Controllers
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                new Claim(ClaimTypes.Name, usuario.Usuario1),
+                        new Claim(ClaimTypes.Name, usuario.Usuario1),
                         // Puedes agregar más claims personalizados aquí si es necesario
                     }),
                     Expires = DateTime.UtcNow.AddHours(1), // Token caduca en 1 hora
@@ -144,6 +143,7 @@ namespace vistas_proyecto_react.Controllers
                 return StatusCode(StatusCodes.Status401Unauthorized, "Credenciales inválidas. Por favor, intente nuevamente.");
             }
         }
+
 
         [HttpPost]
         [Route("Cierre")]
