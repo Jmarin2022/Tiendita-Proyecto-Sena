@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import { Modal } from "./Modal";
 import axios from 'axios';
-import { NavBar } from '../principales/navbar'
-import '../../assets/css/menu.css'
-import { BiTrash } from 'react-icons/bi'; // Importar el icono de eliminación
-import { BiBrush } from 'react-icons/bi';
-import { BiChevronRight, BiChevronLeft } from 'react-icons/bi'; // Importar los iconos de flechas
-import { BsPerson } from 'react-icons/bs';
-import { BiSearch } from "react-icons/bi";
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useEffect, useState } from 'react';
+import { BiChevronLeft, BiChevronRight, BiSearch } from 'react-icons/bi'; // Importar los iconos de flechas
+import '../../assets/css/menu.css';
+import { NavBar } from '../principales/navbar';
+import { Modal } from "./Modal";
+
+import { AiOutlineClose } from 'react-icons/ai';
+import { BsPencil, BsTrash } from 'react-icons/bs';
+import Footer from '../principales/footer';
 
 export function Listadoentradum() {
     const [entradums, setentradums] = useState([]);
@@ -16,13 +16,64 @@ export function Listadoentradum() {
     const [currentPage, setCurrentPage] = useState(1);
     const entradasPorPagina = 12;
 
-    const mostrarentradums = async () => {
+    const [datosCargados, setDatosCargados] = useState(false);
+    const [imagenes, setImagenes] = useState([]);
+
+    const [searchTerm, setSearchTerm] = useState(""); 
+
+
+   
+
+    const mostrarentradums = async (busqueda) => {
         try {
-            const response = await axios.get("/api/entradum/Lista");
+            let url = "/api/entradum/Lista";
+            if (busqueda) {
+                url = `/api/entradum/Buscar?busqueda=${busqueda}`;
+            }
+            const response = await axios.get(url);
             setentradums(response.data);
         } catch (error) {
             console.error(error);
         }
+    };
+
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        const searchValue = e.target.elements.searchInput.value;
+        mostrarentradums(searchValue);
+    };
+
+    const handleDescargarExcel = () => {
+        // Realiza una solicitud al endpoint del servidor para descargar el archivo Excel
+        fetch("/api/entradum/DescargarExcel")
+            .then((response) => {
+                // Verifica si la respuesta es exitosa
+                if (response.ok) {
+                    // Convierte la respuesta en un blob (archivo binario)
+                    return response.blob();
+                } else {
+                    throw new Error("Error al descargar el archivo Excel.");
+                }
+            })
+            .then((blob) => {
+                // Crea una URL de objeto para el blob
+                const url = window.URL.createObjectURL(blob);
+
+                // Crea un enlace temporal para descargar el archivo
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "entradas.xlsx";
+
+                // Simula un clic en el enlace para iniciar la descarga
+                a.click();
+
+                // Limpia la URL del objeto creado
+                window.URL.revokeObjectURL(url);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     const eliminarentradum = async (idEntrada) => {
@@ -38,9 +89,7 @@ export function Listadoentradum() {
         }
     };
 
-    useEffect(() => {
-        mostrarentradums();
-    }, []);
+    
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -97,89 +146,125 @@ export function Listadoentradum() {
         }
     };
 
+    const obtenerImagenes = async () => {
+        const response = await fetch("/api/imagen/Lista");
+        if (response.ok) {
+            const data = await response.json();
+            setImagenes(data);
+        } else {
+            console.log("Error al obtener Imagenes");
+        }
+    };
+
+    useEffect(() => {
+        const obtenerDatos = async () => {
+            await mostrarentradums(searchTerm);
+            await obtenerImagenes(searchTerm);
+            setDatosCargados(true);
+        }; obtenerDatos();
+    }, [searchTerm]);
+
+    const obtenerRoles1 = () => {
+        if (!datosCargados) {
+            return []; // Retorna un arreglo vacío si los datos no están cargados o si no hay roles
+        }
+
+        const detallesVentaComparados = entradums.map((detalle) => {
+            const nombreProducto = imagenes.find((imagen2) => imagen2.idImagen === detalle.idProductos)?.nombre; // Asegúrate de usar el campo correcto para el nombre del rol
+            return {
+                ...detalle,
+                nombreProducto: nombreProducto || 'Nombre  encontrado'
+            };
+        });
+        return detallesVentaComparados;
+
+    };
+    const detallesVentaComparados = obtenerRoles1();
+
     return (
         <div>
             <NavBar />
-            <div className="margin0">
+            
                 <div className="card ">
-                    {loggedIn ? (
-                        <div className="card-header1">
-                            <div className="Titulo12">
-                                <h2 className="letra12">Juan <BsPerson /></h2>
-                            </div>
-                            <button onClick={handleLogout}>Cerrar Sesión</button>
-                        </div>
-                    ) : (
-                        <div className="card-header1">
-                            <div className="Titulo12">
-                                <h2 className="letra12">Juan <BsPerson /></h2>
-                            </div>
-                            <button onClick={handleLogout}>Cerrar Sesión</button>
-                        </div>
-                    )}
+                    
                     <div className="partedeltitulo">
                         <h2 className="letra">Lista de las entradas</h2>
-                        <div className="btn-neon letra2">
-                            <span id="span1"></span>
-                            <span id="span2"></span>
-                            <span id="span3"></span>
-                            <span id="span4"></span>
-                            <a href="/entrada/guardar">Agregar</a>
-                        </div>
-                    </div>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control1 pequeño" type="search" placeholder="Search" aria-label="Search" />
-                        <button class="btn btn-primary pequeño1" type="submit">
-                            <BiSearch />
-                        </button>
-                    </form>
-                    <div className="card-body">
+                        
+                </div>
 
+                
+                    
+                    <div className="card-body">
+                    <div className="buscardor">
+                        <form className="form-inline" onSubmit={handleSearchSubmit}>
+                            <input
+                                className="form-control1 pequeño"
+                                type="search"
+                                placeholder="Buscar Entrada..."
+                                aria-label="Search"
+                                name="searchInput"
+                                value={searchTerm} // Agregar este atributo value
+                                onChange={(e) => setSearchTerm(e.target.value)} // Agregar este evento onChange
+                            />
+                            <button className="pequeno1" type="submit">
+                                <BiSearch />
+                            </button>
+                        </form>
+                    </div>
+
+                    <div className="btn-neon btn-agre letra2">
+                        <span id="span1"></span>
+                        <span id="span2"></span>
+                        <span id="span3"></span>
+                        <span id="span4"></span>
+                        <a href="/entradas/guardar">Agregar</a>
+                    </div>
                     <table className="table1">
                         <thead>
                             <tr>
-                                <th scope="col " className="raya">Id entradum</th>
-                                <th scope="col " className="raya">id del producto</th>
-                                <th scope="col " className="raya">Catidad</th>
+                                {/*<th scope="col " className="raya">Id entradum</th>*/}
+                                <th scope="col " className="raya">Producto</th>
+                                <th scope="col " className="raya">Cantidad</th>
                                 <th scope="col " className="raya">Proveedor</th>
                                 <th scope="col " className="raya">Fecha Registro</th>
-                                <th scope="col " className="raya">Operaciones</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
-                            {entradasPaginadas.map((entradum) => (
-                                <tr key={entradum.IdEntrada}>
-                                    <td className="raya">{entradum.idEntrada}</td>
-                                    <td className="raya">{entradum.idProductos}</td>
-                                    <td className="raya">{entradum.cantidad}</td>
-                                    <td className="raya">{entradum.proveedor}</td>
-                                    <td className="raya">{formatDate(entradum.fecha)}</td>
-                                    <td className="raya corto">
-                                        <button className="btn btn-outline-danger espacio" onClick={() => handleEliminarClick(entradum)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">
-                                            <BiTrash />
-                                        </button>
-                                        <button className="btn btn-primary espacio" onClick={() => { window.location.href = `/entradas/editar/${entradum.idEntrada}`; }}>
-                                            <BiBrush />
-                                        </button>
-
-                                    </td>
+                            {detallesVentaComparados.map((detalle) => (
+                                <tr key={detalle.IdEntrada}>
+                                    {/*<td className="raya">{entradum.idEntrada}</td>*/}
+                                    <td className="raya">{detalle.nombreProducto}</td>
+                                    <td className="raya">{detalle.cantidad}</td>
+                                    <td className="raya">{detalle.proveedor}</td>
+                                    <td className="raya">{formatDate(detalle.fecha)}</td>
+                                   
                                 </tr>
-                            ))}
+                            ))} 
                         </tbody>
                     </table>
+
+                    <span className="totalregistros">
+                        Total de registros: {entradums.length}
+                    </span>
                     
-                    {/* Modal para confirmar la eliminación */}
-                    <Modal entradumSeleccionado={entradumSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
                 </div>
+                <div style={{ marginLeft: '48px' }}>
+                    <button className="btn btn-primary bajar1 my-3" onClick={handleDescargarExcel}>Descargar Excel</button>
+                </div>
+
                     <div className="pagination bajar">
                         <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
                             <BiChevronLeft /> Anterior
                         </button>
-                        <button className="btn btn-primary" onClick={handleNextPage} disabled={entradasPaginadas.length < entradasPorPagina}>
+                        <button className="btn mx-2 btn-primary" onClick={handleNextPage} disabled={entradasPaginadas.length < entradasPorPagina}>
                             Siguiente <BiChevronRight />
                         </button>
-                    </div>
+                </div>
+                {/* Modal para confirmar la eliminación */}
+                <Modal entradumSeleccionado={entradumSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
             </div>
-        </div></div>
+            <Footer />
+        </div>
     );
 }

@@ -9,7 +9,8 @@ export const RolEditar = () => {
 
     const [rol, setrol] = useState({
         rol1:'',
-        fecha: '',
+        estado: '',
+        
     });
 
     useEffect(() => {
@@ -55,12 +56,39 @@ export const RolEditar = () => {
                             <div className="col">
                     <label htmlFor="rol1">rol:</label>
                                 <input className="form-control" type="text" id="rol1" name="rol1" value={rol.rol1} onChange={handleChange} />
-                </div>
-                            <div className="form-row">
-                    <label htmlFor="fecha">fecha:</label>
-                                <input className="form-control" type="datetime-local" id="fecha" name="fecha"  onChange={handleChange} />
-                </div>
-                <button type="submit">Guardar</button>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Estado</label>
+                                <div className="form-check">
+                                    <input
+                                        type="checkbox"
+                                        className="form-check-input"
+                                        id="estadoActivo"
+                                        name="estadoActivo"
+                                        checked={rol.estado === 'Activo'}
+                                        onChange={() => setrol({ ...rol, estado: 'Activo' })}
+                                    />
+                                    <label className="form-check-label" htmlFor="estadoActivo">
+                                        Activo
+                                    </label>
+                                </div>
+                                <div className="form-check">
+                                    <input
+                                        type="checkbox"
+                                        className="form-check-input"
+                                        id="estadoInactivo"
+                                        name="estadoInactivo"
+                                        checked={rol.estado === 'Inactivo'}
+                                        onChange={() => setrol({ ...rol, estado: 'Inactivo' })}
+                                    />
+                                    <label className="form-check-label" htmlFor="estadoInactivo">
+                                        Inactivo
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <button className="btn my-3 btn-primary" type="submit">Guardar</button>
                         </div>
                     </form>
                 </div>

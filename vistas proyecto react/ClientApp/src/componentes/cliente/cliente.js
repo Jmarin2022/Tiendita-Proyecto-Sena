@@ -3,26 +3,54 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Modal } from "./Modal";
 import axios from 'axios';
 import { NavBar } from '../principales/navbar'
+import Footer from '../principales/footer';
 import '../../assets/css/menu.css'
-import { BiTrash } from 'react-icons/bi'; // Importar el icono de eliminación
+import { Link } from 'react-router-dom';
 import { BiBrush } from 'react-icons/bi';
 import { BiChevronRight, BiChevronLeft } from 'react-icons/bi';
 import { BsPerson } from 'react-icons/bs';
 import { BiSearch } from "react-icons/bi";
+import { AiOutlineClose } from 'react-icons/ai';
+import { BsTrash } from 'react-icons/bs';
+import { BsPencil } from 'react-icons/bs';
+
+import { BiAdjust } from 'react-icons/bi';
+import { RiPencilLine } from 'react-icons/ri';
+
+import { FaSignOutAlt } from 'react-icons/fa';
+
+
+
+/*import { BiTrash } from 'react-icons/bi'; // Importar el icono de eliminación*/
+
 export function ListadoCliente() {
     const [clientes, setClientes] = useState([]);
     const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 12;
+    const itemsPerPage = 3;
+    const [searchTerm, setSearchTerm] = useState(""); 
 
-    const mostrarClientes = async () => {
+
+
+    const mostrarClientes = async (busqueda) => {
         try {
-            const response = await axios.get("/api/cliente/Lista");
+            let url = "/api/cliente/Lista";
+            if (busqueda) {
+                url = `/api/cliente/Buscar?busqueda=${busqueda}`;
+            }
+            const response = await axios.get(url);
             setClientes(response.data);
         } catch (error) {
             console.error(error);
         }
     };
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        const searchValue = e.target.elements.searchInput.value;
+        mostrarClientes(searchValue);
+    };
+
 
     const eliminarCliente = async (idCliente) => {
         try {
@@ -38,8 +66,8 @@ export function ListadoCliente() {
     };
 
     useEffect(() => {
-        mostrarClientes();
-    }, []);
+        mostrarClientes(searchTerm);
+    }, [searchTerm]);
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -98,48 +126,84 @@ export function ListadoCliente() {
         }
     };
 
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchTerm(value); // Actualiza el término de búsqueda en el estado
+        mostrarClientes(value); // Muestra los clientes según el término de búsqueda
+    };
+
+
+    const generarPDF = async () => {
+        try {
+            // Hacer la solicitud GET a la API que genera el PDF
+            const response = await axios.get('/api/cliente/GenerarPDF', {
+                responseType: 'blob', // Esto indica que la respuesta será un archivo
+            });
+
+            // Crear un objeto Blob a partir de la respuesta
+            const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
+
+            // Crear una URL para el Blob
+            const pdfUrl = window.URL.createObjectURL(pdfBlob);
+
+            // Abrir el PDF en una nueva ventana o pestaña del navegador
+            window.open(pdfUrl);
+        } catch (error) {
+            console.error('Error al generar el PDF:', error);
+        }
+    };
+
+
+
     return (
         <div>
+
+          
+
+          
+
+
             <NavBar />
-            <div className="margin0">
-                <div className="card ">
-                    {loggedIn ? (
-                        <div className="card-header1">
-                            <div className="Titulo12">
-                                <h2 className="letra12">Juan <BsPerson /></h2>
-                            </div>
-                            <button onClick={handleLogout}>Cerrar Sesión</button>
-                        </div>
-                    ) : (
-                        <div className="card-header1">
-                            <div className="Titulo12">
-                                <h2 className="letra12">Juan <BsPerson /></h2>
-                            </div>
-                            <button onClick={handleLogout}>Cerrar Sesión</button>
-                        </div>
-                    )}
-                    <div className="partedeltitulo">
-                        <h2 className="letra">Lista de los clientes</h2>
+            
+                <div className="card">
+                <div className="partedeltitulo">
+                    <h2 className="letra">Lista de los clientes</h2>
+                    {/*<Link to="/navbar" className="btn btn-secondary">Volver</Link>*/}
+                </div>
+                <div className="card-body">
+                    <div className="buscardor">
+                        <form className="form-inline">
+                            <input
+                                className="form-control1 pequeño"
+                                type="search"
+                                placeholder="Buscar Cliente..."
+                                aria-label="Search"
+                                name="searchInput"
+                                value={searchTerm}
+                                onChange={handleSearchChange} // Agrega el controlador de eventos para la entrada
+                            />
+                            <button className="pequeno1" type="submit">
+                                <BiSearch />
+                            </button>
+                        </form>
+                    </div>
+
+                    
                         <div className="btn-neon letra2">
                             <span id="span1"></span>
                             <span id="span2"></span>
                             <span id="span3"></span>
                             <span id="span4"></span>
+
                             <a href="/cliente/guardar">Agregar</a>
                         </div>
-                    </div>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control1 pequeño" type="search" placeholder="Search" aria-label="Search" />
-                        <button class="btn btn-primary pequeño1" type="submit">
-                            <BiSearch />
-                        </button>
-                    </form>
-                    <div className="card-body">
-               
+                    
+    
+
                     <table className="table1">
                         <thead>
                             <tr>
-                                <th scope="col" className="raya">Id Cliente</th>
+                                <th scope="col" className="raya">Documento</th>
                                 <th scope="col" className="raya">Nombre</th>
                                 <th scope="col" className="raya">Apellido</th>
                                 <th scope="col" className="raya">Celular</th>
@@ -148,34 +212,50 @@ export function ListadoCliente() {
                             </tr>
                         </thead>
                         <tbody>
+                            
                             {currentClientes.map((cliente) => (
                                 <tr key={cliente.idCliente}>
-                                    <td className="raya">{cliente.idCliente}</td>
+                                    {/* Resto del contenido de cada registro */}
+                                    <td className="raya">{cliente.documento}</td>
                                     <td className="raya">{cliente.nombre}</td>
                                     <td className="raya">{cliente.apellido}</td>
                                     <td className="raya">{cliente.celular}</td>
                                     <td className="raya">{formatDate(cliente.fechaRegistro)}</td>
                                     <td className="raya corto">
-                                        <button className="btn btn-outline-danger espacio" onClick={() => handleEliminarClick(cliente)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">
-                                            <BiTrash />
+                                        <button className="btn espacio" onClick={() => handleEliminarClick(cliente)} data-bs-toggle="modal" data-bs-target="#confirmarEliminarModal">
+                                            <BsTrash className="btn-outline-danger icon" />
+                                            <AiOutlineClose className="btn-outline-danger icon-open" />
                                         </button>
                                         <button
-                                            className="btn btn-primary espacio"
+                                            className="btn"
                                             onClick={() => { window.location.href = `/cliente/editar/${cliente.idCliente}`; }}
                                         >
-                                            <BiBrush />
+                                            <BsPencil className="iconedit" />
+
+
+
                                         </button>
 
                                     </td>
                                 </tr>
+
                             ))}
+                            
+                                
+                            
                         </tbody>
                     </table>
-
+                    <span className="totalregistros">
+                        Total de registros: {clientes.length}
+                    </span>
                     
-                    </div>
+                </div>
+
+                <button className="btn btn-primary" onClick={generarPDF}>
+                    Generar PDF
+                </button>
                     <div className="pagination bajar">
-                        <button className="btn btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
+                        <button className="btn mx-2 btn-primary" onClick={handlePrevPage} disabled={currentPage === 1}>
                             <BiChevronLeft /> Anterior
                         </button>
                         <button className="btn btn-primary" onClick={handleNextPage} disabled={currentClientes.length < itemsPerPage}>
@@ -183,8 +263,9 @@ export function ListadoCliente() {
                         </button>
                     </div>
             </div>
+            <Footer />
             {/* Modal para confirmar la eliminación */}
             <Modal clienteSeleccionado={clienteSeleccionado} handleConfirmarEliminar={handleConfirmarEliminar} />
-        </div></div>
+        </div>
     );
 }

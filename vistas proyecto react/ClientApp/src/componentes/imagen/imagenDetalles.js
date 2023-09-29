@@ -35,26 +35,27 @@ export const ImagenDetalles = () => {
     return (
         <div>
             <NavBar />
-            <div className="margin0">
-                <div className="card ">
-                    <div className="card-header1">
+            
+            <div className="card ">
+
+
+                <div className="partedeltitulo">
+                    <h2 className="letra">Detalle del Productos</h2>
+
+                </div>
+                <div className="card-body">
                         <div className="Titulo">
-                            <div className="btn-neon1">
+                        <div className="btn-neon btn-agre letra2">
                                 <span id="span1"></span>
                                 <span id="span2"></span>
                                 <span id="span3"></span>
                                 <span id="span4"></span>
                                 <a href="/imagen">Regresar</a>
                             </div>
-                            <h2 className="letra">Detalle del Productos</h2>
-                            <div className="btn-neon">
-                                <span id="span1"></span>
-                                <span id="span2"></span>
-                                <span id="span3"></span>
-                                <span id="span4"></span>
-                                <a href="/imagen/guardar">Agregar</a>
-                            </div>
-                        </div></div>
+
+                            
+                                                       
+                        
                 <table className="table1">
                     <thead>
                         <tr>
@@ -66,7 +67,8 @@ export const ImagenDetalles = () => {
                             <th scope="col " className="raya">Categoria</th>
                             <th scope="col " className="raya">StockMax</th>
                             <th scope="col " className="raya">StockMin</th>
-                            <th scope="col " className="raya">Imagen1</th>
+                            <th scope="col " className="raya">Imagen</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -81,13 +83,15 @@ export const ImagenDetalles = () => {
                                 <td className="raya">{imagen.stockMax}</td>
                                 <td className="raya">{imagen.stockMin}</td>
                                 <td className="raya">{imagen.imagen1}</td>
+                                
                             </tr>
 
                     </tbody>
                 </table>
-
             </div>
-        </div></div>
+            </div>
+        </div>
+        </div>
     );
 };
 

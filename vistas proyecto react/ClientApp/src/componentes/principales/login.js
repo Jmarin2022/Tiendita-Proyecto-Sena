@@ -1,15 +1,27 @@
 import { useState } from 'react';
-
 import axios from 'axios';
-import React from "react";
-import '../../assets/css/menu.css';
+import { useNavigate } from 'react-router-dom';
 import '../../assets/css/login.css';
-/*import Logo from '../../assets/img/logo_tiendita.png';*/
+import fondo2 from "../../assets/img/tiendo.jpg";
+import Menu  from './menu'
+import Footer  from './footer'
+import { useUserContext } from './UserContext';
+import Swal from 'sweetalert2';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+
+
 
 export function Inicio(props) {
     const [usuario, setUsuario] = useState('');
     const [contrasena, setContrasena] = useState('');
-    const [token, setToken] = useState('');
+    const [error, setError] = useState(''); // Agregamos un estado para mostrar mensajes de error
+    const { setUserPayload } = useUserContext();
+    const navigate = useNavigate();
+
+    const [showPassword, setShowPassword] = useState(false);
+
 
     const handleUsuarioChange = (e) => {
         setUsuario(e.target.value);
@@ -18,8 +30,6 @@ export function Inicio(props) {
     const handleContrasenaChange = (e) => {
         setContrasena(e.target.value);
     };
-
-    // Resto del código del componente LoginPrueba...
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -31,57 +41,89 @@ export function Inicio(props) {
             });
 
             if (response.status === 200) {
-                console.log("Inicio de sesión exitoso");
-                const token = response.data.Token;
-                // Guardar el token en el estado del componente
-                setToken(token);
-                console.log(token);
+                const parts = response.data.token.split('.');
+                if (parts.length === 3) {
+                    const payload = JSON.parse(atob(parts[1]));
+                    const role = payload.role;
 
-                // Esperar 5 segundos antes de redirigir
-                setTimeout(() => {
-                    window.location.href = '/usuario';
-                    // Aquí puedes redirigir a la página de inicio de sesión exitoso después de 5 segundos
-                }, 5000); // 5000 milisegundos = 5 segundos
-            } else {
-                console.log("Credenciales inválidas. Por favor, intente nuevamente.");
+                    setUserPayload(payload);
+
+                    if (role === 'Cliente') {
+                        navigate('/vistacliente');
+                    } else if (role === 'Administrador') {
+                        navigate('/Dasboard');
+                    }
+                }
             }
         } catch (error) {
-            console.error(error);
-        }
+            console.error("Error:", error);
+
+            // Mostrar mensaje de error con Swal.fire
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de inicio de sesiÃ³n',
+                text: 'Credenciales incorrectas',
+            });
+        };
+    }
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
     };
 
 
-// Resto del código del componente LoginPrueba...
-
-
     return (
-        <div className="body2">
-            <center>
-                <div className="box">
-                    <span className="borderLine"></span>
-                    <form onSubmit={handleSubmit}>
-                        <h2 className="titulo">Iniciar</h2>
-                        <div className="inputBox">
-                            <input type="text" value={usuario} onChange={handleUsuarioChange} required />
-                            <span>Correo</span>
-                            <i></i>
+        <div>
+            <Menu />
+            <div className="body2">
+                <center>
+                    <div className="login-container" >
+                        <img src={fondo2} alt="Imagen de inicio de sesiÃ³n" className="login-image" />
+                        <div className="box">
+                            <span className="borderLine"></span>
+                            <form onSubmit={handleSubmit}>
+                                <h2 className="titulo">Iniciar</h2>
+                                <div className="inputBox">
+                                    <input type="text" value={usuario} onChange={handleUsuarioChange} required />
+                                    <span>Usuario</span>
+                                    <i></i>
+                                </div>
+
+                                <div className="inputBox">
+                                    <input
+                                        type={showPassword ? 'text' : 'password'}
+                                        value={contrasena}
+                                        onChange={handleContrasenaChange}
+                                        required
+                                    />
+                                    <span>Clave</span>
+                                    <i>
+                                    </i></div>
+                                    <div className="ojo">
+                                    {showPassword ? (
+        <FontAwesomeIcon icon={faEye} onClick={togglePasswordVisibility} className="password-toggle" />
+    ) : (
+        <FontAwesomeIcon icon={faEyeSlash} onClick={togglePasswordVisibility} className="password-toggle" />
+    )}
+                                </div>
+                                
+                                
+
+
+
+
+                                <div className="links">
+                                    <a href="/recuperar">OlvidÃ© mi contraseÃ±a</a>  <a href="/registarse">Registrarse</a>
+                                </div>
+                                <input type="submit" value="Ingresar" />
+
+                                {error && <p className="error-message">{error}</p>} {/* Mostrar el mensaje de error si existe */}
+                            </form>
                         </div>
-
-                        <div className="inputBox">
-                            <input type="password" value={contrasena} onChange={handleContrasenaChange} required />
-                            <span>Clave</span>
-                            <i></i>
-                        </div>
-
-                        <div className="links">
-                            <a href="#">Olvidé mi contraseña</a>  <a href="#">Registrarse</a>
-                        </div>
-                        <input type="submit" value="Ingresar" />
-
-                    </form>
-                </div>
-
-            </center>
+                    </div>
+                </center>
+            </div>
+            <Footer / >
         </div>
-    )
+    );
 }

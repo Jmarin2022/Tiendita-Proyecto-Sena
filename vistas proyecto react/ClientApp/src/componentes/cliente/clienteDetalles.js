@@ -56,6 +56,7 @@ export const ClienteDetalles = () => {
                     <thead>
                         <tr>
                             <th scope="col " className="raya">Id Cliente</th>
+                            <th scope="col " className="raya">Documento</th>
                             <th scope="col " className="raya">Nombre</th>
                             <th scope="col " className="raya">Apellido</th>
                             <th scope="col " className="raya">Fecha Registro</th>
@@ -64,6 +65,7 @@ export const ClienteDetalles = () => {
                     <tbody>
                             <tr>
                                 <td className="raya">{cliente.idCliente}</td>
+                                <td className="raya">{cliente.documento}</td>
                                 <td className="raya">{cliente.nombre}</td>
                                 <td className="raya">{cliente.apellido}</td>
                                 <td className="raya">{cliente.fechaRegistro}</td>

@@ -37,7 +37,7 @@ public partial class TiendaContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=(local);Database=tienda; Trusted_Connection=True;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Server=(local);Database=tiendaapi; Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -92,6 +92,8 @@ public partial class TiendaContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("nombre");
+
+            entity.Property(e => e.Documento).HasColumnName("documento");
         });
 
         modelBuilder.Entity<DetalleVenta>(entity =>
@@ -148,6 +150,8 @@ public partial class TiendaContext : DbContext
             entity.Property(e => e.Nombre)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            
+               
         });
 
         modelBuilder.Entity<Permiso>(entity =>
@@ -222,10 +226,15 @@ public partial class TiendaContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("usuario");
+            entity.Property(e => e.Documento)
+                .HasMaxLength(11)
+                .IsUnicode(false)
+                .HasColumnName("documento");
+            entity.Property(e => e.Documento).HasColumnName("documento");
 
             entity.HasOne(d => d.RolNavigation).WithMany(p => p.Usuarios)
-                .HasForeignKey(d => d.Rol)
-                .HasConstraintName("FK_Usuario_Rol");
+    .HasForeignKey(d => d.Rol)
+    .HasConstraintName("FK_Usuario_Rol");
         });
 
         modelBuilder.Entity<Ventum>(entity =>

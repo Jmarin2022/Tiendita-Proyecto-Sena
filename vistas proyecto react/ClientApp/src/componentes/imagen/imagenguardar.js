@@ -1,11 +1,15 @@
-//import "bootsrap/dist/css/bootstrap.min.css"
-import { Component } from "react";
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { NavBar } from '../principales/navbar'
-import '../../assets/css/menu.css'
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import { NavBar } from '../principales/navbar';
+import '../../assets/css/menu.css';
+import { Link, useLocation } from 'react-router-dom';
 
-export class GuardarImagen extends Component {
-    state = {
+export const GuardarImagen = () => {
+    const [selectedImage, setSelectedImage] = useState(null);
+
+    const [formState, setFormState] = useState({
         Nombre: '',
         Descripcion: '',
         Stock: '',
@@ -13,152 +17,232 @@ export class GuardarImagen extends Component {
         Categoria: '',
         StockMax: '',
         StockMin: '',
-        Imagen1: null
-    }
+        
+        Estado: '',
+    });
 
-    changeHandler = (e) => {
-        const { name, value, files } = e.target;
-        this.setState({ [name]: files ? files[0] : value });
-    }
+    const [categorias, setCategorias] = useState([]); 
 
-    guardarImagen = async () => {
-        const { Nombre, Descripcion, Stock, Precio, Categoria, StockMax, StockMin, Imagen1 } = this.state;
+    const [clienteExistente, setClienteExistente] = useState(false);
+    const [mensaje, setMensaje] = useState('');
 
-        try {
-            // Step 1: Save the image with null value for Imagen1
-            const formData = new FormData();
-            formData.append('Nombre', Nombre);
-            formData.append('Descripcion', Descripcion);
-            formData.append('Stock', Stock);
-            formData.append('Precio', Precio);
-            formData.append('Categoria', Categoria);
-            formData.append('StockMax', StockMax);
-            formData.append('StockMin', StockMin);
+    const handleFormChange = (e) => {
+        setFormState({ ...formState, [e.target.name]: e.target.value });
+    };
 
-            // Save the name of the image for later use
-            const newImageName = Date.now().toString(); // You can generate a unique name using Date.now() or any other method
-            formData.append('Imagen1', null); // Set the value of Imagen1 as null
+    const handleImageChange = (e) => {
+        setSelectedImage(e.target.files[0]);
+    };
 
-            const response = await axios.post('api/imagen/Guardar', formData);
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-            // Step 2: Save the image in the desired location
-            const imageExtension = Imagen1.name.split('.').pop();
-            const imagePath = `./../assets/img/${newImageName}.${imageExtension}`;
-            const imageURL = URL.createObjectURL(Imagen1);
-
-            const image = new Image();
-            image.src = imageURL;
-
-            image.onload = () => {
-                const canvas = document.createElement('canvas');
-                canvas.width = image.width;
-                canvas.height = image.height;
-
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(image, 0, 0, image.width, image.height);
-
-                canvas.toBlob((blob) => {
-                    const file = new File([blob], `${newImageName}.${imageExtension}`, { type: `image/${imageExtension}` });
-
-                    // Save the image in the specified location
-                    const formDataWithImage = new FormData();
-                    formDataWithImage.append('Nombre', Nombre);
-                    formDataWithImage.append('Descripcion', Descripcion);
-                    formDataWithImage.append('Stock', Stock);
-                    formDataWithImage.append('Precio', Precio);
-                    formDataWithImage.append('Categoria', Categoria);
-                    formDataWithImage.append('StockMax', StockMax);
-                    formDataWithImage.append('StockMin', StockMin);
-                    formDataWithImage.append('Imagen1', file);
-
-                    axios.post('api/imagen/Guardar', formDataWithImage)
-                        .then((response) => {
-                            console.log(response);
-
-                            // Step 3: Get the saved image from /api/imagen/Lista
-                            axios.get('/api/imagen/Lista')
-                                .then((response) => {
-                                    const savedImage = response.data[0].imagen1; // Get the saved image
-                                    const imagen1 = response.data[0].idImagen; // Get the idImagen
-
-                                    // Step 4: Rename the image using /api/imagen/Editar
-                                    const formDataRenameImage = new FormData();
-                                    formDataRenameImage.append('id', response.data[0].id); // Assuming there's an id field in the response
-                                    formDataRenameImage.append('Imagen1', imagen1);
-
-                                    axios.post('/api/imagen/Editar', formDataRenameImage)
-                                        .then((response) => {
-                                            console.log(response);
-                                            window.location.href = "/imagen";
-                                        })
-                                        .catch((error) => {
-                                            console.log(error);
-                                        });
-                                })
-                                .catch((error) => {
-                                    console.log(error);
-                                });
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        });
-                }, `image/${imageExtension}`);
-            };
-        } catch (error) {
-            console.log(error);
+        // Verifica si algún campo está vacío
+        if (Object.values(formState).some(value => !value)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Campos vac&#237;os',
+                text: 'Por favor, completa todos los campos.',
+            });
+            console.log(formState)
+            return;
         }
-    }
 
-    render() {
-        return (
-            <div  >
-                <NavBar />
-                <div className="contenido1">
-                    <div className="highlight contenidointeriorproducto">
-                        <h2>Agregar Producto</h2>
-                        <form onSubmit={this.submitHandler}>
-                            <div className="Mitad1">
-                                <div className="form-row">
-                                    <p>Digite el nombre</p> 
-                                    <input type="Text" name="Nombre" onChange={this.changeHandler}></input>
-                                </div>
-                                <div>
-                                    <p>Digite La descripcion</p> 
-                                    <input type="Text" name="Descripcion" onChange={this.changeHandler}></input>
-                                </div>
-                                <div>
-                                    <p>Digite el Stock</p> 
-                                    <input type="number" name="Stock" onChange={this.changeHandler}></input>
-                                </div>
-                                <div>
-                                    <p>Digite el Precio</p> 
-                                    <input type="number" name="Precio" onChange={this.changeHandler}></input>
-                                </div>
+        // Crear FormData para enviar imagen
+        const formData = new FormData();
+        formData.append('imageFile', selectedImage);
+        for (const key in formState) {
+            formData.append(key, formState[key]);
+        }
+
+        // Enviar los datos del formulario y la imagen al servidor
+        axios.post('/api/imagen/Guardar', formData)
+            .then(async response => {
+                console.log(response);
+                try {
+                    console.log('Imagen subida al servidor.');
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Producto Agregado',
+                        text: 'El producto se ha agregado correctamente.',
+                    });
+                    window.location.href = "/imagen";
+                } catch (error) {
+                    console.error('Error al subir la imagen al servidor:', error);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    };
+
+    const verificarCliente = () => {
+        axios.get(`/api/imagen/Verificar/${formState.Nombre}`)
+            .then(response => {
+                setClienteExistente(response.data.message === "Ya existe un producto con el mismo nombre.");
+                setMensaje(response.data.message);
+            })
+            .catch(error => {
+                console.log(error);
+                if (error.response && error.response.status === 400) {
+                    setClienteExistente(true);
+                    setMensaje(error.response.data.message);
+                }
+            });
+    };
+
+    useEffect(() => {
+        // Obtener la lista de roles desde la API cuando el componente se monta
+        axios.get('/api/categoria/Lista')
+            .then(response => {
+                setCategorias(response.data); // Guardar la lista de categorías en el estado
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
+    return (
+        <div>
+            <NavBar />
+
+            <div className="modal-content">
+                <div className="contenidointerior">
+                    <h2>Agregar Producto</h2>
+
+                    <form class="row g-2" onSubmit={handleSubmit}>
+                        
+
+
+
+                        <div class="col-md-6">
+                            <div>
+                                <label for="inputPassword4" class="form-label">Producto</label>
+                                <input class={`form-control ${clienteExistente ? 'cliente-existe':''}`}
+                                    type="text"
+                                    name="Nombre"
+                                    value={formState.Nombre}
+                                    onChange={handleFormChange}
+                                    onBlur={verificarCliente}
+                                    required
+                                />
                             </div>
-                            <div className="Mitad2">
-                                <div>
-                                    <p>Digite la Categoria</p> 
-                                    <input type="Text" name="Categoria" onChange={this.changeHandler}></input>
-                                </div>
-                                <div>
-                                    <p>Digite el Stock Maximo</p> 
-                                    <input type="number" name="StockMax" onChange={this.changeHandler}></input>
-                                </div>
-                                <div>
-                                    <p>Digite el Stock Minimo</p> 
-                                    <input type="number" name="StockMin" onChange={this.changeHandler}></input>
-                                </div>
-                                <div>
-                                    <p>Sube la imagen</p> 
-                                    <input type="file" name="Imagen1" onChange={this.changeHandler} />
-                                </div>
+                            <span className={`error-message ${clienteExistente ? '' : ''}`}>{mensaje}</span>
+                        </div>
+
+
+
+                        <div className="col-md-6">
+                            <label for="inputPassword4" class="form-label">Descripci&#243;n</label>
+                                <textarea className="form-control" name="Descripcion" onChange={handleFormChange} ></textarea>
+                        </div>
+
+                        <div className="col-md-6">
+                                <label for="inputPassword4" class="form-label">Stock</label>
+                                <input type="number" className="form-control" name="Stock" onChange={handleFormChange} />
+                        </div>
+
+                        <div className="col-md-6">
+                            <label for="inputPassword4" class="form-label">Precio</label>
+                            <input type="number" className="col-12 form-control" name="Precio" onChange={handleFormChange} />
+                        </div>
+                        
+                      
+                        <div className="col-md-6">
+                            <label for="inputPassword4" class="form-label">Categoria</label>
+                                
+                                <select
+                                className="form-select form-select-sm"
+                                    name="Categoria" // Cambiar el nombre del campo a "Categoria"
+                                    value={formState.Categoria} // Cambiar el valor del estado a "Categoria"
+                                    onChange={handleFormChange}
+                                >
+                                    <option className="form-control" value="">Selec. Categoria</option>
+                                    {categorias.map(categoria => (
+                                        <option className="form-select" key={categoria.IdCategoria} value={categoria.IdCategoria}>
+                                            {categoria.nombreC}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
-                            <button type="submit" class="btn btn-primary bajar1">Guardar</button>
-                        </form>
-                    </div>
+
+
+                        <div className="col-md-6">
+                                <label for="inputPassword4" class="form-label">Stock Maximo</label>
+                                <input type="number" className="col-12 form-control" name="StockMax" onChange={handleFormChange} />
+                        </div>
+
+                        <div className="col-md-6">
+                                <label for="inputPassword4" class="form-label">Stock Minimo</label>
+                                <input type="number" className="col-12 form-control" name="StockMin" onChange={handleFormChange} />
+                        </div>
+
+                      
+                        <div className="col-md-6">
+                            <label>Estado</label>
+                            <br />
+                            <div className="form-check form-check-inline">
+                                <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    id="estadoActivo"
+                                    name="Estado"
+                                    checked={formState.Estado === 'Activo'}
+                                    onChange={() => setFormState({ ...formState, Estado: 'Activo' })}
+                                />
+                                <label className="form-check-label" htmlFor="estadoActivo">
+                                    Activo
+                                </label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                                <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    id="estadoInactivo"
+                                    name="Estado"
+                                    checked={formState.Estado === 'Inactivo'}
+                                    onChange={() => setFormState({ ...formState, Estado: 'Inactivo' })}
+                                />
+                                <label className="form-check-label" htmlFor="estadoInactivo">
+                                    Inactivo
+                                </label>
+                            </div>
+                        </div>
+
+
+                       
+
+
+                        <div className="col-md-6">
+                            
+                            <label className="custom-file-upload">
+                                <input type="file" className="form-control" onChange={handleImageChange} />
+                                
+                            </label>
+                            {selectedImage && (
+                                <img src={URL.createObjectURL(selectedImage)} alt="Miniatura" className="thumbnail" />
+                            )}
+                        </div>
+
+                        <div className="d-flex align-items-center justify-content-center">
+                            
+                            <button type="submit" className="btn btn-primary bajar1 my-3  mx-3">Guardar</button>
+                            <Link to="/imagen" className="btn btn-primarycancelar bajar1 my-3 ">Cancelar</Link >    
+
+                            
+
+
+
+                        </div>
+
+                    </form>
+                   
                 </div>
-            </div>
-        )
-    }
-}
+            
+        </div>
+        </div>
 
+
+    );
+};

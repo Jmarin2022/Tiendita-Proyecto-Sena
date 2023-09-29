@@ -8,6 +8,7 @@ const ClienteEditar = () => {
     const { idCliente } = useParams();
 
     const [cliente, setCliente] = useState({
+        documento:'',
         nombre: '',
         apellido: '',
         celular: '',
@@ -55,9 +56,15 @@ const ClienteEditar = () => {
                         <div className="form-row">
 
                             <div className="col">
-                                <label htmlFor="nombre">Nombre:</label>
-                                <input className="form-control"  type="text" id="nombre" name="nombre" value={cliente.nombre} onChange={handleChange} />
+                                <label htmlFor="documento">Documento:</label>
+                                <input className="form-control"  type="text" id="documento" name="documento" value={cliente.documento} onChange={handleChange} />
                             </div>
+
+                            <div className="col">
+                                <label htmlFor="nombre">Nombre:</label>
+                                <input className="form-control" type="text" id="nombre" name="nombre" value={cliente.nombre} onChange={handleChange} />
+                            </div>
+
                             <div className="col">
                                 <label htmlFor="apellido">Apellido:</label>
                                 <input type="text" className="form-control" form-control id="apellido" name="apellido" value={cliente.apellido} onChange={handleChange} />

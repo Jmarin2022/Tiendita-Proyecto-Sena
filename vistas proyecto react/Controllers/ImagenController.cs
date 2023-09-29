@@ -8,6 +8,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace vistas_proyecto_react.Controllers
 {
@@ -77,12 +78,16 @@ namespace vistas_proyecto_react.Controllers
             Imagen.StockMax = request.StockMax;
             Imagen.StockMin = request.StockMin;
             Imagen.Imagen1 = request.Imagen1;
+            Imagen.Estado = request.Estado;
 
 
             await _context.SaveChangesAsync();
 
             return StatusCode(StatusCodes.Status200OK, "OK");
         }
+
+
+
 
         [HttpGet]
         [Route("Detalles/{id:int}")]
@@ -115,44 +120,222 @@ namespace vistas_proyecto_react.Controllers
 
             return Ok(Imagen);
         }
-        [HttpPost("Upload")]
-        public IActionResult UploadImage(IFormFile image)
+
+        //[HttpPost("Upload")]
+        //public IActionResult UploadImage(IFormFile image)
+        //{
+        //    try
+        //    {
+        //        if (image == null || image.Length == 0)
+        //        {
+        //            return BadRequest("No se proporcionó una imagen válida.");
+        //        }
+
+        //        string destinationPath = @"D:\Apis\api3\Tiendita-Proyecto-Sena\vistas proyecto react\ClientApp\src\componentes\imagen\img";
+        //        if (!Directory.Exists(destinationPath))
+        //        {
+        //            Directory.CreateDirectory(destinationPath);
+        //        }
+
+        //        string originalFileName = Path.GetFileName(image.FileName);
+        //        string filePath = Path.Combine(destinationPath, originalFileName);
+
+        //        // Guardar la imagen en el directorio de destino
+        //        using (var stream = new FileStream(filePath, FileMode.Create))
+        //        {
+        //            image.CopyTo(stream);
+        //        }
+
+        //        // Crear un nuevo objeto Imagen y asignar el nombre del archivo
+        //        Imagen newImage = new Imagen
+        //        {
+        //            Imagen1 = originalFileName
+        //        };
+
+        //        // Agregar el nuevo objeto Imagen a la base de datos
+        //        _context.Imagens.Add(newImage);
+        //        _context.SaveChanges();
+
+        //        string fullPath = Path.Combine("componentes/imagen/img", originalFileName);
+
+        //        return Ok(new { Message = "Imagen subida correctamente.", FilePath = fullPath });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
+
+
+        [HttpPost]
+        [Route("Guardar")]
+        public async Task<IActionResult> Guardar(IFormFile imageFile, [FromForm] Imagen request)
         {
+            if (imageFile == null || imageFile.Length <= 0)
+            {
+                return BadRequest("La imagen no se ha proporcionado.");
+            }
+
             try
             {
-                if (image == null || image.Length == 0)
+                // Ruta del directorio donde se guardarán las imágenes
+                string imageDirectory = Path.Combine(_environment.ContentRootPath, "ClientApp/src/componentes/imagen/img");
+
+                // Crear el directorio si no existe
+                if (!Directory.Exists(imageDirectory))
                 {
-                    return BadRequest("No se proporcionó una imagen válida.");
+                    Directory.CreateDirectory(imageDirectory);
                 }
 
-                // Asegurarse de que la ruta de destino exista.
-                string destinationPath = @"C:\Users\Juan Manuel\Desktop\Proyecto\proyecto react\vistas proyecto react\vistas proyecto react\ClientApp\src\componentes\imagen\img";
-                if (!Directory.Exists(destinationPath))
-                {
-                    Directory.CreateDirectory(destinationPath);
-                }
+                // Generar un nombre único para la imagen
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
 
-                // Generar un nombre único para la imagen (usando el nombre original del archivo).
-                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-                string filePath = Path.Combine(destinationPath, fileName);
+                // Ruta completa del archivo de imagen
+                string filePath = Path.Combine(imageDirectory, uniqueFileName);
 
-                // Guardar la imagen en la ruta de destino.
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    image.CopyTo(stream);
+                    await imageFile.CopyToAsync(stream);
                 }
 
-                return Ok("Imagen subida correctamente.");
+                // Guardar información en la base de datos
+                request.Imagen1 = uniqueFileName;  // Asignar el nombre único de la imagen
+
+                await _context.Imagens.AddAsync(request);
+                await _context.SaveChangesAsync();
+
+                return StatusCode(StatusCodes.Status200OK, "OK");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message}");
             }
         }
 
 
 
 
-    }
-}
 
+        [HttpGet]
+        [Route("Verificar/{nombre}")]
+        public async Task<IActionResult> VerificarCliente(String nombre)
+        {
+            var clienteExistente = await _context.Imagens.FirstOrDefaultAsync(c => c.Nombre == nombre);
+
+            if (clienteExistente != null)
+            {
+                return BadRequest(new { message = "Ya existe un producto con el mismo nombre." });
+            }
+
+            return Ok(new { message = "" });
+        }
+
+
+        [Route("Buscar")]
+        public async Task<IActionResult> Buscar(string busqueda)
+        {
+            if (string.IsNullOrEmpty(busqueda))
+            {
+                return BadRequest("El término de búsqueda no puede estar vacío.");
+            }
+
+            try
+            {
+                var imagenes = await _context.Imagens
+                    .Where(c => c.IdImagen.ToString().Contains(busqueda) ||
+                                c.Nombre.Contains(busqueda) ||
+                                c.Estado.Contains(busqueda) ||
+                                c.Categoria.Contains(busqueda))
+
+                    .ToListAsync();
+
+                return Ok(imagenes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al buscar registros: {ex.Message}");
+            }
+        }
+
+
+        [HttpPut]
+        [Route("ToggleEstado/{id:int}")]
+        public async Task<IActionResult> ToggleEstado(int id)
+        {
+            try
+            {
+                var imagen = await _context.Imagens.FindAsync(id);
+                if (imagen == null)
+                {
+                    return NotFound();
+                }
+
+                // Cambia el estado de la imagen (por ejemplo, de Activo a Inactivo o viceversa)
+                imagen.Estado = imagen.Estado == "Activo" ? "Inactivo" : "Activo";
+
+                await _context.SaveChangesAsync();
+
+                return Ok(imagen);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al cambiar el estado de la imagen: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        [Route("FiltrarActivos")]
+        public async Task<IActionResult> FiltrarActivos()
+        {
+            try
+            {
+                List<Imagen> imagenesActivas = await _context.Imagens
+                    .Where(img => img.Estado == "Activo")
+                    .OrderByDescending(img => img.IdImagen)
+                    .ToListAsync();
+
+                return StatusCode(StatusCodes.Status200OK, imagenesActivas);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al obtener imágenes activas: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        [Route("FiltrarInactivos")]
+        public async Task<IActionResult> FiltrarInactivos()
+        {
+            try
+            {
+                List<Imagen> imagenesInactivas = await _context.Imagens
+                    .Where(img => img.Estado == "Inactivo")
+                    .OrderByDescending(img => img.IdImagen)
+                    .ToListAsync();
+
+                return StatusCode(StatusCodes.Status200OK, imagenesInactivas);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al obtener imágenes inactivas: {ex.Message}");
+            }
+        }
+
+
+        [HttpGet]
+        [Route("ListaCelular")]
+        public async Task<IActionResult> ListaCelular()
+        {
+            List<Imagen> imagenes = _context.Imagens
+                .OrderBy(u => u.Stock)
+                .ThenBy(u => u.StockMin)
+                .ToList();
+
+            return StatusCode(StatusCodes.Status200OK, imagenes);
+        }
+
+
+
+    }
+
+}

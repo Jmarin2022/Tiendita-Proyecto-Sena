@@ -107,24 +107,40 @@
 
 
 .body2 {
-    height: 100vh;
-    width: 100vw;
+    height: 90vh;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #23242a;
+    /* background-repeat: no-repeat;*/
+  /*  background-color: #ECECEC*/
+    background-color: #fff
 }
 
 .box {
     position: relative;
-    width: 380px;
+    width: 350px;
     height: 420px;
-    background: #1c1c1c;
+    /*background: grey;*/
     border-radius: 8px;
     overflow: hidden;
     display: flex;
     justify-content: center; /* Centrado horizontal */
     align-items: center; /* Centrado vertical */
+}
+
+.box2 {
+    position: relative;
+    width: 350px;
+    height: 425px;
+    /*background: grey;*/
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center;
+    margin:2px;
+    /* Centrado vertical */
 }
 
     .box::before {
@@ -134,7 +150,7 @@
         left: -50%;
         width: 380px;
         height: 420px;
-        background: linear-gradient(0deg, transparent, transparent, #f9f9f9);
+        background: linear-gradient(0deg, transparent, transparent,#fff, #fff );
         z-index: 1;
         transform-origin: bottom right;
         animation: anime 6s linear infinite;
@@ -147,7 +163,7 @@
         left: -50%;
         width: 380px;
         height: 420px;
-        background: linear-gradient(0deg, transparent, transparent, #f9f9f9);
+        background: linear-gradient(0deg, transparent, transparent, #fff, #fff );
         z-index: 1;
         transform-origin: bottom right;
         animation: anime 6s linear infinite;
@@ -167,7 +183,7 @@
         left: -50%;
         width: 380px;
         height: 420px;
-        /* background: linear-gradient(0deg, transparent, transparent, #ff2770,#ff2770, #ff2770);*/
+        background: linear-gradient(0deg, transparent, transparent, #fff, #fff);
         z-index: 1;
         transform-origin: bottom right;
         animation: anime 6s linear infinite;
@@ -181,10 +197,10 @@
         left: -50%;
         width: 380px;
         height: 420px;
-        /*background: linear-gradient(0deg, transparent, transparent, #ff2770,#ff2770, #ff2770);*/
+        background: linear-gradient(0deg, transparent, transparent, #fff, #fff );
         z-index: 1;
         transform-origin: bottom right;
-        animation: anime 6s linear infinite;
+        animation: anime 6<s linear infinite;
         animation-delay: -4.5s;
     }
 
@@ -201,8 +217,19 @@
 .box form {
     position: absolute;
     inset: 4px;
-    background: #222;
+    background: #2b2c49;
     padding: 50px 40px;
+    border-radius: 8px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.box2 form {
+    position: absolute;
+    inset: 4px;
+    background: #2b2c49;
+    padding: 10px 40px;
     border-radius: 8px;
     z-index: 2;
     display: flex;
@@ -218,9 +245,19 @@
         font-size: 1.5em;
     }
 
+    .box2 form h2 {
+        color: #fff;
+        font-weight: 500;
+        text-align: center;
+        letter-spacing: 0.1em;
+        color: white;
+        font-size: 1.5em;
+        padding-top:8px;
+    }
+
     .box form .inputBox {
         position: relative;
-        width: 300px;
+        width: 250px;
         margin-top: 35px;
     }
 
@@ -303,5 +340,64 @@
         border-radius: 4px;
         font-weight: 600;
         width: 100px;
-        margin-top: 10px
+        margin-top: 20px;
+        margin-left:90px
     }
+
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 10px; /* Agregamos bordes redondeados para dar un aspecto más suave */
+    box-shadow: 0 2px 50px rgba(0, 0, 0, 0.7);/* Aquí definimos la sombra */
+}
+
+
+.login-image {
+    width: 270px; /* Ajusta el tamaño de la imagen según tus necesidades */
+    height: 410px; /* Ajusta el tamaño de la imagen según tus necesidades */
+    margin:4px; /* Ajusta el margen derecho según tus necesidades */
+}
+
+.login-imageR {
+    width: 270px; /* Ajusta el tamaño de la imagen según tus necesidades */
+    height: 420px; /* Ajusta el tamaño de la imagen según tus necesidades */
+    margin: 4px; /* Ajusta el margen derecho según tus necesidades */
+}
+
+.tituloRegistrar {
+   float:left;
+   padding-bottom:5px;
+    
+ 
+    color: #8f8f8f;
+    
+    letter-spacing: 0.1em;
+   
+}
+
+/* En tu archivo de estilos CSS */
+/* En tu archivo de estilos CSS */
+.password-toggle {
+    
+    
+    
+   
+    cursor: pointer;
+    color: #666;
+    z-index: 10;
+    display: inline-block;
+   
+}
+.password-toggle:hover {
+    color: #333; /* Cambia el color cuando el mouse está sobre el ícono */
+}
+
+.ojo {
+    position: absolute;
+    left: 265px;
+    transform: translateY(765%);
+    z-index:10;
+    
+}

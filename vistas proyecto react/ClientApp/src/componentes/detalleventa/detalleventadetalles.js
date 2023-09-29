@@ -3,6 +3,9 @@ import { NavBar } from '../principales/navbar';
 import '../../assets/css/menu.css';
 import { FaFilePdf } from 'react-icons/fa';
 import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import numeral from 'numeral';
+
+
 
 
 
@@ -38,14 +41,51 @@ export function ListadoDetalleventa(props) {
     const [imagenes, setImagenes] = useState([]);
     const [datosCargados, setDatosCargados] = useState(false); // Estado para controlar si los datos han sido cargados
 
+    const [pdfData] = useState('Este es el contenido del PDF'); // Esto podría ser tu contenido de PDF dinámico
+
+
+
+
     const obtenerDetallesVenta = async () => {
-        const response = await fetch("api/detalleventa/Lista");
+        const response = await fetch("/api/detalleventa/Lista");
         if (response.ok) {
             const data = await response.json();
             setDetalleVenta(data);
         } else {
             console.log("Error al obtener detalles de venta");
         }
+    };
+
+    const handleDescargarExcel = () => {
+        // Realiza una solicitud al endpoint del servidor para descargar el archivo Excel
+        fetch("/api/detalleventa/DescargarExcel")
+            .then((response) => {
+                // Verifica si la respuesta es exitosa
+                if (response.ok) {
+                    // Convierte la respuesta en un blob (archivo binario)
+                    return response.blob();
+                } else {
+                    throw new Error("Error al descargar el archivo Excel.");
+                }
+            })
+            .then((blob) => {
+                // Crea una URL de objeto para el blob
+                const url = window.URL.createObjectURL(blob);
+
+                // Crea un enlace temporal para descargar el archivo
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "Detalle_de_la_venta.xlsx";
+
+                // Simula un clic en el enlace para iniciar la descarga
+                a.click();
+
+                // Limpia la URL del objeto creado
+                window.URL.revokeObjectURL(url);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     const obtenerVentas = async () => {
@@ -102,118 +142,106 @@ export function ListadoDetalleventa(props) {
 
     const detallesVentaComparados = obtenerDetallesVentaComparados();
 
-    // Componente para el contenido del PDF
-    const generatePDF = async () => {
-        // Verificar si detallesVentaComparados tiene datos
-        if (detallesVentaComparados.length === 0) {
-            console.log("No hay datos para generar el PDF.");
-            return;
-        }
 
-        // Componente para el contenido del PDF
-        const DetalleVentaPDF = ({ detallesVentaComparados }) => (
+    const PDFComponent = ({ detallesVentaComparados }) => {
+        return (
             <Document>
                 <Page size="A4" style={styles.page}>
                     <View style={styles.section}>
                         <Text style={styles.title}>Detalle de la Venta</Text>
-                        <Text style={styles.subTitle}>Fecha: {new Date().toLocaleString()}</Text>
-                        <Text style={styles.subTitle}>Venta ID: {ventaId}</Text>
-                    </View>
-                    <View style={styles.section}>
-                        {detallesVentaComparados.map((item) => (
-                            <Text key={item.id} style={styles.content}>
-                                {item.nombreProducto} - Cantidad: {item.cantidad} - Total: {item.total}
-                            </Text>
+                        {detallesVentaComparados.map((detalle) => (
+                            <View key={detalle.id} style={styles.content}>
+                                <Text>{`ID del detalle: ${detalle.id}`}</Text>
+                                <Text>{`ID de la venta: ${detalle.ventaId}`}</Text>
+                                <Text>{`Nombre del producto: ${detalle.nombreProducto}`}</Text>
+                                <Text>{`Cantidad: ${detalle.cantidad}`}</Text>
+                                <Text>{`Total: ${detalle.total}`}</Text>
+                            </View>
                         ))}
                     </View>
                 </Page>
             </Document>
         );
-
-        // Obtener el JSX del componente DetalleVentaPDF
-        const detalleVentaPDFInstance = (
-            <DetalleVentaPDF detallesVentaComparados={detallesVentaComparados} />
-        );
-
-        // Generar el Blob del PDF usando el componente PDFDownloadLink
-        const { blob } = await (
-            <PDFDownloadLink
-                document={detalleVentaPDFInstance}
-                fileName={`detalle_venta_${ventaId}.pdf`}
-            >
-                {({ blob, loading }) => (loading ? 'Generando PDF...' : blob)}
-            </PDFDownloadLink>
-        );
-
-        // Revocar el enlace de descarga anterior (si existe)
-        if (window.pdfDownloadLink) {
-            window.pdfDownloadLink.revokeObjectURL();
-        }
-
-        // Crear el enlace de descarga y descargar el PDF
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `detalle_venta_${ventaId}.pdf`;
-        document.body.appendChild(link);
-        link.click();
-
-        // Guardar el enlace de descarga para poder revocarlo posteriormente
-        window.pdfDownloadLink = link;
     };
 
+    const generateAndOpenPDF = () => {
+        try {
+            const pdf = (
+                <PDFComponent detallesVentaComparados={detallesVentaComparados} />
+            );
 
+            const blobUrl = URL.createObjectURL(
+                new Blob([pdf], { type: 'application/pdf' })
+            );
+
+            const newWindow = window.open();
+            if (newWindow) {
+                newWindow.document.open();
+                newWindow.document.write('<html><body>');
+                newWindow.document.write('<embed width="100%" height="100%" src="' + blobUrl + '" type="application/pdf">');
+                newWindow.document.write('</body></html>');
+                newWindow.document.close();
+
+                setTimeout(() => {
+                    URL.revokeObjectURL(blobUrl);
+                }, 100);
+            } else {
+                throw new Error("No se pudo abrir una nueva ventana.");
+            }
+        } catch (error) {
+            console.error("Error al generar o abrir el PDF:", error);
+        }
+    };
 
 
 
     return (
         <div>
             <NavBar />
-            <div className="margin0">
-                <div className="card">
-                    <div className="card-header1">
-                        <div className="Titulo1">
-                            <h2 className="letra">Lista de categorías</h2>
-                            <div className="btn-neon1">
-                                <span id="span1"></span>
-                                <span id="span2"></span>
-                                <span id="span3"></span>
-                                <span id="span4"></span>
-                                <a href="/venta">Regresar</a>
-                            </div>
-                        </div>
+
+            <div className="card">
+                <div className="partedeltitulo">
+
+                    <h2 className="letra">Lista de la venta</h2>
+                    <div className="btn-neon letra2 my-2">
+                        <span id="span1"></span>
+                        <span id="span2"></span>
+                        <span id="span3"></span>
+                        <span id="span4"></span>
+                        <a href="/venta">Regresar</a>
                     </div>
-                    <div className="card-body">
-                        <table className="table1">
-                            <thead>
-                                <tr>
-                                    <th className="raya" scope="col">Id del detalle</th>
-                                    <th className="raya" scope="col">Id de la venta</th>
-                                    <th className="raya" scope="col">Nombre del producto</th>
-                                    <th className="raya" scope="col">Cantidad</th>
-                                    <th className="raya" scope="col">Total</th>
+
+                </div>
+                <div className="card-body">
+                    <table className="table1">
+                        <thead>
+                            <tr>
+                                <th className="raya" scope="col">Id del detalle</th>
+                                <th className="raya" scope="col">Id de la venta</th>
+                                <th className="raya" scope="col">Nombre del producto</th>
+                                <th className="raya" scope="col">Cantidad</th>
+                                <th className="raya" scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {detallesVentaComparados.map((item) => (
+                                <tr key={item.id}>
+                                    <td className="raya">{item.id}</td>
+                                    <td className="raya">{item.ventaId}</td>
+                                    <td className="raya">{item.nombreProducto}</td>
+                                    <td className="raya">{item.cantidad}</td>
+                                    <td className="raya">{numeral(item.total || 0).format('0,0.00')}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {detallesVentaComparados.map((item) => (
-                                    <tr key={item.id}>
-                                        <td className="raya">{item.id}</td>
-                                        <td className="raya">{item.ventaId}</td>
-                                        <td className="raya">{item.nombreProducto}</td>
-                                        <td className="raya">{item.cantidad}</td>
-                                        <td className="raya">{item.total}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className="pdf-button">
-                        <button onClick={generatePDF}>
-                            Descargar PDF
-                        </button>
-                    </div>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <div style={{ marginLeft: '38px' }}>
+                    <button className="btn btn-primary bajar1 my-3" onClick={handleDescargarExcel}>Descargar Excel</button>
                 </div>
             </div>
-            
         </div>
+
+
     );
 }

@@ -3,6 +3,7 @@ import { Component } from "react";
 import axios from 'axios';
 import { NavBar } from '../principales/navbar'
 import '../../assets/css/menu.css'
+import { Link, useLocation } from 'react-router-dom';
 
 export class GuardarRol extends Component {
 
@@ -35,20 +36,23 @@ export class GuardarRol extends Component {
         return (
             <div  >
                 <NavBar />
-                <div className="contenido1">
-                    <div className="highlight contenidointerior1">
+                <div className="modal-content">
+                    <div className="contenidointerior">
                         <h2>Crear Permiso</h2>
                         <form onSubmit={this.submitHandler}>
-                            <div className="form-row">
-                        <p>Digite el rol1</p>
-                                <input className="form-control"  type="Text" name="rol1" onChange={this.changeHandler} ></input>
+                            <div className="form-row col-9  ">
+                        <p>Rol</p>
+                                <input className="form-control "  type="Text" name="rol1" onChange={this.changeHandler} ></input>
                     </div>
-                            <div className="form-row">
-                        <p>Digite La fecha</p>
-                                <input className="form-control" type="datetime-local" name="fecha" onChange={this.changeHandler} ></input>
+                            <div className="form-row col-9">
+                        <p>Fecha</p>
+                                <input className="form-control " type="datetime-local" name="fecha" onChange={this.changeHandler} ></input>
+                            </div>
+                            <div className="btn-primary11">
+                                <Link to="/rol" className="btn btn-primarycancelar bajar1 my-3 mx-3 ">Cancelar</Link >
+                                <button type="submit" class="btn">Guardar</button>
                     </div>
-                            <button type="submit" class="btn btn-primary bajar1">Guardar</button>
-                </form>
+                </form>  
                     </div>
                 </div>
             </div>

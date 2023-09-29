@@ -105,5 +105,94 @@ namespace vistas_proyecto_react.Controllers
         }
 
 
+        [HttpGet]
+        [Route("Buscar")]
+        public async Task<IActionResult> Buscar(string busqueda)
+        {
+            if (string.IsNullOrEmpty(busqueda))
+            {
+                return BadRequest("El término de búsqueda no puede estar vacío.");
+            }
+
+            try
+            {
+                var Categoria = await _context.Categorias
+                    .Where(c => c.IdCategoria.ToString().Contains(busqueda) ||
+                                c.NombreC.Contains(busqueda) ||
+                                c.Estado.Contains(busqueda) ||
+                                c.IdImagen.ToString().Contains(busqueda))
+                    .ToListAsync();
+
+                return Ok(Categoria);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al buscar registros: {ex.Message}");
+            }
+        }
+
+        [HttpPut]
+        [Route("ToggleEstado/{id:int}")]
+        public async Task<IActionResult> ToggleEstado(int id)
+        {
+            try
+            {
+                var Categoria = await _context.Categorias.FindAsync(id);
+                if (Categoria == null)
+                {
+                    return NotFound();
+                }
+
+                // Cambia el estado de la imagen (por ejemplo, de Activo a Inactivo o viceversa)
+                Categoria.Estado = Categoria.Estado == "Activo" ? "Inactivo" : "Activo";
+
+                await _context.SaveChangesAsync();
+
+                return Ok(Categoria);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al cambiar el estado de la imagen: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        [Route("FiltrarActivos")]
+        public async Task<IActionResult> FiltrarActivos()
+        {
+            try
+            {
+                List<Categoria> imagenesActivas = await _context.Categorias
+                    .Where(usu => usu.Estado == "Activo")
+                    .OrderByDescending(usu => usu.IdCategoria)
+                    .ToListAsync();
+
+                return StatusCode(StatusCodes.Status200OK, imagenesActivas);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al obtener imágenes activas: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        [Route("FiltrarInactivos")]
+        public async Task<IActionResult> FiltrarInactivos()
+        {
+            try
+            {
+                List<Categoria> imagenesInactivas = await _context.Categorias
+                    .Where(usu => usu.Estado == "Inactivo")
+                    .OrderByDescending(usu => usu.IdCategoria)
+                    .ToListAsync();
+
+                return StatusCode(StatusCodes.Status200OK, imagenesInactivas);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al obtener imágenes inactivas: {ex.Message}");
+            }
+        }
+
     }
 }

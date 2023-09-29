@@ -11,7 +11,7 @@ export function Modal({ usuarioSeleccionado, handleConfirmarEliminar }) {
                     </div>
                     <div className="modal-body">
                         {usuarioSeleccionado && (
-                            <p>¿Estás seguro de que deseas eliminar el usuario {usuarioSeleccionado.usuario1}?</p>
+                            <p>¿Estás seguro de que deseas eliminar o no el usuario {usuarioSeleccionado.usuario1}?</p>
                         )}
                     </div>
                     <div className="modal-footer">

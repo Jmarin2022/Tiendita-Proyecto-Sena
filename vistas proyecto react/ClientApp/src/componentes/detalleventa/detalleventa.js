@@ -1,6 +1,7 @@
 //import "bootsrap/dist/css/bootstrap.min.css"
 import { useEffect, useState } from "react";
-
+import '../../assets/css/menu.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 export function Listadodetalleventa(props) {
 
     const [detalleventa, setDetalleVenta] = useState([]);
@@ -47,6 +48,7 @@ export function Listadodetalleventa(props) {
     const detallesVentaComparados = obtenerDetallesVentaComparados();
 
     return (
+        <div className="card">
         <div className="container bd-dark p-4 vh-100">
             <h2 className="text-white">Lista de los detalles de las ventas</h2>
             <div className="row">
@@ -81,6 +83,7 @@ export function Listadodetalleventa(props) {
                         </table>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     );

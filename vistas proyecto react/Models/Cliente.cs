@@ -18,4 +18,5 @@ public partial class Cliente
     public DateTime FechaRegistro { get; set; }
 
     public string Estado { get; set; } = null!;
+    public int Documento { get; set; }
 }

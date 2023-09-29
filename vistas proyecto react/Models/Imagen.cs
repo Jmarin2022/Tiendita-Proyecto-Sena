@@ -22,6 +22,7 @@ public partial class Imagen
     public int? StockMin { get; set; }
 
     public string? Imagen1 { get; set; }
+    public string? Estado { get; set; }
 
     public virtual ICollection<Categoria> CategoriaNavigation { get; set; } = new List<Categoria>();
 

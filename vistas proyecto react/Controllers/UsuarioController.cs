@@ -7,6 +7,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using vistas_proyecto_react.Models;
+using System.Collections.Generic;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
 
 namespace vistas_proyecto_react.Controllers
 {
@@ -22,7 +26,6 @@ namespace vistas_proyecto_react.Controllers
         }
 
 
-
         [HttpGet]
         [Route("Lista")]
         public async Task<IActionResult> Lista()
@@ -31,6 +34,7 @@ namespace vistas_proyecto_react.Controllers
 
             return StatusCode(StatusCodes.Status200OK, Usuario);
         }
+
 
         [HttpPost]
         [Route("Guardar")]
@@ -70,6 +74,8 @@ namespace vistas_proyecto_react.Controllers
             Usuario.Rol = request.Rol;
             Usuario.Usuario1 = request.Usuario1;
             Usuario.Contrasena = request.Contrasena;
+            Usuario.Documento = request.Documento;
+            Usuario.Estado = request.Estado;
 
 
 
@@ -98,6 +104,32 @@ namespace vistas_proyecto_react.Controllers
             return StatusCode(StatusCodes.Status200OK, Usuario);
         }
 
+
+        [HttpPut]
+        [Route("ToggleEstado/{id:int}")]
+        public async Task<IActionResult> ToggleEstado(int id)
+        {
+            try
+            {
+                var Usuario = await _context.Usuarios.FindAsync(id);
+                if (Usuario == null)
+                {
+                    return NotFound();
+                }
+
+                // Cambia el estado de la imagen (por ejemplo, de Activo a Inactivo o viceversa)
+                Usuario.Estado = Usuario.Estado == "Activo" ? "Inactivo" : "Activo";
+
+                await _context.SaveChangesAsync();
+
+                return Ok(Usuario);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al cambiar el estado de la imagen: {ex.Message}");
+            }
+        }
+
         [HttpGet]
         [Route("{id:int}")]
         public async Task<IActionResult> GetCliente(int id)
@@ -116,28 +148,27 @@ namespace vistas_proyecto_react.Controllers
         public async Task<IActionResult> Login([FromBody] Usuario request)
         {
             Usuario usuario = await _context.Usuarios
-                .FirstOrDefaultAsync(u => u.Usuario1 == request.Usuario1 && u.Contrasena == request.Contrasena);
+                .Include(u => u.RolNavigation)
+                .FirstOrDefaultAsync(u => u.Usuario1 == request.Usuario1 && u.Contrasena == request.Contrasena && u.Estado == "Activo");
 
             if (usuario != null)
             {
-                // Generar el token JWT
-                var key = Encoding.ASCII.GetBytes("tu_secreto_secreto_secreto"); // Utiliza la misma clave que configuraste en ConfigureServices
                 var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes("tu_secreto_para_firmar_el_token");
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                new Claim(ClaimTypes.Name, usuario.Usuario1),
-                        // Puedes agregar más claims personalizados aquí si es necesario
+                new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
+                new Claim(ClaimTypes.Role, usuario.RolNavigation != null ? usuario.RolNavigation.Rol1 : "cliente"),
+                        // Agregar más claims según la información que deseas incluir
                     }),
-                    Expires = DateTime.UtcNow.AddHours(1), // Token caduca en 1 hora
+                    Expires = DateTime.UtcNow.AddDays(1),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
-                var tokenString = tokenHandler.WriteToken(token);
 
-                // Devolver el token al cliente (frontend)
-                return Ok(new { Token = tokenString });
+                return Ok(new { token = tokenHandler.WriteToken(token), userCredentials = new { usuario.Usuario1, usuario.Contrasena } });
             }
             else
             {
@@ -145,62 +176,96 @@ namespace vistas_proyecto_react.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("Cierre")]
-        [Authorize] // Requiere que el usuario esté autenticado para acceder a este endpoint
-        public IActionResult Logout()
+
+
+        [HttpGet]
+        [Route("FiltrarInactivos")]
+        public async Task<IActionResult> FiltrarInactivos()
         {
             try
             {
-                // Aquí puedes agregar cualquier lógica adicional antes de invalidar el token, si es necesario.
+                List<Usuario> imagenesInactivas = await _context.Usuarios
+                    .Where(usu => usu.Estado == "Inactivo")
+                    .OrderByDescending(usu => usu.Id)
+                    .ToListAsync();
 
-                // Invalidar el token actual, si es válido y está presente en el encabezado de la solicitud.
-                var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                if (!string.IsNullOrEmpty(token))
-                {
-                    var tokenHandler = new JwtSecurityTokenHandler();
-                    var key = Encoding.ASCII.GetBytes("tu_secreto_secreto_secreto"); // Misma clave que usaste para generar el token en el login.
-                    tokenHandler.ValidateToken(token, new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ClockSkew = TimeSpan.Zero // Sin margen de error en la expiración del token
-                    }, out SecurityToken validatedToken);
-
-                    // En este punto, el token es válido, por lo que puedes considerarlo como inválido (caducado) al construir un nuevo token con fecha de expiración en el pasado.
-                    var jwtToken = (JwtSecurityToken)validatedToken;
-
-                    // Construir un nuevo token con fecha de expiración en el pasado.
-                    var newExpiration = DateTime.UtcNow.AddSeconds(-1);
-                    var newToken = new JwtSecurityToken(
-                        jwtToken.Issuer,
-                        null, // Lista de audiencias vacía
-                        jwtToken.Claims,
-                        DateTime.UtcNow, // Valor actual de NotBefore
-                        newExpiration, // Nueva fecha de expiración
-                        jwtToken.SigningCredentials // Reutilizar las credenciales de firma del token original
-                    );
-
-                    // Generar el token en formato JWT.
-                    var tokenString = tokenHandler.WriteToken(newToken);
-
-                    // Devolver el token actualizado al cliente (frontend) para que pueda eliminarlo del almacenamiento local.
-                    return Ok(new { Token = tokenString });
-                }
-
-                // Si no hay token o ya ha expirado, simplemente devuelve un mensaje de éxito.
-                return Ok("Cierre de sesión exitoso");
+                return StatusCode(StatusCodes.Status200OK, imagenesInactivas);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al obtener imágenes inactivas: {ex.Message}");
+            }
+        }
+
+
+        [HttpGet]
+        [Route("FiltrarActivos")]
+        public async Task<IActionResult> FiltrarActivos()
+        {
+            try
+            {
+                List<Usuario> imagenesActivas = await _context.Usuarios
+                    .Where(usu => usu.Estado == "Activo")
+                    .OrderByDescending(usu => usu.Id)
+                    .ToListAsync();
+
+                return StatusCode(StatusCodes.Status200OK, imagenesActivas);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al obtener imágenes activas: {ex.Message}");
             }
         }
 
 
 
+        [HttpGet]
+        [Route("Buscar")]
+        public async Task<IActionResult> Buscar(string busqueda)
+        {
+            if (string.IsNullOrEmpty(busqueda))
+            {
+                return BadRequest("El término de búsqueda no puede estar vacío.");
+            }
 
+            try
+            {
+                var Usuario = await _context.Usuarios
+                    .Where(c => c.Id.ToString().Contains(busqueda) ||
+                                c.RolNavigation.Rol1.Contains(busqueda) ||
+                                c.Documento.ToString().Contains(busqueda) ||
+                                c.Usuario1.Contains(busqueda))
+
+                    .ToListAsync();
+
+                return Ok(Usuario);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al buscar registros: {ex.Message}");
+            }
+        }
+
+        [HttpPost("send-sms")]
+        public IActionResult SendSms([FromBody] SmsRequest request)
+        {
+            var accountSid = "AC4432a41bdc91dd6c0d06342609a3f0e6";
+            var authToken = "d0631821d882e9c0ab6569a3cfe31b57";
+            TwilioClient.Init(accountSid, authToken);
+
+            var messageOptions = new CreateMessageOptions(
+                new PhoneNumber(request.To));
+            messageOptions.From = new PhoneNumber("+14705161438");
+            messageOptions.Body = request.Body;
+
+            var message = MessageResource.Create(messageOptions);
+            return Ok(new { Message = "SMS sent successfully." });
+        }
+
+        public class SmsRequest
+        {
+            public string To { get; set; }
+            public string Body { get; set; }
+        }
     }
 }

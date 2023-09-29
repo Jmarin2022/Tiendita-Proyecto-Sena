@@ -1,6 +1,7 @@
 //import "bootsrap/dist/css/bootstrap.min.css"
 import { Component } from "react";
 import axios from 'axios';
+import { Link, useLocation } from 'react-router-dom';
 
 export class GuardarVenta extends Component {
 
@@ -31,7 +32,7 @@ export class GuardarVenta extends Component {
     }
     render() {
         return (
-            <div>
+            <div >
                 <form onSubmit={this.submitHandler}>
                     <div>
                         <p>Digite el nombre del cliente</p><br />
@@ -45,7 +46,8 @@ export class GuardarVenta extends Component {
                         <p>Digite el total</p><br />
                         <input type="number" name="Total" onChange={this.changeHandler} ></input>
                     </div>
-                    <button type="submit" >Enviar</button>
+                    <Link to="/venta" className="btn btn-primarycancelar bajar1 my-3 mx-3 ">Cancelar</Link >
+                    <button type="submit" >Enviawr</button>
                 </form>
             </div>
         )

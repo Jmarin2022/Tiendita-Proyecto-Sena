@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { NavBar } from '../principales/navbar';
 import '../../assets/css/menu.css';
-import { BiTrash } from 'react-icons/bi'; // Importar el icono de eliminación
-import { BiBrush } from 'react-icons/bi';
-import Swal from 'sweetalert2';
 
+import Swal from 'sweetalert2';
+import Footer from '../principales/footer';
+
+import { BsTrash } from 'react-icons/bs';
+import { BsPencil } from 'react-icons/bs';
+import { AiOutlineClose } from 'react-icons/ai';
+import { Link, useLocation } from 'react-router-dom';
 
 export const ProductosFormulario = () => {
     const [productos, setProductos] = useState([]);
@@ -17,7 +21,10 @@ export const ProductosFormulario = () => {
     const [editIndex, setEditIndex] = useState(null);
     const [cliente, setCliente] = useState('');
     const [ventaId, setVentaId] = useState(null);
+    const [cantidad, setCantidad] = useState('');
     const [nombresProductosSeleccionados, setNombresProductosSeleccionados] = useState([]);
+
+    const [productoInactivo, setProductoInactivo] = useState(false); // Estado para verificar si el producto está inactivo
 
     useEffect(() => {
         const fetchProductos = async () => {
@@ -52,11 +59,22 @@ export const ProductosFormulario = () => {
             ...producto,
             [name]: value,
         });
+        const selectedProducto = productos.find((item) => item.nombre === value);
+        // Verificar si el producto seleccionado está inactivo
+
+        if (selectedProducto) {
+            setProductoInactivo(selectedProducto.estado === 'Inactivo');
+        } else {
+            setProductoInactivo(false); // Reiniciar el estado si no se encuentra el producto
+        }
+
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const productoSeleccionado = productos.find((item) => item.nombre === producto.nombre);
+
+        
 
         if (!productoSeleccionado) {
             Swal.fire({
@@ -66,6 +84,8 @@ export const ProductosFormulario = () => {
             })
             return;
         }
+
+        
 
         const stockActual = productoSeleccionado.stock;
 
@@ -77,6 +97,17 @@ export const ProductosFormulario = () => {
             })
             return;
         }
+
+        // Agregar una comprobación para productos inactivos
+        if (productoSeleccionado.estado === 'Inactivo') {
+            Swal.fire({
+                icon: 'warning',
+                
+                title: 'Este producto est&#225; inactivo y no se puede agregar a la lista de productos.'
+            });
+            return;
+        }
+        
 
         if (editIndex !== null) {
             const updatedProductosSeleccionados = [...productosSeleccionados];
@@ -118,9 +149,29 @@ export const ProductosFormulario = () => {
         setEditIndex(index);
     };
 
-    const handleClienteChange = (e) => {
-        setCliente(e.target.value);
+    const handleClienteChange = (event) => {
+        const inputValue = event.target.value;
+
+        // Validar la entrada utilizando una expresión regular que solo permita letras y números
+        if (/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ\s]*$/.test(inputValue)) {
+            setCliente(inputValue);
+        }
     };
+    const handleCantidadChange = (event) => {
+        const inputCantidad = event.target.value;
+        // Validate input using the regular expression
+        if (inputCantidad === '' || /^\d+$/.test(inputCantidad)) {
+            setCantidad(inputCantidad);
+        }
+    };
+
+    const handleKeyDown = (event) => {
+        // Prevenir la entrada de la tecla 'e'
+        if (event.key === 'e') {
+            event.preventDefault();
+        }
+    };
+
 
     const handleGuardarVenta = async () => {
         // Calcular el total sumando los subtotales de los productos seleccionados
@@ -176,7 +227,7 @@ export const ProductosFormulario = () => {
             Swal.fire({
                 icon: 'success',
                 title: 'Venta guardada correctamente.',
-                text: `El número de venta es: ${ventaId}`,
+              
             });
         } catch (error) {
             console.error(error);
@@ -196,60 +247,73 @@ export const ProductosFormulario = () => {
     return (
         <div>
             <NavBar />
-            <div className="margin0">
-                <div className="card ">
-                    <div className="card-header1">
-                        <div className="Titulo1">
-                            <h2 className="letra">Crear venta</h2>
-                        </div>
+            <div className="modal-entrada">
+                
+                    {/*<div className="card-header1">                      */}
+                    {/*        <h2 className="letra13">Crear venta</h2>*/}
+                    {/*</div>*/}
+                <form onSubmit={handleSubmit} >
+
+                <div className="row">
+                    <div className="col-md-3">
+                        <label className="tituloentrada" htmlFor="cantidad">Producto</label>
+                        <input
+                            className={`form-control1 ${productoInactivo ? 'producto-inactivo' : ''}`}
+                            list="productosList"
+                            id="nombre"
+                            name="nombre"
+                            value={producto.nombre}
+                            onChange={handleChange}
+                            placeholder="Buscar producto"
+                        />
+                        <datalist id="productosList">
+                            {productosDisponibles.map((item, index) => (
+                                <option key={index} value={item.nombre}>
+                                    {item.nombre}
+                                </option>
+                            ))}
+                        </datalist>
+                        {productoInactivo && <p className="mensaje-error" style={{marginLeft:'90px'} }>Producto Inactivo</p>}
                     </div>
-                    <div className="card-body">
-                        <div className="Contenedor13">
-                            <div className="form-group row">
-                                <label className="col-sm-3 col-form-label" htmlFor="cliente">Nombre del Cliente:</label>
-                                <div className="col-sm-9">
-                                    <input className="form-control" type="text" id="cliente" value={cliente} onChange={handleClienteChange} />
-                                </div>
-                            </div>
-                            <form onSubmit={handleSubmit}>
-                                <h2 className="letra1">Información del Producto para agregar</h2>
-                                <div className="row">
-                                    <div className="form-row col-sm-5">
-                                        <label htmlFor="cantidad">busque el nombre del producto:</label>
-                                        <input
-                                            className="form-control"
-                                            list="productosList"
-                                            id="nombre"
-                                            name="nombre"
-                                            value={producto.nombre}
-                                            onChange={handleChange}
-                                            placeholder="Buscar producto"
-                                        />
-                                        <datalist id="productosList">
-                                            {productosDisponibles.map((item, index) => (
-                                                <option key={index} value={item.nombre}>
-                                                    {item.nombre}
-                                                </option>
-                                            ))}
-                                        </datalist>
-                                    </div>
 
-                                    <div className="form-row col-sm-5">
-                                        <label htmlFor="cantidad">Cantidad:</label>
-                                        <input className="form-control" type="number" id="cantidad" name="cantidad" value={producto.cantidad} onChange={handleChange} />
-                                    </div>
+                        <div className="col-md-3">
+                    
+                        <label class="tituloentrada" htmlFor="cliente">Cliente</label>
+                         <input className="form-control1" type="text" id="cliente" value={cliente} onChange={handleClienteChange} />
+                           
+                        </div>
+                         
 
-                                    <button className="btn btn-primary bajar1 col-sm" type="submit">{editIndex !== null ? 'Guardar Cambios' : 'Agregar Producto'}</button>
-                                </div>
-                            </form>
+                        <div className="col-md-3">
+                   
+                        <label class="tituloentrada">Cantidad</label>
+                        <input className="form-control1" type="number" id="cantidad" name="cantidad" value={producto.cantidad} onChange={handleChange} onKeyDown={handleKeyDown} />
+                        </div>
+                    
 
-                            <h2 className="letra1">Listado de Productos</h2>
+                    
+
+                    <div className="col-md-3">
+                        
+                        <button className="btn btn-primary bajar1 col-sm" type="submit">{editIndex !== null ? 'Guardar Cambios' : 'Agregar a la lista'}</button>
+                        <Link to="/usuario" className="btn btn-primarycancelar bajar1  mx-3 ">Cancelar</Link >
+                    </div>
+                    </div>
+
+                </form>
+                <hr />
+                <br />
+                <h2 className="d-flex align-items-center justify-content-center mt-3 listaventaguardar">Lista de Productos</h2>
+                
+                
+
+                <div className="">
                             <table className="table1">
                                 <thead>
                                     <tr>
-                                        <th className="raya" scope="col">Nombre del producto</th>
-                                        <th className="raya" scope="col">Catidad del producto</th>
-                                        <th className="raya" scope="col">Subtotal del producto</th>
+                                        <th className="raya" scope="col">Producto</th>
+                                        <th className="raya" scope="col">Cantidad </th>
+                                        <th className="raya" scope="col">Subtotal</th>
                                         <th className="raya" scope="col">Operaciones</th>
                                     </tr>
                                 </thead>
@@ -260,11 +324,12 @@ export const ProductosFormulario = () => {
                                             <td className="raya">{item.cantidad}</td>
                                             <td className="raya">{item.subtotal}</td>
                                             <td className="raya">
-                                                <button className="btn btn-outline-danger espacio" onClick={() => handleDelete(index)}>
-                                                    <BiTrash />
+                                                <button className="btn espacio" onClick={() => handleDelete(index)}>
+                                                    <BsTrash className="btn-outline-danger icon" />
+                                                    <AiOutlineClose className="btn-outline-danger icon-open" />
                                                 </button>
-                                                <button className="btn btn-primary espacio" onClick={() => handleEdit(index)}>
-                                                    <BiBrush />
+                                                <button className="btn espacio" onClick={() => handleEdit(index)}>
+                                                    <BsPencil className="iconedit" />
                                                 </button>
                                             </td>
                                         </tr>
@@ -273,15 +338,19 @@ export const ProductosFormulario = () => {
 
                                 {productosSeleccionados.length > 0 && (
                                     <div>
-                                        <p>Total: {productosSeleccionados.reduce((acc, item) => acc + item.subtotal, 0)}</p>
-                                        <button className="btn btn-primary bajar1" onClick={handleGuardarVenta}>Guardar Venta</button>
+                                <p className="px-2">Total: {productosSeleccionados.reduce((acc, item) => acc + item.subtotal, 0)}</p>
+                                
+                                   
+                                    <button className="btn btn-primary my-2 mx-2" onClick={handleGuardarVenta}>Guardar Venta</button>
+                                    
                                     </div>
                                 )}
-                            </table>
-                        </div>
-                    </div>
+                    </table>
                 </div>
             </div>
+                   
+           
+            <Footer />
         </div>
     );
 };
